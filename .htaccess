@@ -1,0 +1,11 @@
+RewriteEngine on
+
+RewriteRule ^(index|contact|login)$ $1.php [NC,L]
+
+RewriteRule ^details/(\d+)$ includes/details.php?p_id=$1 [NC,L]
+
+RewriteRule ^category/(\d+)$ category.php?category=$1 [NC,L]
+
+RewriteRule ^reservation/(\D+)$ reservation.php?page=$1 [NC,L]
+
+RewriteRule ^logout$ includes/logout.php [NC,L]
