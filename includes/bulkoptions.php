@@ -1,7 +1,7 @@
 <?php 
 if(isset($_POST['bulkoptionApply'])) {
     
-    if(!isset($_POST['checkBoxArray']) && !isset($_POST['bulk_options'])) {
+    if(isset($_POST['checkBoxArray']) && isset($_POST['bulk_options'])) {
         $checkBoxArray = $_POST['checkBoxArray'];
         $length = count($checkBoxArray);
 
@@ -15,8 +15,10 @@ if(isset($_POST['bulkoptionApply'])) {
                 $message = bulkoptionMessage($length, $bulk_options);
             }
         }
+    } else {
+        $bulkError = "<div class='error'>Select Status and check at least one checkbox!</div>";
     }
-}
+} 
 ?>
 
 <form id="bulkOptions" method="post">
@@ -30,3 +32,4 @@ if(isset($_POST['bulkoptionApply'])) {
         </select>
         <input type="submit" name="bulkoptionApply" id="bulkoptionApply" value="Apply">
     </div>
+    <?= (isset($bulkError))? $bulkError :"";?>

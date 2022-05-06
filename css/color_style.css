@@ -78,6 +78,8 @@ h2.no-result {
     text-align: center;
 } */
 
-.small-alert {
-    color: tomato;
+#bulkOptions div.error {
+    color: red;
+    padding-bottom: 1rem;
+    font-size: 1.5rem;
 }

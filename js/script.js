@@ -374,20 +374,24 @@ if(searchBtn !== null ) {
 const bulkoptionApplyBtn = document.getElementById('bulkoptionApply');
 const checkBoxes = document.querySelectorAll('.checkbox');
 
-bulkoptionApplyBtn.addEventListener("click", (e)=> {
-    // check checkbox status
-    checkBoxes.forEach(checkBox => {
-        if(checkBox.checked == true) {
-            return;
-        } else {
-            console.log("no checkbox checked!");
-            e.preventDefault();
-        }
-    });
-    
-    e.preventDefault();
-    console.log("no thing checked");
-});
+// bulkoptionApplyBtn.addEventListener("click", (e)=> {
+//     // check checkbox status
+//     var i = 0;
+//     checkBoxes.forEach(checkBox => {
+//         if(checkBox.checked !== true) {
+//             i++;
+//         }
+         
+//     });
+
+//     if(i === checkBoxes.length) {
+//         e.preventDefault();
+//         console.log("no checkbox checked");
+//     }
+
+//     const document.getElementById('bulkoptionContainer').
+//     document.createElement('div').innerHTML = 
+// });
 // end of bulkoption.php
 
 
