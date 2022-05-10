@@ -18,118 +18,109 @@
     <div class="reservationDetails">
         
     <?php
+    $status = new Status();
+
     // STATUS CHANGE
     if(isset($_POST['newStatus'])){
-        $request_id = escape($_POST['request_id']);
-        $new_status = escape($_POST['newStatus']);
+        $selectedRequestId = escape($_POST['request_id']);
+        $newStatus = escape($_POST['newStatus']);
 
-        $changeStatusStmt = mysqli_prepare($connection, "UPDATE reservation_request SET request_status = ? WHERE request_id = ?");
-        mysqli_stmt_bind_param($changeStatusStmt, "si", $new_status, $request_id);
-        mysqli_execute($changeStatusStmt);
+        $status->changeStatus($newStatus, $selectedRequestId);
 
-        header ("Location: /reservation/details/$request_id");
+        header('"Location: reservation.php?details&'.$selectRequestId .'"');
     }
 
     // SHOW DATA FROM REQUEST_ID
-    if(isset($_GET['r_id'])){
-        $request_id = $_GET['r_id'];
+    if(isset($_GET['p_id'])){
+        $requestId = $_GET['p_id'];
     ?>
         <div class="anotherReservation">
             <ul>
     <?php
         // SELECT ALL DATA FROM REQUEST_ID
-        $stmt = mysqli_prepare($connection, "SELECT request_id, request_name, request_email, request_tel, request_date, DATE_FORMAT(request_time, '%H:%i'), request_num_seats, request_comment, request_status, request_recieved_time, request_flag, request_edited_time FROM reservation_request WHERE request_id = ?");
-        mysqli_stmt_bind_param($stmt, "i", $request_id);
-        mysqli_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $request_id, $request_name, $request_email, $request_tel, $request_date, $request_time, $request_num_seats, $request_comment, $request_status, $request_recieved_time, $flag, $request_edited_time );
-        mysqli_stmt_store_result($stmt);
+        $reservations = Reservation::find_by_id("request_id", $requestId);
+        foreach($reservations as $reservation) :
 
-        mysqli_stmt_fetch($stmt);
+            $formatedRequestDate = $reservation->formatDate();
+            $formatedRequestTime = $reservation->formatTime();
 
-        // change request status 'unread' to 'pending"
-        if($request_status === 'unread') {
-            $stmt1 = mysqli_prepare($connection, "UPDATE reservation_request SET request_status = 'pending' WHERE request_id = ?");
-            mysqli_stmt_bind_param($stmt1, "i", $request_id);
-            mysqli_execute($stmt1);
-        } 
-
-        // SELECT ALL DATA FROM SAME REQUEST_DATE
-        $stmt2= mysqli_prepare($connection, "SELECT request_id, request_date, DATE_FORMAT(request_time, '%H:%i'), request_num_seats, request_comment, request_status, request_recieved_time, request_flag FROM reservation_request WHERE request_date = ? ORDER BY request_time ASC");
-        mysqli_stmt_bind_param($stmt2, "s", $request_date);
-        mysqli_execute($stmt2);
-        mysqli_stmt_bind_result($stmt2, $another_request_id, $another_request_date, $another_request_time, $another_request_num_seats, $another_request_comment, $another_request_status, $another_request_recieved_time, $another_request_flag );
-        mysqli_stmt_store_result($stmt2);
-        $num_another_reservations = mysqli_stmt_num_rows($stmt2)-1;
+            // format date and time
+            
         
-        // format date and time
-        $formated_request_date = date_create($request_date);
-        $formated_request_date = date_format($formated_request_date, 'D d.m.Y');
+            $formatedRequestRecievedTime = date_create($reservation->request_recieved_time);
+            $formatedRequestRecievedTime = date_format($formatedRequestRecievedTime, 'D d.m.Y H:i');
 
-        $formated_request_recieved_time = date_create($request_recieved_time);
-        $formated_request_recieved_time = date_format($formated_request_recieved_time, 'D d.m.Y H:i');
+            
+            // change request status 'unread' to 'pending"
+            $requestStatus = $reservation->request_status;
 
-        if(isset($request_edited_time)) {
-            $formated_request_edited_time = date_create($request_edited_time);
-            $formated_request_edited_time = date_format($formated_request_edited_time, 'D d.m.Y H:i');
-        }
-        
-        if($num_another_reservations > 0) {
-            echo "<li class='date'><i class='fas fa-exclamation'></i> $num_another_reservations more Requests on $formated_request_date<i class='fas fa-caret-down dropdown2'></i></li>";
+            if($requestStatus === 'unread') {
+                $newStatus = "pending";
+                $status->changeStatus($newStatus, $requestId);
 
-            while(mysqli_stmt_fetch($stmt2)) {
-                $another_request_recieved_time = date_create($another_request_recieved_time);
+                $requestStatus = $newStatus;
+            } 
+
+            // SELECT ALL DATA FROM SAME REQUEST_DATE
+            $anotherRequests = Reservation::selectByRequestDate($reservation->request_date);
+            $numAnotherReservations = count($anotherRequests);
+
+            if($numAnotherReservations <= 0) {
+                echo "<li class='date'>No other reservation on $formatedRequestDate</li>";
+            } else {
+                echo "<li class='date'><i class='fas fa-exclamation'></i> $numAnotherReservations more Requests on $formatedRequestDate<i class='fas fa-caret-down dropdown2'></i></li>";
+            
+                foreach($anotherRequests as $anotherRequest):           
     ?>
-                <li <?php if($request_id === $another_request_id){ echo 'class="selected"'; } ?> >
-                    <a href="reservation/details/<?php echo $another_request_id; ?>">
+                <li <?php if($requestId === $anotherRequest->request_id){ echo 'class="selected"'; } ?> >
+                    <a href="reservation/details/<?= $reservation->id; ?>">
                         <div class="list-container">
                             <div class="details">
-                                <p class="small"><?php echo DATE_FORMAT($another_request_recieved_time,'d-m-Y H:i'); ?></p>
+                                <p class="small"><?= $anotherRequest->formatTimestamp("request_recieved_time"); ?></p>
                                 <div>
-                                    <p><?php echoFlag($another_request_flag); ?></p>
-                                    <p><?php echo $another_request_time; ?></p>
-                                    <p><?php echo $another_request_num_seats; ?> Seats</p>
-                                    <?php echoCommentSign($another_request_comment); ?>
+                                    <p><?php echoFlag($anotherRequest->isFlaged()); ?></p>
+                                    <p><?= $anotherRequest->request_time; ?></p>
+                                    <p><?= $anotherRequest->request_num_seats; ?> Seats</p>
+                                    <?php echoCommentSign($anotherRequest->request_comment); ?>
                                 </div>
                             </div>
-                            <div class="status <?php echo $another_request_status; ?>">
-                                <p><?php echo $another_request_status; ?></p>
+                            <div class="status <?= $anotherRequest->request_status; ?>">
+                                <p><?= $anotherRequest->request_status; ?></p>
                             </div>
                         </div>
                     </a>
                 </li>
-    <?php
-            } // end of while loop
-        } else {
-            echo "<li class='date'>No other reservation on $formated_request_date</li>";
-        } 
-    ?>
+                <?php
+                endforeach;
+            }
+                ?>
             </ul>
         </div>
         <div class="mail">
             <div class="mail-header">
-                <form action="" method="post" class="status <?php echo $request_status; ?>">
-                    <select name="newStatus" class="status <?php echo $request_status; ?>" onchange="this.form.submit()">
-                        <option value="unread" <?php checkSelected("unread", $request_status); ?>>Unread</option>
-                        <option value="pending" <?php checkSelected("pending", $request_status); ?>>Pending</option>
-                        <option value="confirmed" <?php checkSelected("confirmed", $request_status); ?>>Confirmed</option>
-                        <option value="canceled" <?php checkSelected("canceled", $request_status); ?>>Canceled</option>
+                <form action="" method="post" class="status <?= $requestStatus; ?>">
+                    <select name="newStatus" class="status <?= $requestStatus; ?>" onchange="this.form.submit()">
+                        <option value="unread" <?= checkSelected("unread", $requestStatus); ?>>Unread</option>
+                        <option value="pending" <?= checkSelected("pending", $requestStatus); ?>>Pending</option>
+                        <option value="confirmed" <?= checkSelected("confirmed", $requestStatus); ?>>Confirmed</option>
+                        <option value="canceled" <?= checkSelected("canceled", $requestStatus); ?>>Canceled</option>
                     </select>
-                    <input type="text" value="<?php echo $request_id; ?>" name="request_id" readonly class="hide">
+                    <input type="text" value="<?= $reservation->request_id; ?>" name="request_id" readonly class="hide">
                 </form>
                 <div class="row">
-                    <?php echoFlag($flag); ?>
+                    <?php echoFlag($reservation->isflaged()); ?>
                     <table class="small">
                         <tbody>
                             <tr>
                                 <td>Recieved </td>
-                                <td>: <?php echo $formated_request_recieved_time; ?></td>
+                                <td>: <?php echo $reservation->formatTimestamp("request_recieved_time"); ?></td>
                             </tr>
                             <?php
-                            if(isset($formated_request_edited_time)) {
+                            if($reservation->formatTimestamp("request_edited_time") !== null) {
                             ?>
                             <tr>
                                 <td>Edited </td>
-                                <td>: <?php echo $formated_request_edited_time; ?></td>
+                                <td>: <?= $reservation->formatTimestamp("request_edited_time"); ?></td>
                             </tr>
                             <?php } ?>
                         </tbody>
@@ -141,36 +132,39 @@
                 <tbody>
                     <tr>
                         <td class="label">Name :</td>
-                        <td class="contents"><?php echo $request_name; ?></td>
+                        <td class="contents"><?= $reservation->request_name; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Email :</td>
-                        <td class="contents"><?php echo $request_email; ?></td>
+                        <td class="contents"><?= $reservation->request_email; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Phone :</td>
-                        <td class="contents"><?php if($request_tel == "") { echo " - "; } else { echo $request_tel; }?></td>
+                        <td class="contents"><?= $reservation->request_tel == "" ? " - " :  $reservation->request_tel; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Reservation Time :</td>
-                        <td class="contents"><?php echo $request_time; ?></td>
+                        <td class="contents"><?= $formatedRequestTime; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Seats :</td>
-                        <td class="contents"><?php echo $request_num_seats; ?></td>
+                        <td class="contents"><?= $reservation->request_num_seats; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Special Request :</td>
-                        <td class="contents comment"><?php echo $request_comment; ?></td>
+                        <td class="contents comment"><?= $reservation->request_comment; ?></td>
                     </tr>
                 </tbody>
             </table> <!-- end of mail-contents -->
-            <form class="editBtnContainer" action="edit_reservation.php?r_id=<?php echo $request_id; ?>" method="post">
+            <form class="editBtnContainer" action="edit_reservation.php?r_id=<?= $reservation->request_id; ?>" method="post">
                 <input type="submit" value="Edit" class="btn">
             </form>
             <div class="down hide">
                 <i class="fas fa-angle-down"></i>
             </div>
-<?php }  ?> 
+<?php endforeach;
+
+}
+      ?> 
         </div> <!-- end of mail -->
     </div> <!-- end of .reservationBox -->

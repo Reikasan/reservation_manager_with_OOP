@@ -46,7 +46,11 @@ function echoCommentSign($another_request_comment) {
     } 
 }
 
-
+function checkSelected($value, $selected_value) {
+    if($value == $selected_value) {
+        return "selected";
+    } 
+}
 
 
 
@@ -151,11 +155,7 @@ function bulkoptionMessage($length, $bulkoption) {
 }
 
 /* DETAILS.PHP */
-function checkSelected($value, $selected_value) {
-    if($selected_value === $value) {
-        echo "selected";
-    }
-}
+
 
 function checkChecked($value, $selected_value) {
     if($selected_value === $value) {

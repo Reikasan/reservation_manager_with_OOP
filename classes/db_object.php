@@ -9,6 +9,11 @@ class Db_object {
         return count(static::find_all());
 
     }
+
+    public static function find_by_id($id_name, $id) {
+        return static::find_by_query("SELECT * FROM " .static::$db_table ." where $id_name = " .$id);
+    }
+
     public static function find_by_query($sql) {
         global $database;
 

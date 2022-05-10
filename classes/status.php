@@ -13,6 +13,8 @@ class Status {
         $stmt->execute();
         $query = checkQuery();
     }
+
+    
 }
 
 
