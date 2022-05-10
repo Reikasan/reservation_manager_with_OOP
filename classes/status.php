@@ -11,7 +11,6 @@ class Status {
         $stmt = $mysqli->prepare($query);
         $stmt->bind_param("si", $option, $selectedRequestId);
         $stmt->execute();
-        $query = checkQuery();
     }
 
     

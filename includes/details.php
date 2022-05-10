@@ -24,10 +24,9 @@
     if(isset($_POST['newStatus'])){
         $selectedRequestId = escape($_POST['request_id']);
         $newStatus = escape($_POST['newStatus']);
-
         $status->changeStatus($newStatus, $selectedRequestId);
 
-        header('"Location: reservation.php?details&'.$selectRequestId .'"');
+        redirect('reservation.php?source=details&p_id='.$selectedRequestId);
     }
 
     // SHOW DATA FROM REQUEST_ID
@@ -41,14 +40,12 @@
         $reservations = Reservation::find_by_id("request_id", $requestId);
         foreach($reservations as $reservation) :
 
-            $formatedRequestDate = $reservation->formatDate();
-            $formatedRequestTime = $reservation->formatTime();
+            $formattedRequestDate = $reservation->formatDate();
+            $formattedRequestTime = $reservation->formatTime();
 
             // format date and time
-            
-        
-            $formatedRequestRecievedTime = date_create($reservation->request_recieved_time);
-            $formatedRequestRecievedTime = date_format($formatedRequestRecievedTime, 'D d.m.Y H:i');
+            $formattedRequestReceivedTime = date_create($reservation->request_recieved_time);
+            $formattedRequestReceivedTime = date_format($formattedRequestReceivedTime, 'D d.m.Y H:i');
 
             
             // change request status 'unread' to 'pending"
@@ -65,20 +62,20 @@
             $anotherRequests = Reservation::selectByRequestDate($reservation->request_date);
             $numAnotherReservations = count($anotherRequests);
 
-            if($numAnotherReservations <= 0) {
-                echo "<li class='date'>No other reservation on $formatedRequestDate</li>";
+            if($numAnotherReservations <= 1) {
+                echo "<li class='date'>No other reservation on $formattedRequestDate</li>";
             } else {
-                echo "<li class='date'><i class='fas fa-exclamation'></i> $numAnotherReservations more Requests on $formatedRequestDate<i class='fas fa-caret-down dropdown2'></i></li>";
+                echo "<li class='date'><i class='fas fa-exclamation'></i> $numAnotherReservations Requests on $formattedRequestDate<i class='fas fa-caret-down dropdown2'></i></li>";
             
                 foreach($anotherRequests as $anotherRequest):           
     ?>
-                <li <?php if($requestId === $anotherRequest->request_id){ echo 'class="selected"'; } ?> >
-                    <a href="reservation/details/<?= $reservation->id; ?>">
+                <li class="<?= checkSelected($requestId, $anotherRequest->request_id); ?>" >
+                    <a href="reservation.php?source=details&p_id=<?= $anotherRequest->request_id; ?>">
                         <div class="list-container">
                             <div class="details">
                                 <p class="small"><?= $anotherRequest->formatTimestamp("request_recieved_time"); ?></p>
                                 <div>
-                                    <p><?php echoFlag($anotherRequest->isFlaged()); ?></p>
+                                    <p><?php echoFlag($anotherRequest->isFlagged()); ?></p>
                                     <p><?= $anotherRequest->request_time; ?></p>
                                     <p><?= $anotherRequest->request_num_seats; ?> Seats</p>
                                     <?php echoCommentSign($anotherRequest->request_comment); ?>
@@ -108,15 +105,15 @@
                     <input type="text" value="<?= $reservation->request_id; ?>" name="request_id" readonly class="hide">
                 </form>
                 <div class="row">
-                    <?php echoFlag($reservation->isflaged()); ?>
+                    <?php echoFlag($reservation->isFlagged()); ?>
                     <table class="small">
                         <tbody>
                             <tr>
-                                <td>Recieved </td>
+                                <td>Received </td>
                                 <td>: <?php echo $reservation->formatTimestamp("request_recieved_time"); ?></td>
                             </tr>
                             <?php
-                            if($reservation->formatTimestamp("request_edited_time") !== null) {
+                            if($reservation->request_edited_time !== null) {
                             ?>
                             <tr>
                                 <td>Edited </td>
@@ -144,7 +141,7 @@
                     </tr>
                     <tr>
                         <td class="label">Reservation Time :</td>
-                        <td class="contents"><?= $formatedRequestTime; ?></td>
+                        <td class="contents"><?= $formattedRequestTime; ?></td>
                     </tr>
                     <tr>
                         <td class="label">Seats :</td>

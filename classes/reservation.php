@@ -35,7 +35,7 @@ class Reservation extends Db_object {
         }
     }
 
-    public function isflaged(){
+    public function isFlagged(){
         if($this->request_flag === "active") {
             return "fas active";
         } else {
@@ -56,18 +56,18 @@ class Reservation extends Db_object {
 
     // Format Date and Time
     public function formatDate () {
-        $formated_date = date_create($this->request_date);
-        return $formated_date = date_format($formated_date, 'D d.m');
+        $formatted_date = date_create($this->request_date);
+        return $formatted_date = date_format($formatted_date, 'D d.m');
     } 
 
     public function formatTime() {
-        $formated_time = date_create($this->request_time);
-        return $formated_time = date_format($formated_time, 'H:i');
+        $formatted_time = date_create($this->request_time);
+        return $formatted_time = date_format($formatted_time, 'H:i');
     }
 
     public function formatTimeStamp($timestamp) {
-        $formated_timestamp = date_create($this->$timestamp);
-        return $formated_timestamp = date_format($formated_timestamp, 'D d.m.Y H:i');
+        $formatted_timestamp = date_create($this->$timestamp);
+        return $formatted_timestamp = date_format($formatted_timestamp, 'D d.m.Y H:i');
     }
 
     // CHECK PAST EVENT
