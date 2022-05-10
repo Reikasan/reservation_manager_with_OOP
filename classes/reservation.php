@@ -6,8 +6,8 @@ class Reservation extends Db_object {
 
     public $request_id;
     public $request_name;
-    private $request_email;
-    private $request_tel;
+    public $request_email;
+    public $request_tel;
     public $request_date;
     public $request_time;
     public $request_num_seats;
@@ -19,11 +19,16 @@ class Reservation extends Db_object {
     public $request_via;
  
 
+    public static function selectByRequestDate($request_date) {
+        return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
+    }
+
     public function isUnread() {
         if($this->request_status == "unread") {
             return true;
         }
     }
+
     public function showUnreadSign() {
         if($this->isUnread()) {
             return "<i class='fas fa-circle' title='unread'></i>";
@@ -54,10 +59,15 @@ class Reservation extends Db_object {
         $formated_date = date_create($this->request_date);
         return $formated_date = date_format($formated_date, 'D d.m');
     } 
-    
+
     public function formatTime() {
         $formated_time = date_create($this->request_time);
         return $formated_time = date_format($formated_time, 'H:i');
+    }
+
+    public function formatTimeStamp($timestamp) {
+        $formated_timestamp = date_create($this->$timestamp);
+        return $formated_timestamp = date_format($formated_timestamp, 'D d.m.Y H:i');
     }
 
     // CHECK PAST EVENT
