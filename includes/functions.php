@@ -2,8 +2,9 @@
 
 // ESCAPE SQL INJECTION
 function escape($string) {
-    global $connection;
-    $escapedString = mysqli_real_escape_string($connection, trim($string));
+    $db = new Database();
+    $mysqli = $db->open_db_connection();
+    $escapedString = mysqli_real_escape_string($mysqli, trim($string));
     return $escapedString;
 }
 
