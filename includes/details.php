@@ -26,12 +26,12 @@
         $newStatus = escape($_POST['newStatus']);
         $status->changeStatus($newStatus, $selectedRequestId);
 
-        redirect('reservation.php?source=details&p_id='.$selectedRequestId);
+        redirect("reservation.php?source=details&r_id={$selectedRequestId}");
     }
 
     // SHOW DATA FROM REQUEST_ID
-    if(isset($_GET['p_id'])){
-        $requestId = $_GET['p_id'];
+    if(isset($_GET['r_id'])){
+        $requestId = $_GET['r_id'];
     ?>
         <div class="anotherReservation">
             <ul>
@@ -70,7 +70,7 @@
                 foreach($anotherRequests as $anotherRequest):           
     ?>
                 <li class="<?= checkSelected($requestId, $anotherRequest->request_id); ?>" >
-                    <a href="reservation.php?source=details&p_id=<?= $anotherRequest->request_id; ?>">
+                    <a href="reservation.php?source=details&r_id=<?= $anotherRequest->request_id; ?>">
                         <div class="list-container">
                             <div class="details">
                                 <p class="small"><?= $anotherRequest->formatTimestamp("request_recieved_time"); ?></p>

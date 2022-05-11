@@ -49,6 +49,8 @@ unset($_SESSION['currentPage']);
                 $items_total_count = Reservation::count_all();
                 $paginations_per_page = 5;
 
+                $_SESSION['currentPage']= $page;
+
                 // Show Reservations
                 $paginate = new Paginate($page, $items_per_page, $items_total_count, $paginations_per_page);
                 
@@ -68,8 +70,8 @@ unset($_SESSION['currentPage']);
                         <td class="name"><?= $reservation->request_name; ?></td>
                         <td><?= $reservation->request_num_seats; ?></td>
                         <td class="commentCell"><?= $reservation->substringedComment(); ?></td>
-                        <td class="detailCell"><button class="btn details"><a href="reservation.php?source=details&p_id=<?= $reservation->request_id; ?>">Details</a></button></td>
-                        <td title="go to details"><a href="reservation.php?source=details&p_id=<?= $reservation->request_id; ?>" class="btn status <?= $reservation->request_status; ?>" title="<?= $reservation->request_status; ?>"><?= $reservation->request_status; ?></a></td>
+                        <td class="detailCell"><button class="btn details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>">Details</a></button></td>
+                        <td title="go to details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>" class="btn status <?= $reservation->request_status; ?>" title="<?= $reservation->request_status; ?>"><?= $reservation->request_status; ?></a></td>
                     </tr>
             
             <?php endforeach; ?>
