@@ -311,6 +311,7 @@ p#addFilter i {
     display: flex;
     width: auto !important;
     margin-bottom: 1rem;
+    justify-content: space-around;
 }
 
 .filterBtnContainer {

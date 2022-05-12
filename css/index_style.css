@@ -402,11 +402,12 @@ textarea {
     justify-content: space-between;
 }
 
-form#add input.btn {
+form#add .btn {
     background-color: #fff;
-    width: 50%;
-    margin: 2rem 25%;
+    width: 35%;
+    margin: 2rem;
     padding: 1rem;
+    font-size: 2rem;
 } 
 
 .checkboxlabel {

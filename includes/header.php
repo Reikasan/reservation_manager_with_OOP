@@ -16,7 +16,7 @@
     
     <link rel="stylesheet" href="css/style.css">
 <?php
-    if(isset($_SESSION['user_role']) || $_SESSION['user_role'] === 'user' ) {
+    if(isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'user' ) {
         echo '<link rel="stylesheet" href="css/index_style.css">';
         echo '<link rel="stylesheet" href="css/index_style_responsible.css">';
         echo '<link rel="stylesheet" href="css/color_style.css">';
