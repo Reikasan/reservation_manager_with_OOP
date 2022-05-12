@@ -2,6 +2,7 @@
 
 class Reservation extends Db_object {
     protected static $db_table = "reservation_request";
+    protected static $id_name = "request_id";
     protected static $db_table_fields = array('request_name', 'request_email', 'request_tel', 'request_date', 'request_time', 'request_num_seats', 'request_comment', 'request_status', 'request_recieved_time', 'request_edited_time', 'request_flag', 'request_via');
 
     public $request_id;

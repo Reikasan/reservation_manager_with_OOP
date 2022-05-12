@@ -37,7 +37,8 @@
 
 
 /* MESSAGE - ALERT */
-h2.success i.closeBtn {
+h2.success i.closeBtn,
+h2.alert i.closeBtn {
     position: absolute;
     right: 1rem;
     top: .8rem;
@@ -71,12 +72,17 @@ h2.no-result {
     padding-left: 1rem;
 }
 
-/* .alert {
-    background-color: tomato;
+.alert {
+    background-color: red;
     color: #fff;
     font-size: 2rem;
-    text-align: center;
-} */
+    padding: .5rem .5rem .5rem 1rem;
+    margin: 0 0 2rem;
+    position: relative;
+}
+.alert.hide {
+    display: none;
+}
 
 #bulkOptions div.error {
     color: red;

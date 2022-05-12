@@ -16,7 +16,6 @@ class Database {
         if($this->connection->connect_errno) {
             die("Database connection failed" .$this->connection->connect_error);
         }
-
         return $this->connection;
     }
 
@@ -36,7 +35,6 @@ class Database {
     public function escape_string($string) {
         return $this->db->real_escape_string($string);
     }
-
 }
 
 $database = new Database();
