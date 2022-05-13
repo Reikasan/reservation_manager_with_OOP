@@ -22,8 +22,8 @@
 
     // STATUS CHANGE
     if(isset($_POST['newStatus'])){
-        $selectedRequestId = escape($_POST['request_id']);
-        $newStatus = escape($_POST['newStatus']);
+        $selectedRequestId = $_POST['request_id'];
+        $newStatus = $_POST['newStatus'];
         $status->changeStatus($newStatus, $selectedRequestId);
 
         redirect("reservation.php?source=details&r_id={$selectedRequestId}");
@@ -37,9 +37,8 @@
             <ul>
     <?php
         // SELECT ALL DATA FROM REQUEST_ID
-        $reservations = Reservation::find_by_id("request_id", $requestId);
+        $reservations = Reservation::find_by_id($requestId);
         foreach($reservations as $reservation) :
-
             $formattedRequestDate = $reservation->formatDate();
             $formattedRequestTime = $reservation->formatTime();
 
@@ -148,6 +147,10 @@
                         <td class="contents"><?= $reservation->request_num_seats; ?></td>
                     </tr>
                     <tr>
+                        <td class="label">Request via :</td>
+                        <td class="contents"><?= $reservation->request_via == "" ? " - " :  $reservation->request_via; ?></td>
+                    </tr>
+                    <tr>
                         <td class="label">Special Request :</td>
                         <td class="contents comment"><?= $reservation->request_comment; ?></td>
                     </tr>
@@ -155,6 +158,8 @@
             </table> <!-- end of mail-contents -->
             <form class="editBtnContainer" action="edit_reservation.php?r_id=<?= $reservation->request_id; ?>" method="post">
                 <input type="submit" value="Edit" class="btn">
+                <div class="btn"><a href="delete_reservation.php?r_id=<?= $reservation->request_id; ?>">Delete</a></div>
+
             </form>
             <div class="down hide">
                 <i class="fas fa-angle-down"></i>
