@@ -9,8 +9,9 @@ class Db_object {
         return count(static::find_all());
     }
 
-    public static function find_by_id($id_name, $id) {
-        return static::find_by_query("SELECT * FROM " .static::$db_table ." where $id_name = " .$id);
+    public static function find_by_id($id) {
+        $the_result_array = static::find_by_query("SELECT * FROM " .static::$db_table ." WHERE " .static::$id_name ." = {$id} LIMIT 1");
+        return !empty($the_result_array) ? $the_result_array : false;
     }
 
     public static function find_by_query($sql) {
@@ -84,7 +85,7 @@ class Db_object {
             return false;
         }
     }
-    
+
     public function update() {
         global $database;
 
@@ -97,8 +98,18 @@ class Db_object {
 
         $sql = "UPDATE " .static::$db_table ." SET ";
         $sql .= implode(", ", $properties_pair);
-        $sql .= " WHERE " .static::$id_name ." = " .$this->id;
+        $sql .= " WHERE " .static::$id_name ." = " .$database->escape_string($this->id);
 
+        $database->query($sql);
+
+        return (mysqli_affected_rows($database->connection) == 1) ? true : false;
+    }
+
+    public function delete() {
+        global $database;
+        $sql = "DELETE FROM " .static::$db_table ." WHERE " .static::$id_name ." = " .$database->escape_string($this->id);
+        $sql .= " LIMIT 1";
+        echo $sql;
         $database->query($sql);
 
         return (mysqli_affected_rows($database->connection) == 1) ? true : false;

@@ -4,7 +4,7 @@ class Reservation extends Db_object {
     protected static $db_table = "reservation_request";
     protected static $id_name = "request_id";
     protected static $db_table_fields = array('request_name', 'request_email', 'request_tel', 'request_date', 'request_time', 'request_num_seats', 'request_comment', 'request_status', 'request_recieved_time', 'request_edited_time', 'request_flag', 'request_via');
-
+    
     public $request_id;
     public $request_name;
     public $request_email;
@@ -19,7 +19,6 @@ class Reservation extends Db_object {
     public $request_flag;
     public $request_via;
  
-
     public static function selectByRequestDate($request_date) {
         return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
     }
