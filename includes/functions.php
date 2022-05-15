@@ -1,13 +1,4 @@
 <?php 
-
-// ESCAPE SQL INJECTION
-function escape($string) {
-    $db = new Database();
-    $mysqli = $db->open_db_connection();
-    $escapedString = mysqli_real_escape_string($mysqli, trim($string));
-    return $escapedString;
-}
-
 // REDIRECT
 function redirect($location) {
     header("Location: " .$location);
@@ -21,14 +12,6 @@ function checkUnreadRequest() {
     $result = mysqli_query($connection, $query);
 
     $num_rows = mysqli_num_rows($result);
-}
-
-// CONFIRM
-function confirm($result) {
-    global $connection;
-    if(!$result) {
-        die("Query Failed ".mysqli_error($connection));
-    }
 }
 
 // ECHO FLAG
@@ -135,29 +118,7 @@ function checkQuery() {
     return $query;
 }
 
-function bulkoptionMessage($length, $bulkoption) {
-    if($bulkoption === "flag") {
-        $option = "<span class='bold'>Flag added</span>";
-    } elseif($bulkoption === "removeFlag") {
-        $option = "<span class='bold'>Flag removed</span>";
-    } elseif($bulkoption === "delete") {
-        $option = "<span class='bold'>deleted</span>";
-    } else {
-        $option = "change status to <span class='bold'>" .ucfirst($bulkoption) ."</span>";
-    }
-
-    if($length === 1) {
-        $message = "<h2 class='success'><span class='bold'>1 item</span> selected and $option<i class='fas fa-times closeBtn'></i></h2>";
-    } elseif($length > 1) {
-        $message = "<h2 class='success'><span class='bold'>$length items</span> selected and $option<i class='fas fa-times closeBtn'></i></h2>";
-    }
-
-    return $message;
-}
-
 /* DETAILS.PHP */
-
-
 function checkChecked($value, $selected_value) {
     if($selected_value === $value) {
         echo "checked";
@@ -165,9 +126,9 @@ function checkChecked($value, $selected_value) {
 }
 
 /* EDIT_RESERVATION.PHP */
-function echoValue($variable) {
+function returnValueIfItsNotNull($variable) {
     if($variable !== null) {
-        echo $variable;
+        return $variable;
     }
 }
 

@@ -9,13 +9,18 @@
         // SAVE EDITED RESERVATION DATA
         if(isset($_POST['update'])) {
             //CHECK REQUIRED FIELDS ARE FILED
-            if(empty($_POST['name']) || empty($_POST['date']) || empty($_POST['time']) || empty($_POST['seat']) || empty($_POST['status'])) {
-                $message = "<h2 class='alert'>Please fill out all required input<i class='fas fa-times closeBtn'></i></h2>";
+            if(empty($_POST['name']) || empty($_POST['date']) || empty($_POST['time']) || empty($_POST['seats']) || empty($_POST['status'])) {
+                $session->message("<h2 class='alert'>Please fill out all required input<i class='fas fa-times closeBtn'></i></h2>");
+                redirect("edit_reservation.php?r_id={$requestId}");
+                return false;
             }
 
             if(empty($_POST['email']) && empty($_POST['tel'])) {
-                $message = "<h2 class='alert'> Please fill out at least one of the contact input <i class='fas fa-times closeBtn'></i></h2>";
+                $session->message("<h2 class='alert'> Please fill out at least one of the contact input <i class='fas fa-times closeBtn'></i></h2>");
+                redirect("edit_reservation.php?r_id={$requestId}");
+                return false;
             } 
+
             $reservation->id = $requestId;
             $reservation->request_name = $_POST['name'];
             $reservation->request_name = $_POST['name'];
@@ -32,14 +37,12 @@
             $reservation->request_edited_time = date("Y-m-d H:i:s");
             $reservation->save();
 
-            redirect("edit_reservation.php?r_id={$requestId}&edited");  
-        } // end of $_POST['update']
+            $session->message("<h2 class='success'> 1 Reservation Updated <a class='check' href='reservation.php?source=details&r_id={$requestId}'>check</a><i class='fas fa-times closeBtn'></i></h2>"); 
+            redirect("edit_reservation.php?r_id={$requestId}"); 
 
-        // EDITED MESSAGE
-        if(isset($_GET['edited'])) {
-            $message = "<h2 class='success'> 1 Reservation Updated <a class='check' href='reservation.php?source=details&r_id={$requestId}'>check</a><i class='fas fa-times closeBtn'></i></h2>"; 
-        }
+        } // end of $_POST['update']
     }
+
 ?>
 <?php include "includes/navigation.php"; ?>
 
@@ -65,7 +68,7 @@
 
         <div class="reservationBox">
             <div class="message hide"></div>
-            <?= (isset($message))? $message :"";?>
+            <?= isset($message)? $message : null;?>
 
             <form id="add" method="post">
                 <div class="form-group">
