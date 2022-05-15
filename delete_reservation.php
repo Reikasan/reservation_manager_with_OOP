@@ -1,7 +1,7 @@
 <?php require_once("classes/init.php"); ?>
 
 <?php
-    // if(!$session->is_signed_in()) { redirect("login.php"); }
+    if(!$session->is_signed_in()) { redirect("login.php"); }  
 ?>
 
 <?php

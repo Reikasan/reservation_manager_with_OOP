@@ -1,9 +1,6 @@
 <?php include "includes/header.php"; ?>
 <?php 
-if(!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'user' ) {
-    header("Location: login");
-    $message = "<p class='warning'>User does not exist. Please check your account.</p>";
-} 
+    if(!$session->is_signed_in()) { redirect("login.php"); } 
 ?>
 <?php include "includes/navigation.php"; ?>
 
