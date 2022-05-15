@@ -11,7 +11,7 @@ class Db_object {
 
     public static function find_by_id($id) {
         $the_result_array = static::find_by_query("SELECT * FROM " .static::$db_table ." WHERE " .static::$id_name ." = {$id} LIMIT 1");
-        return !empty($the_result_array) ? $the_result_array : false;
+        return !empty($the_result_array) ? $the_result_array[0] : false;
     }
 
     public static function find_by_query($sql) {

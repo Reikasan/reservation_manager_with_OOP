@@ -37,8 +37,7 @@
             <ul>
     <?php
         // SELECT ALL DATA FROM REQUEST_ID
-        $reservations = Reservation::find_by_id($requestId);
-        foreach($reservations as $reservation) :
+        $reservation = Reservation::find_by_id($requestId);
             $formattedRequestDate = $reservation->formatDate();
             $formattedRequestTime = $reservation->formatTime();
 
@@ -158,15 +157,12 @@
             </table> <!-- end of mail-contents -->
             <form class="editBtnContainer" action="edit_reservation.php?r_id=<?= $reservation->request_id; ?>" method="post">
                 <input type="submit" value="Edit" class="btn">
-                <div class="btn"><a href="delete_reservation.php?r_id=<?= $reservation->request_id; ?>">Delete</a></div>
+                <div class="btn" id="deleteBtn"><a href="delete_reservation.php?r_id=<?= $reservation->request_id; ?>">Delete</a></div>
 
             </form>
             <div class="down hide">
                 <i class="fas fa-angle-down"></i>
             </div>
-<?php endforeach;
-
-}
-      ?> 
+<?php } ?> 
         </div> <!-- end of mail -->
     </div> <!-- end of .reservationBox -->

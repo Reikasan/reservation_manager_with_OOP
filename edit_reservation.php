@@ -4,9 +4,7 @@
         $requestId = $_GET['r_id'];
 
         // SELECT ALL DATA FROM REQUEST_ID
-        $reservations = Reservation::find_by_id('request_id', $requestId);
-
-        foreach($reservations as $reservation)
+        $reservation = Reservation::find_by_id($requestId);
 
         // SAVE EDITED RESERVATION DATA
         if(isset($_POST['update'])) {

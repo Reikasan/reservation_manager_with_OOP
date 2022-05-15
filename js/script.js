@@ -186,89 +186,101 @@ if(closeBtns !== null) {
 
 
 // DETAILS.PHP
-    // Show scroll down mark when contents is too long
-    const container = document.querySelector('.mail');
-    if(container !== null) {
-        var containerHeight = container.clientHeight;
-        containerHeight = containerHeight - 40;
+// Show scroll down mark when contents is too long
+const container = document.querySelector('.mail');
+if(container !== null) {
+    var containerHeight = container.clientHeight;
+    containerHeight = containerHeight - 40;
 
-        const contents = document.querySelector('.mail-contents');
-        var contentsHeight = contents.clientHeight;
-        contentsHeight = contentsHeight + 60;
+    const contents = document.querySelector('.mail-contents');
+    var contentsHeight = contents.clientHeight;
+    contentsHeight = contentsHeight + 60;
 
-        if(contentsHeight > containerHeight) {
-            const downArea = document.querySelector('.down');
-            downArea.classList.remove('hide');
+    if(contentsHeight > containerHeight) {
+        const downArea = document.querySelector('.down');
+        downArea.classList.remove('hide');
 
-            const downMark = document.querySelector('.down .fa-angle-down');
+        const downMark = document.querySelector('.down .fa-angle-down');
 
-            const option = { once: true };
+        const option = { once: true };
 
-            downMark.addEventListener('click', scrollAndHideDownmark, option);
-            container.addEventListener('scroll', scrollAndHideDownmark, option);
-            document.querySelector('.reservationDetails').addEventListener('scroll', scrollAndHideDownmark, option);
+        downMark.addEventListener('click', scrollAndHideDownmark, option);
+        container.addEventListener('scroll', scrollAndHideDownmark, option);
+        document.querySelector('.reservationDetails').addEventListener('scroll', scrollAndHideDownmark, option);
 
-            function scrollAndHideDownmark() {
-                container.scrollTo(0, contentsHeight);
-                downArea.classList.add('hide');
-            }   
+        function scrollAndHideDownmark() {
+            container.scrollTo(0, contentsHeight);
+            downArea.classList.add('hide');
         }   
-    }
+    }   
+}
 
-    /* Toggle Dropdown anotherReservation by click */ 
-    if(dropdown2 !== null) {
-        dropdown2.addEventListener('click', function() {
-            const anotherReservation = document.querySelector('.anotherReservation');
-            const showAnotherReservations = anotherReservation.classList.contains('open');
-            if(showAnotherReservations) {
-                anotherReservation.classList.remove('open');
-                anotherReservation.classList.remove('transition');
-            } else {
-                anotherReservation.classList.add('open');
-                anotherReservation.classList.add('transition');
-            }
-        });
-    }
+/* Toggle Dropdown anotherReservation by click */ 
+if(dropdown2 !== null) {
+    dropdown2.addEventListener('click', function() {
+        const anotherReservation = document.querySelector('.anotherReservation');
+        const showAnotherReservations = anotherReservation.classList.contains('open');
+        if(showAnotherReservations) {
+            anotherReservation.classList.remove('open');
+            anotherReservation.classList.remove('transition');
+        } else {
+            anotherReservation.classList.add('open');
+            anotherReservation.classList.add('transition');
+        }
+    });
+}
 
+const deleteBtn = document.getElementById('deleteBtn');
+if(deleteBtn !== null) {
+    deleteBtn.addEventListener('click', confirmDelete);
+}
+
+
+function confirmDelete(e) {
+    const confirmText = window.confirm('Are you sure to delete this reservation?');
+
+    if(!confirmText) {
+        e.preventDefault();
+    }
+}
 
 /* ADD REQUEST */
-    // make sure when past date was selected
-    const date = document.getElementById('date')
+const date = document.getElementById('date')
 
+if(date !== null){
+    date.addEventListener('change', confirmPastEvent);
+}
 
-    if(date !== null){
-        date.addEventListener('change', function() {
-            var today = new Date();
-            var dateValue = new Date(date.value);
+function confirmPastEvent() {
+    var today = new Date();
+    var dateValue = new Date(date.value);
 
-            if(today > dateValue) {
-                window.alert('Are you sure this Reservation was past Event?');
-            }
-        });
+    if(today > dateValue) {
+        window.alert('Are you sure this Reservation was past Event?');
     }
+}
 
 
     //Check all required fields are filled
-    const addForm = document.getElementById('add');
-    if(addForm !== null) {
-        addForm.addEventListener('submit', checkRequiredFields);
-    }
+    // const addForm = document.getElementById('add');
+    // if(addForm !== null) {
+    //     addForm.addEventListener('submit', checkRequiredFields);
+    // }
 
+    // function checkRequiredFields(event) {
+    //     const errorMessage = document.querySelector('.message');
 
-    function checkRequiredFields(event) {
-        const errorMessage = document.querySelector('.message');
+    //     var requestEmailValue = document.getElementById('email').value;
+    //     var requestTelValue = document.getElementById('tel').value;
 
-        var requestEmailValue = document.getElementById('email').value;
-        var requestTelValue = document.getElementById('tel').value;
+    //     if(requestEmailValue.length == 0 && requestTelValue.length == 0) {
+    //         errorMessage.innerHTML = "Please enter Email address or Phone number";
+    //         errorMessage.classList.add('alert'); 
+    //         errorMessage.classList.remove('hide');
 
-        if(requestEmailValue.length == 0 && requestTelValue.length == 0) {
-            errorMessage.innerHTML = "Please enter Email address or Phone number";
-            errorMessage.classList.add('alert'); 
-            errorMessage.classList.remove('hide');
-
-            event.preventDefault();
-        } 
-    } 
+    //         event.preventDefault();
+    //     } 
+    // } 
 
 /* SEARCHBOX.PHP */
 const searchBtn = document.getElementById('searchBtn');

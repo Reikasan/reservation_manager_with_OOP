@@ -18,6 +18,7 @@ class Reservation extends Db_object {
     public $request_edited_time;
     public $request_flag;
     public $request_via;
+    public $id;
  
     public static function selectByRequestDate($request_date) {
         return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
