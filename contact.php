@@ -1,4 +1,6 @@
-<?php session_start(); ?>
+<?php
+    require_once("classes/init.php");
+?>
 <!doctype html>
 <html>
 <head>

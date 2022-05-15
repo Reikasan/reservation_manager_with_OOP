@@ -7,7 +7,7 @@ class Session {
 
     function __construct() {
         session_start();
-        // $this->check_the_login();
+        $this->check_the_login();
         $this->check_message();
     }
 
@@ -35,7 +35,24 @@ class Session {
 
     public function login($user) {
         if($user) {
-            $this->user_id = $_SESSION['user_id'] = $user->id;
+            $this->user_role = $_SESSION['user_role'] = $user->user_role;
+            $this->signed_in = true; 
+        }
+    }
+
+    public function logout() {
+        unset($_SESSION['user_role']);
+        unset($this->user_role);
+        $this->signed_in = false;
+    }
+
+    private function check_the_login() {
+        if(isset($_SESSION['user_role'])) {
+            $this->user_role = $_SESSION['user_role'];
+            $this->signed_in = true;
+        } else {
+            unset($this->user_role);
+            $this->signed_in = false;
         }
     }
 }

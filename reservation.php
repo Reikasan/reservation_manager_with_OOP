@@ -1,5 +1,8 @@
 <?php include "includes/header.php"; ?>
 <?php include "includes/navigation.php"; ?>
+<?php
+    if(!$session->is_signed_in()) { redirect("login.php"); }  
+?>
 
 <div class="container">
     <!-- sidebar -->
@@ -27,7 +30,7 @@
                 break;
 
             default:
-                include "includes/all_reservations/all_reservations.php";
+                include "includes/all_reservations.php";
                 break;
         }
     ?>
