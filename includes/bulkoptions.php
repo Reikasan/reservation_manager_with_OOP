@@ -7,16 +7,21 @@ if(isset($_POST['bulkoptionApply'])) {
 
         if($length > 0) {
             foreach($checkBoxArray as $selectedRequestId) {
-                $bulk_options = $_POST['bulk_options'];
+                $bulkoption = $_POST['bulk_options'];
 
                 $status = new Status();
-                $status->changeStatus($bulk_options, $selectedRequestId);
-
-                $message = bulkoptionMessage($length, $bulk_options);
+                $status->changeStatus($bulkoption, $selectedRequestId);
             }
+
+            if($length === 1) {
+                $message = "<h2 class='success'><span class='bold'>1 item</span> selected and change status to <span class='bold'>" .ucfirst($bulkoption) ."</span><i class='fas fa-times closeBtn'></i></h2>";
+            } else {
+                $message = "<h2 class='success'><span class='bold'>$length items</span> selected and selected and change status to <span class='bold'>" .ucfirst($bulkoption) ."</span><i class='fas fa-times closeBtn'></i></h2>"; 
+            }
+
         }
     } else {
-        $bulkError = "<div class='error'>Select Status and check at least one checkbox!</div>";
+        $bulkOptionError ="<div class='error'>Select Status and check at least one checkbox!</div>";
     }
 } 
 ?>
@@ -32,4 +37,4 @@ if(isset($_POST['bulkoptionApply'])) {
         </select>
         <input type="submit" name="bulkoptionApply" id="bulkoptionApply" value="Apply">
     </div>
-    <?= (isset($bulkError))? $bulkError :"";?>
+    <?= (isset($bulkOptionError))? $bulkOptionError : null;?>
