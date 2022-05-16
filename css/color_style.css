@@ -73,7 +73,7 @@ h2.no-result {
 }
 
 .alert {
-    background-color: red;
+    background-color: tomato;
     color: #fff;
     font-size: 2rem;
     padding: .5rem .5rem .5rem 1rem;
@@ -85,7 +85,7 @@ h2.no-result {
 }
 
 #bulkOptions div.error {
-    color: red;
+    color: tomato;
     padding-bottom: 1rem;
     font-size: 1.5rem;
 }

@@ -3,35 +3,27 @@
 <!-- navigation -->
 <?php include "includes/navigation.php"; ?>
 <?php 
+if($session->is_signed_in()) {
+    redirect("index.php");
+}
+
 //LOGIN FUNCTION
 if(isset($_POST['login'])) {
-    $username = escape($_POST['username']);
-    $password = escape($_POST['password']);
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    $stmt = mysqli_prepare($connection, "SELECT user_password, user_role FROM users WHERE username = ?");
-    mysqli_stmt_bind_param($stmt, "s", $username,);
-    mysqli_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $db_password, $db_user_role);
-    mysqli_stmt_store_result($stmt);
-    
-    echo $num_row = mysqli_stmt_num_rows($stmt);
+    $user = User::verify_user($username, $password);
 
-    if($num_row >= 1) {
-        while(mysqli_stmt_fetch($stmt)){
-            if(password_verify($password, $db_password)) {
-                $_SESSION['username'] = $username;
-                $_SESSION['user_role'] = $db_user_role;
-                redirect('index.php');
-            } else {
-                $message ="<p class='warning'>Wrong Password. Please check and try again.</p>";
-            }
-        }
-    } else { // if username doesnt match any
-        $message ="<p class='warning'>Username does not exist.</p>";
+    if($user) {
+        $session->login($user);
+        redirect("index.php");
+    } else {
+        $message = "<h2 class='warning'>Your password or username is incorrect</h2>";
     }
-
-    mysqli_stmt_close($stmt);
-    
+} else {
+    $username = "";
+    $password = "";
+    $message = "";
 }
 ?>
 	<!-- Page Content -->
@@ -39,7 +31,7 @@ if(isset($_POST['login'])) {
 		<div class="client-logo">
 			<img src="img/bar-logo.jpg" alt="client-logo" title="client-logo">
 		</div>	
-        <?php if(isset($message)) { echo $message; } ?>
+        <?= isset($message) ? $message: null; ?>
         <form action="" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
