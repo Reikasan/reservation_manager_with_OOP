@@ -12,5 +12,6 @@ require_once(CLASSES_PASS.DS."reservation.php");
 require_once(CLASSES_PASS.DS."session.php");
 require_once(CLASSES_PASS.DS."paginate.php");
 require_once(CLASSES_PASS.DS."status.php");
+require_once(CLASSES_PASS.DS."user.php");
 
 ?>
