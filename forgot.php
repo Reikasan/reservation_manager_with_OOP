@@ -24,8 +24,13 @@ if(isset($_POST['resetPass'])) {
         $token->expire_date_time = $token->create_and_format_expire_date($token->create_issue_date());
         $token->save();
 
-        $message = "<h2 class='success'>Password reset request has been sent. <i class='fas fa-times closeBtn'></i></h2>";
+        $_SESSION['token'] = $token->token;
+        $_SESSION['email'] = $email;
+        $_SESSION['issue_date'] = $token->issue_date_time;
 
+        $email = "";
+        $message = "<h2 class='success'>Password reset request has been sent. <i class='fas fa-times closeBtn'></i></h2>";
+        $dummy = "<h2 class='dummy'>Dummy Email is <a href='email.php' target='_blank'>HERE</a><i class='fas fa-times closeBtn'></i></h2>";
     } else {
         $message = "<h2 class='alert'>Email doesn't much with your Username <i class='fas fa-times closeBtn'></i></h2>";
     }   
@@ -42,7 +47,8 @@ if(isset($_POST['resetPass'])) {
         </a>
     </div>
     <div>
-        <?= isset($message) ? $message: null; ?>    
+        <?= isset($message) ? $message: null; ?>
+        <?= isset($dummy) ? $dummy: null;?>    
     </div>
         <form action="" method="post" class="login-form">
             <div class="form-group">
@@ -51,9 +57,10 @@ if(isset($_POST['resetPass'])) {
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" name="email" placeholder="enter your Email" requered>
+                <input type="email" name="email" value="" placeholder="enter your Email" requered>
             </div>
             <p>* This page is used only for demonstration purpose, mail isn't sent to entered Email Address</p>
+            <p>* sample Email is "barattokio@sample.com"</p>
             <input class="btn" type="submit" value="Send Request" name="resetPass">
         </form>
 	</div> <!-- /.container -->

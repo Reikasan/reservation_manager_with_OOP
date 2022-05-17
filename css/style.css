@@ -446,6 +446,12 @@ h2.alert i.closeBtn {
     cursor: pointer;
 }
 
+h2.dummy i.closeBtn {
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin-left: 1rem;
+}
+
 h2.no-result {
     background-color: tomato;
     text-align: center;
@@ -482,6 +488,9 @@ h2.no-result {
 }
 .alert.hide {
     display: none;
+}
+.dummy.hide {
+    display: none;;
 }
 
 

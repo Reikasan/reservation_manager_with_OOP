@@ -87,3 +87,63 @@ footer .copyright{
     bottom: 0;
 }
 
+/* forgot page */
+h2.dummy {
+    text-decoration: underline;
+}
+
+h2.dummy a {
+    font-weight: 900;
+}
+
+/* email.php */
+.container.mail h2{
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: .5rem;
+}
+
+.container.mail h3{
+    font-size: 2rem;
+    margin-bottom: .5rem;
+}
+
+.container.mail a {
+    color:#666;
+    text-decoration: underline;
+}
+
+div.mail-header {
+    border-bottom: solid 1px #ddd;
+    position: relative;
+    padding: 1rem;
+}
+
+div.mail-header p {
+    position: absolute;
+    top: 2rem;
+    right: 0;
+    color: #666;
+}
+
+div.mail-contents {
+    padding: 5rem 1rem;
+}
+
+div.mail-contents p {
+    font-size: 1.5rem;
+}
+
+div.mail-contents div.link {
+    padding: 5rem 2rem;
+    font-size: 2.5rem;
+    text-decoration: underline;
+    text-align: center;
+}
+
+div.mail-footer {
+    font-size: 1.3rem;
+}
+.text-center {
+    text-align: center;
+}
