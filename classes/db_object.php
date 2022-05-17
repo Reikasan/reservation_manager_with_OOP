@@ -61,7 +61,10 @@ class Db_object {
         $clean_properties = array();
 
         foreach($this->properties() as $key => $value) {
-            $clean_properties[$key] = $database->escape_string($value);
+            if(is_string($value)) {
+                $clean_properties[$key] = $database->escape_string($value);
+            }
+            
         }
         return $clean_properties;
     }
@@ -75,8 +78,8 @@ class Db_object {
 
         $properties = $this->clean_properties();
 
-        $sql = "INSERT INTO " .static::$db_table ."(" .implode(", ", array_keys($properties)) .")";
-        $sql .= "VALUES ('" .implode("', '", array_values($properties)) ."') ";
+        $sql = "INSERT INTO " .static::$db_table ." (" .implode(", ", array_keys($properties)) .")";
+        $sql .= " VALUES ('" .implode("', '", array_values($properties)) ."') ";
 
         if($database->query($sql)) {
             $this->id = $database->the_insert_id();
