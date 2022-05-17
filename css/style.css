@@ -425,7 +425,64 @@ ul.pagination input:read-only {
     cursor: pointer;
 }
 
+/* forgot.php */
+h1 {
+    font-size: 4rem;
+    text-align: center;
+    padding-top: 2rem;
+}
+.back {
+    font-size: 1.5rem;
+    margin: 4rem 0 1rem 1rem;
+}
 
+/* MESSAGE - ALERT */
+h2.success i.closeBtn,
+h2.alert i.closeBtn {
+    position: absolute;
+    right: 1rem;
+    top: .8rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+h2.no-result {
+    background-color: tomato;
+    text-align: center;
+    font-size: 2.5rem;
+    padding: 1rem;
+}
+.success {
+    background-color: paleturquoise;
+    color: #fff;
+    font-size: 2rem;
+    padding: .5rem .5rem .5rem 1rem;
+    margin: 0 0 2rem;
+    position: relative;
+}
+
+.success.hide {
+    display: none;
+}
+
+.result {
+    border-bottom: solid 3px #000;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding-left: 1rem;
+}
+
+.alert {
+    background-color: tomato;
+    color: #fff;
+    font-size: 2rem;
+    padding: .5rem .5rem .5rem 1rem;
+    margin: 0 0 2rem;
+    position: relative;
+}
+.alert.hide {
+    display: none;
+}
 
 
 

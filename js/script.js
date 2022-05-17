@@ -126,27 +126,30 @@ function toggleDropdown() {
     } 
 }
 
-dropdownMenu.addEventListener('click', toggleDropdown);
+if(dropdownMenu !== null) {
+    dropdownMenu.addEventListener('click', toggleDropdown);
+}
+
 
 /* Hamburger menu */
 const hamburgerIcon = document.querySelector('.hamburgerIcon');
-
-hamburgerIcon.addEventListener('click', function() {
-    const hideSidebar = hamburger.classList.contains('hide');
-
-    if(!hideSidebar) {
-        sidebar.classList.add('hide');
-        sidebar.classList.remove('transition');
-        hamburger.classList.add('hide');
-        hamburger.classList.remove('transition');
-    } else {
-        sidebar.classList.remove('hide');
-        sidebar.classList.add('transition');
-        hamburger.classList.remove('hide');
-        hamburger.classList.add('transition');
-    }
+if(hamburgerIcon !== null) {
+    hamburgerIcon.addEventListener('click', function() {
+        const hideSidebar = hamburger.classList.contains('hide');
     
-});
+        if(!hideSidebar) {
+            sidebar.classList.add('hide');
+            sidebar.classList.remove('transition');
+            hamburger.classList.add('hide');
+            hamburger.classList.remove('transition');
+        } else {
+            sidebar.classList.remove('hide');
+            sidebar.classList.add('transition');
+            hamburger.classList.remove('hide');
+            hamburger.classList.add('transition');
+        }
+    });
+}
 
 /* SEARCH BAR */
 const searchInput = document.getElementById('searchText');
@@ -179,8 +182,7 @@ if(closeBtns !== null) {
         closeBtn.addEventListener('click', () => {
             closeBtn.parentElement.classList.add('hide');
         });
-    });
-    
+    });    
 }
 
 
