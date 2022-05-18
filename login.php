@@ -6,6 +6,8 @@
 if($session->is_signed_in()) {
     redirect("index.php");
 }
+$loginUser = new User();
+$db_password = $loginUser->find_by_id(1)->password;
 
 //LOGIN FUNCTION
 if(isset($_POST['login'])) {
@@ -41,7 +43,7 @@ if(isset($_POST['login'])) {
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" name="password" value="bar1" placeholder="enter your password" requered>
+                <input type="password" name="password" value="<?= $db_password; ?>" placeholder="enter your password" requered>
                 <br>
                 <a class="forgot" href="forgot.php">Forget your password?</a>
             </div>
