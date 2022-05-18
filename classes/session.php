@@ -26,7 +26,6 @@ class Session {
         } else {
             $this->message = "";
         }
-
     }
 
     public function is_signed_in() {

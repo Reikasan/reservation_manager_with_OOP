@@ -2,26 +2,15 @@
 
 class User extends DB_object {
     protected static $db_table = "users";
-    protected static $db_table_fields = array('user_id', 'username', 'user_email', 'user_password', 'user_role');
+    protected static $id_name = "user_id";
+    protected static $db_table_fields = array('user_id', 'username', 'user_email', 'user_password', 'password', 'user_role');
     
     public $user_id;
     public $username;
-    protected $user_password;
+    public $user_password;
+    public $password;
     public $user_email;
     public $user_role;
-
-    // private static function fetch_hashed_password($username) {
-    //     global $database;
-
-    //     $username = $database->escape_string($username);
-    //     $sql = "SELECT user_password FROM " .self::$db_table;
-    //     $sql .= " WHERE username = '" .$username;
-    //     $sql .= "' LIMIT 1 ";
-
-    //     $resultArray = static::find_by_query($sql);
-    //     $result = $resultArray[0];
-    //     return !empty($result) ? $result->user_password : false;
-    // }
 
     public static function fetch_value($username, $db_field_name) {
         global $database;
@@ -49,8 +38,9 @@ class User extends DB_object {
     public static function verify_user($username, $password) {
         global $database;
 
+        $username = $database->escape_string($username);
         $password = $database->escape_string($password);
-        $db_password = static::fetch_value($username, "user_password");
+        $db_password = static::fetch_value($username, 'user_password');
 
         if($db_password) {
             if(password_verify($password, $db_password)) {
@@ -85,7 +75,8 @@ class User extends DB_object {
         global $database;
         $hashedPassword = self::hashPassword($password);
 
-        $sql = "UPDATE " .static::$db_table ." SET user_password = '{$hashedPassword}' ";
+        // just for demo purpose, keep un-hushed password
+        $sql = "UPDATE " .static::$db_table ." SET user_password = '{$hashedPassword}', password = '{$password}' ";
         $sql .= "WHERE user_id = " .$database->escape_string($user_id);
         $database->query($sql);
 
