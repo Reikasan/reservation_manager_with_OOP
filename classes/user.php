@@ -72,10 +72,23 @@ class User extends DB_object {
             }
         }
         return false;
-        
-        
-
     }
 
-    
+    private function hashPassword($password) {
+        global $database;
+
+        $password = $database->escape_string($password);
+        return password_hash($password, PASSWORD_BCRYPT, array('cost'=>12));
+    }
+
+    public function updatePassword($password, $user_id) {
+        global $database;
+        $hashedPassword = self::hashPassword($password);
+
+        $sql = "UPDATE " .static::$db_table ." SET user_password = '{$hashedPassword}' ";
+        $sql .= "WHERE user_id = " .$database->escape_string($user_id);
+        $database->query($sql);
+
+        return (mysqli_affected_rows($database->connection) == 1) ? true : false;
+    }
 }

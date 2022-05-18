@@ -31,7 +31,9 @@ if(isset($_POST['login'])) {
 		<div class="client-logo">
 			<img src="img/bar-logo.jpg" alt="client-logo" title="client-logo">
 		</div>	
-        <?= isset($message) ? $message: null; ?>
+        <div class="message-container">
+            <?= isset($message) ? $message: null; ?>
+        </div>
         <form action="" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Username</label>

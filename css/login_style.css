@@ -96,6 +96,13 @@ h2.dummy a {
     font-weight: 900;
 }
 
+div.message-container {
+    margin-top: 3rem;
+}
+.form-group.comment {
+    font-size: 1.3rem;
+}
+
 /* email.php */
 .container.mail h2{
     font-size: 3rem;
@@ -134,7 +141,7 @@ div.mail-contents p {
     font-size: 1.5rem;
 }
 
-div.mail-contents div.link {
+div.link {
     padding: 5rem 2rem;
     font-size: 2.5rem;
     text-decoration: underline;
