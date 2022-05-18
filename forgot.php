@@ -19,6 +19,7 @@ if(isset($_POST['resetPass'])) {
         
         $token = new Token();
         $token->user_id = $user->fetch_value($username, 'user_id');
+        $token->email = $email;
         $token->token = $token->create_token($length);
         $token->issue_date_time = $token->format_issue_date();
         $token->expire_date_time = $token->create_and_format_expire_date($token->create_issue_date());
@@ -44,12 +45,12 @@ if(isset($_POST['resetPass'])) {
             <a href='login.php'>
             <i class="fas fa-chevron-left"></i>
             Back to Login page
-        </a>
-    </div>
-    <div>
-        <?= isset($message) ? $message: null; ?>
-        <?= isset($dummy) ? $dummy: null;?>    
-    </div>
+            </a>
+        </div>
+        <div class="message-container">
+            <?= isset($message) ? $message: null; ?>
+            <?= isset($dummy) ? $dummy: null;?>    
+        </div>
         <form action="" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -59,8 +60,11 @@ if(isset($_POST['resetPass'])) {
                 <label for="email">Email</label>
                 <input type="email" name="email" value="" placeholder="enter your Email" requered>
             </div>
-            <p>* This page is used only for demonstration purpose, mail isn't sent to entered Email Address</p>
-            <p>* sample Email is "barattokio@sample.com"</p>
+            <div class="form-group comment">
+                <p>* This page is used only for demonstration purpose, mail isn't sent to entered Email Address</p>
+                <p>* sample Email is "barattokio@sample.com"</p>
+            </div>
+            
             <input class="btn" type="submit" value="Send Request" name="resetPass">
         </form>
 	</div> <!-- /.container -->

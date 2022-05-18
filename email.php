@@ -25,7 +25,7 @@
             <p>Hello! This email has been sent to you to reset your login password.</p>
             <p>Please click the link below to complete the password reset process. This link will expire in 24 hours.</p>
             <div class="link">
-            <a href="reset_password.php?<?= $token->token; ?>">Reset Password</a>
+                <a href="reset_password.php?email=<?= $token->email; ?>&token=<?= $token->token; ?>">Reset Password</a>
             </div>
         </div>
         <div class="mail-footer">

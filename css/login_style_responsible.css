@@ -2,6 +2,10 @@
     div.mail-header p {
         top: -1rem;
     }
+
+    div.container {
+        width: 80%;
+    }
 } 
 
 @media screen and (max-width: 600px)  {
@@ -9,12 +13,36 @@
         width: 30%;
     }
 
+    h1 {
+        font-size: 3rem;
+    }
+
+    .back {
+        margin-top: 2rem;
+    }
+
+    div.message-container {
+        margin-top: 0;
+    }
+
+    h2 {
+        font-size: 1.5rem !important;
+    }
+
+    .success {
+        margin: 0 0 0.5rem;
+    }
     .form-group {
         width: 100%;
+        font-size: 1.5rem;
     }
 
     .container.mail {
         width: 80%;
+    }
+
+    .login-form .btn[type='submit'] {
+        font-size: 1.5rem;
     }
 }
 
@@ -27,6 +55,10 @@
         font-size: 2.5rem;
     }
 
+    .container {
+        margin-top: 2rem;
+    }
+    
     .container.mail h2{
         font-size: 2rem;
     }
