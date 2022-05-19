@@ -77,6 +77,17 @@ class Reservation extends Db_object {
             return "done";
         } 
     }
+
+    public function ajax_change_flag_status($flag_status, $request_id) {
+        global $database;
+        $flag_status = $database->escape_string($flag_status);
+        $request_id = $database->escape_string($request_id);
+        
+        $sql = "UPDATE " .static::$db_table ." SET request_flag = '{$flag_status}' ";
+        $sql .= "WHERE request_id = {$request_id}";
+
+        $database->query($sql);
+    }
 } // end of class Reservation
 
 ?>
