@@ -88,6 +88,11 @@ class Reservation extends Db_object {
 
         $database->query($sql);
     }
+
+    public function ajax_load_flag_status($request_id) {
+        $reservation = static::find_by_id($request_id);
+        return $reservation->isFlagged($reservation->request_flag);
+    }
 } // end of class Reservation
 
 ?>

@@ -187,41 +187,48 @@ if(closeBtns !== null) {
 
 // TOGGLE FLAG COLOR USING AJAX
  $(document).ready(function() {
-     $('.fa-flag').each(function() {
-        const flag5 = $( this );
+    $('.fa-flag').each(function() {
+        const flag5 = $(this);
         var flag_status;
         var request_id = flag5.attr('data');
+        const pathname = window.location.pathname;
+        const path = pathname + ' i.fa-flag';
 
         flag5.click(function() {
-
             if(flag5.hasClass('active')) {
                 $.ajax({
                     type: "POST",
                     url: "includes/ajax_code.php",
                     data: {flag_status: 'deactive', request_id: request_id},
                     success: function(response) {
-                        console.log(response);
+                        changeFlag();
                     }
                 });
-                console.log('active');
             } else {
                 $.ajax({
                     type: "POST",
                     url: "includes/ajax_code.php",
                     data: {flag_status: 'active', request_id: request_id},
                     success: function(response) {
-                        console.log(response);
+                        changeFlag();
                     }
                 });
-                console.log('deactive');
-            }
-            console.log('clicked');
-            // $.ajax({
-            //     url: "includes/ajax_code.php",
-            //     data: {}
-            // });
-        });
-     }) ;    
+            }  
+        }); // flag5.click
+        function changeFlag() {
+            $.ajax({
+                type: "GET",
+                url: 'includes/ajax_code.php?request_id='+request_id,
+                success: function(response) {
+                    if(flag5.hasClass('active')) {
+                        flag5.removeClass('fas active');
+                    }
+                    flag5.addClass(response);   
+
+                }
+            });
+        }
+    }); // $('.fa-flag').each(function()
  });
 
 
