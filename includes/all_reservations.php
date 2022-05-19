@@ -59,7 +59,7 @@ unset($_SESSION['currentPage']);
                     <tr class="<?= $reservation->isPastEvent();?>">
                         <td><input class="checkbox" type="checkbox" name="checkBoxArray[]" value="<?= $reservation->request_id; ?>"></td>
                         <td><?= $reservation->showUnreadSign(); ?></td>
-                        <td><i class="fa-flag <?= $reservation->isFlagged(); ?>"></i></td>
+                        <td><i class="fa-flag <?= $reservation->isFlagged(); ?>" data="<?= $reservation->request_id; ?>"></i></td>
                         <td><?= $reservation->formatDate(); ?></td>
                         <td class="timeCell"><?= $reservation->formatTime(); ?></td>
                         <td class="name"><?= $reservation->request_name; ?></td>
