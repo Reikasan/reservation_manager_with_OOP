@@ -56,7 +56,7 @@ class Reservation extends Db_object {
     }
 
     // Format Date and Time
-    public function formatDate () {
+    public function formatDate() {
         $formatted_date = date_create($this->request_date);
         return $formatted_date = date_format($formatted_date, 'D d.m');
     } 
