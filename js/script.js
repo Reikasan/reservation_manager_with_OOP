@@ -188,14 +188,14 @@ if(closeBtns !== null) {
 // TOGGLE FLAG COLOR USING AJAX
  $(document).ready(function() {
     $('.fa-flag').each(function() {
-        const flag5 = $(this);
+        const flag = $(this);
         var flag_status;
-        var request_id = flag5.attr('data');
+        var request_id = flag.attr('data');
         const pathname = window.location.pathname;
         const path = pathname + ' i.fa-flag';
 
-        flag5.click(function() {
-            if(flag5.hasClass('active')) {
+        flag.click(function() {
+            if(flag.hasClass('active')) {
                 $.ajax({
                     type: "POST",
                     url: "includes/ajax_code.php",
@@ -214,16 +214,16 @@ if(closeBtns !== null) {
                     }
                 });
             }  
-        }); // flag5.click
+        }); // flag.click
         function changeFlag() {
             $.ajax({
                 type: "GET",
                 url: 'includes/ajax_code.php?request_id='+request_id,
                 success: function(response) {
-                    if(flag5.hasClass('active')) {
-                        flag5.removeClass('fas active');
+                    if(flag.hasClass('active')) {
+                        flag.removeClass('fas active');
                     }
-                    flag5.addClass(response);   
+                    flag.addClass(response);   
 
                 }
             });

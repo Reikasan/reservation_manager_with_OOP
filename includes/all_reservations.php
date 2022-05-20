@@ -50,6 +50,7 @@ unset($_SESSION['currentPage']);
                 $paginate = new Paginate($page, $items_per_page, $items_total_count, $paginations_per_page);
                 
                 $sql = "SELECT * FROM reservation_request ";
+                $sql .= "ORDER BY request_recieved_time DESC ";
                 $sql .= "LIMIT {$items_per_page} ";
                 $sql .= "OFFSET {$paginate->offset()}";
                 $reservations = Reservation::find_by_query($sql);

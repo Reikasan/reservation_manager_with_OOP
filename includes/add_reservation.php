@@ -1,37 +1,30 @@
 <?php
     if(isset($_POST['addNewReservation'])) {
-        $new_request_name = escape($_POST['name']);
-        $new_request_email = escape($_POST['email']);
-        $new_request_tel = escape($_POST['tel']);
-        $new_request_date = escape($_POST['date']);
-        $new_request_time = escape($_POST['time']);
-        $new_request_num_seats = escape($_POST['seats']);
-        $new_request_comment = escape($_POST['comments']);
-        $new_request_via = escape($_POST['via']);
-        $new_request_status = escape($_POST['status']);
-        $new_request_recieved_time = date("Y-m-d H:i:s");
+        $reservation = new Reservation();
 
-        $new_request_time = date_create($new_request_time);
-        $new_request_time = date_format($new_request_time, 'H:i:s');
+        $reservation->request_name = trim($_POST['name']);
+        $reservation->request_email = trim($_POST['email']);
+        $reservation->request_tel = trim($_POST['tel']);
+        $reservation->request_date = $_POST['date'];
+        $reservation->request_time = $_POST['time'];
+        $reservation->request_num_seats = trim($_POST['seats']);
+        $reservation->request_comment = trim($_POST['comments']);
+        $reservation->request_via = trim($_POST['via']);
+        $reservation->request_status = trim($_POST['status']);
+        $reservation->request_recieved_time = date("Y-m-d H:i:s");;
 
-        //CHECK REQUEIRED FIELDS ARE FILED
+        //CHECK REQUIRED FIELDS ARE FILED
         if(!empty($request_name) && !empty($request_date) && !empty($request_time) && !empty($request_num_seats) && !empty($request_status)) {
             if(empty($request_email) && empty($request_tel) ) {
-                $message = "not enough infos";
+                $message = "<h2 class='alert'> Please fill all required input fields<i class='fas fa-times closeBtn'></i></h2>";
             }
         }
 
-        $addNewStmt= mysqli_prepare($connection, "INSERT INTO reservation_request (request_name, request_email, request_tel, request_date, request_time, request_num_seats, request_comment, request_status, request_recieved_time, request_via) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        mysqli_stmt_bind_param($addNewStmt, "sssssissss", $new_request_name, $new_request_email, $new_request_tel, $new_request_date, $new_request_time, $new_request_num_seats, $new_request_comment, $new_request_status, $new_request_recieved_time, $new_request_via );
-        mysqli_execute($addNewStmt);
-
-        $query = "SELECT request_id FROM reservation_request ORDER BY request_id DESC LIMIT 1";
-        $result = mysqli_query($connection, $query);
-        $row = mysqli_fetch_assoc($result);
-        $request_id = $row['request_id'];
-        
-        $message = "<h2 class='success'> 1 Reservation saved <a class='check' href='reservation.php?source=details&r_id={$request_id}'>check</a><i class='fas fa-times closeBtn'></i></h2>";   
-        
+        if($reservation->save()) {
+            $last_id = $database->connection->insert_id;
+            $session->message("<h2 class='success'> 1 Reservation saved <a class='check' href='reservation.php?source=details&r_id={$last_id}'>check</a><i class='fas fa-times closeBtn'></i></h2>"); 
+            redirect("reservation.php?source=add"); 
+        };
     }
 ?>
 
@@ -40,11 +33,7 @@
 
     <div class="reservationBox">
         <div class="message hide"></div>
-        <?php
-            if(isset($message)){
-                echo $message; 
-            }
-        ?>
+        <?= isset($message) ? $message: null; ?>
         <form id="add" method="post">
             <div class="form-group">
                 <label for="name" class="short">Name*</label>
