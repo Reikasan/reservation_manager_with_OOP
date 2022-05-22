@@ -1,5 +1,5 @@
 <div class="search">
-    <form action="search" method="post" id="searchForm">
+    <form action="search.php" method="post" id="searchForm">
         <div class="search-bar">
             <div class="row-1">
                 <i class="fas fa-search"></i>

@@ -2,8 +2,6 @@
     ob_start();
     include "includes/header.php";
     include "includes/navigation.php"; 
-
-    unset($_SESSION['currentPage']);
 ?>
 
 <div class="container">
@@ -15,70 +13,41 @@
         <?php include "includes/searchbox.php"; ?>
        
         <div class="back">
-            <a href="reservation">
+            <?php 
+            if(isset($_SESSION['currentPage'])) {
+                $page = $_SESSION['currentPage'];
+                echo "<a href='reservation.php?page={$page}'>";
+            } else {
+                echo "<a href='reservation.php'>";
+            }
+            ?>
                 <i class="fas fa-chevron-left"></i>
                 Back to All reservations
             </a>
         </div>
 
-        <div class="reservationBox">  
-    <?php
-        // SEARCH AND FILTERS
-        include "includes/search/search_filter.php";
+        <div class="reservationBox"> 
 
-        $result = mysqli_query($connection, $query);
+        <!-- SEARCH AND FILTERS -->
+        <?php include "includes/search/search_filter.php"; ?>
+        
+        <!-- BULK OPTIONS -->
+        <?php include "includes/bulkoptions.php"; ?>
 
-        $count = mysqli_num_rows($result);
-        $count_pagination = ceil($count/$per_page);
+        <?php
+            if($numResult === null) {
+                redirect("index.php");
 
-        if($count > 0){
-            // user uses SEARCH BAR
-            if((isset($_POST['search']) || isset($_SESSION['searchQuery']))) {
-                if(isset($_SESSION['searchText'])) {
-                    $searchText = $_SESSION['searchText'];
-                    $displayName = $_SESSION['displayName'];
-                }
-
-                if($count == 1) {
-                    echo '<h2 class="result"><span class="bold">"' .$searchText .'"</span> in <span class="bold">' .$displayName .'</span> find ' .$count .' result</h2>';
-                    
-                } elseif($count > 1) {
-                    echo '<h2 class="result"><span class="bold">"' .$searchText .'"</span> in <span class="bold">' .$displayName .'</span> find ' .$count .' results</h2>';
-                }
-
-                // check if filter is set
-                if(isset($_POST['applyFilter']) || isset($_SESSION['filters'])) {
-                    echo "<form class='filterBtnContainer' method='post'>";
-                    for($i = 0; $i <= 2; ++$i) {
-                        createFilterBtn($filters, $filterValues, $i);
-                    }
-                    echo "</form>";
-                } 
+            } elseif($numResult === 0) {
+                echo $message = "<h2 class='alert'><span class='bold'>{$searchText}</span> in <span class='bold'> {$displayCatName}</span> find no result <i class='fas fa-times closeBtn'></i></h2>";
+            
             } else {
-                if($count === 1) {
-                    echo '<h2 class="result">Find ' .$count .' result</h2>';
-                } elseif($count >1) {
-                    echo '<h2 class="result">Find ' .$count .' results</h2>';
+                if($numResult === 1) {
+                    echo $message = "<h2 class='success'><span class='bold'>{$searchText}</span> in <span class='bold'> {$displayCatName}</span> found $numResult result <i class='fas fa-times closeBtn'></i></h2>";
+                } else {
+                    echo $message = "<h2 class='success'><span class='bold'>{$searchText}</span> in <span class='bold'> {$displayCatName}</span> found $numResult results <i class='fas fa-times closeBtn'></i></h2>";
                 }
-
-                echo "<form class='filterBtnContainer' method='post'>";
-                for($i = 0; $i <= 2; ++$i) {
-                    if(isset($_SESSION['filters'])) {
-                        $filters = $_SESSION['filters'];
-                    }
-                    createFilterBtn($filters, $filterValues, $i);
-                }
-                echo "</form>";
-            }
-
-
-            // BULK OPTIONS
-            include "includes/bulkoptions.php";
-
-            if(isset($message)) {
-                echo $message;
-            }
-    ?>
+        ?>
                 <table>
                     <thead>
                         <tr>
@@ -96,92 +65,50 @@
                     </thead>
                     <tbody>
         <?php
-                    $query .= "ORDER BY request_recieved_time DESC ";
-                    $query .= "LIMIT $start_show_request, $per_page";
-                    $select_all_request_query = mysqli_query($connection, $query);
-
-                    while($row= mysqli_fetch_assoc($select_all_request_query)) {
-                        $request_id = $row['request_id'];
-                        $request_name = $row['request_name'];
-                        $request_date = $row['request_date'];
-                        $request_time = $row['request_time'];
-                        $request_num_seats = $row['request_num_seats'];
-                        $request_comment = $row['request_comment'];
-                        $request_status = $row['request_status'];
-                        $request_flag = $row['request_flag'];
-                        $request_recieved_time = $row['request_recieved_time'];
-                        $today = date("Y-m-d");//"2021-09-01"; //date("Y-m-d");
-
-                        // format date and time
-                        $formated_request_date = date_create($request_date);
-                        $formated_request_date = date_format($formated_request_date, 'D d.m');
-
-                        $formated_request_time = date_create($request_time);
-                        $formated_request_time = date_format($formated_request_time, 'H:i');
-
-                        checkPastEvent($request_date, $today);
-                        
-                        echo "<td><input class='checkbox' type='checkbox' name='checkBoxArray[]' value='$request_id'></td>";
-                        
-                        echoUnreadSign($request_status);
-                        echoFlagInTd($request_flag);
-
-                        echo "<td>$formated_request_date</td>";
-                        echo "<td class='timeCell'>$formated_request_time</td>";
-                        echo "<td class='name'>$request_name</td>";
-                        echo "<td>$request_num_seats</td>";
-
-                        echoSubstringedComment($request_comment);
-
-                        echo "<td class='detailCell'><button class='btn details'><a href='reservation/search_details/$request_id'>Details</a></button></td>";
-                        echo "<td><a href='reservation/search_details/$request_id' class='btn status $request_status'>$request_status</a></td>";
-                        
-                        echo "</tr>";
-                    } // while loop
-                ?>
-                </tbody>
-            </table>
-        </form> <!-- end of bulkoptions form -->
-        <?php
-            } else {
-                if((isset($_POST['search'])|| isset($_SESSION['searchText']))){
-                    if(isset($_SESSION['searchText'])) {
-                        $searchText = $_SESSION['searchText'];
-                        $displayName = $_SESSION['displayName'];
-                    }
-                    
-                    echo '<h2 class="no-result"><span class="bold">"' .$searchText .'"</span> in <span class="bold">' .$displayName .'</span> find no result</h2>';
-                    
-                    
-                    
-                
-                } else {
-                    echo '<h2 class="no-result">Find no result</h2>';
-                }
-                
-                if(isset($_POST['applyFilter']) || isset($_SESSION['filters'])){
-                    echo "<form class='filterBtnContainer' method='post'> ";
-
-                    if(empty($filters)){
-                        $filters = $_SESSION['filters'];
-                        $filterValues = $_SESSION['filterValues'];
-                    }
-
-                    for($i = 0; $i <= 2; ++$i) {
-                        createFilterBtn($filters, $filterValues, $i);
-                    }
-                    echo "</form>";
-                }
-                
-                if(isset($message)) {
-                    echo $message;
-                }
-            }
-            
+            foreach($reservations as $reservation) :
+                $request_id = $reservation->request_id;
+                $request_name = $reservation->request_name;
+                $request_email = $reservation->request_email;
+                $request_tel = $reservation->request_tel;
+                $request_date = $reservation->formatDate($reservation->request_date);
+                $request_time = $reservation->formatTime($reservation->request_time);
+                $request_num_seats = $reservation->request_num_seats;
+                $request_comment = $reservation->request_comment;
+                $request_status = $reservation->request_status;
+                $request_recieved_time = $reservation->request_recieved_time;
+                $request_edited_time = $reservation->request_edited_time;
+                $request_flag = $reservation->request_edited_time;
+                $request_via = $reservation->request_edited_time;            
         ?>
-
-        <!-- PAGINATION -->
-        <?php include "includes/search/pagination.php"; ?>
-        </div> <!-- end of .reservationBox --> 
+                        <tr class="<?= $reservation->isPastEvent();?>">
+                            <td><input class="checkbox" type="checkbox" name="checkBoxArray[]" value="<?= $reservation->request_id; ?>"></td>
+                            <td><?= $reservation->showUnreadSign(); ?></td>
+                            <td><i class="fa-flag <?= $reservation->isFlagged(); ?>" data="<?= $reservation->request_id; ?>"></i></td>
+                            <td><?= $reservation->formatDate(); ?></td>
+                            <td class="timeCell"><?= $reservation->formatTime(); ?></td>
+                            <td class="name"><?= $reservation->request_name; ?></td>
+                            <td><?= $reservation->request_num_seats; ?></td>
+                            <td class="commentCell"><?= $reservation->substringedComment(); ?></td>
+                            <td class="detailCell"><button class="btn details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>">Details</a></button></td>
+                            <td title="go to details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>" class="btn status <?= $reservation->request_status; ?>" title="<?= $reservation->request_status; ?>"><?= $reservation->request_status; ?></a></td>
+                        </tr>
+        <?php endforeach;     
+            }  // end if/else
+        ?>
+                    </tbody>
+                </table>
+            </form> <!-- end of bulkoptions form -->
+            <!-- PAGINATION -->
+            <ul class="pagination">
+                    <?php 
+                    // $paginate = new Paginate();
+                        if($paginate->page_total() > 1) {
+                            $paginate->has_previous("search.php");
+                            $paginate->show_pagination("search.php");
+                            $paginate->has_next("search.php");
+                        }
+                    ?>
+            </ul>
+     </div> <!-- end of .reservationBox --> 
 <?php include "includes/footer.php"; ?>
 <?php ob_end_flush(); ?>

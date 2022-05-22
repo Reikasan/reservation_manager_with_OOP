@@ -14,5 +14,6 @@ require_once(CLASSES_PASS.DS."paginate.php");
 require_once(CLASSES_PASS.DS."status.php");
 require_once(CLASSES_PASS.DS."user.php");
 require_once(CLASSES_PASS.DS."token.php");
+require_once(CLASSES_PASS.DS."category.php");
 
 ?>
