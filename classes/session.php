@@ -5,12 +5,14 @@ class Session {
     public $msg;
     public $message;
 
+
     function __construct() {
         session_start();
         $this->check_the_login();
         $this->check_message();
     }
 
+    // Message
     public function message($msg="") {
         if(!empty($msg)) {
             $_SESSION['message'] = $msg;
@@ -28,6 +30,7 @@ class Session {
         }
     }
 
+    // Login
     public function is_signed_in() {
         return $this->signed_in;
     }
@@ -43,6 +46,7 @@ class Session {
         unset($_SESSION['user_role']);
         unset($this->user_role);
         $this->signed_in = false;
+        self::unset_search_set();
     }
 
     private function check_the_login() {
@@ -53,6 +57,20 @@ class Session {
             unset($this->user_role);
             $this->signed_in = false;
         }
+    }
+
+    // Search
+    public function is_searched() {
+        if(isset($_SESSION['searchText']) && isset($_SESSION['searchCategory'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function unset_search_set() {
+        unset($_SESSION['searchText']);
+        unset($_SESSION['searchCategory']);
     }
 }
 

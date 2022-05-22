@@ -1,14 +1,15 @@
 <?php
 // clear previous search data
-unset($_SESSION['searchText']);
-unset($_SESSION['searchCategory']);
-unset($_SESSION['query']);
-unset($_SESSION['searchQuery']);
-unset($_SESSION['displayName']);
-unset($_SESSION['filters']);
-unset($_SESSION['filterValues']);
-unset($_SESSION['filterQueries']);
-unset($_SESSION['currentPage']);
+// unset($_SESSION['searchText']);
+// unset($_SESSION['searchCategory']);
+// unset($_SESSION['query']);
+// unset($_SESSION['searchQuery']);
+// unset($_SESSION['displayName']);
+// unset($_SESSION['filters']);
+// unset($_SESSION['filterValues']);
+// unset($_SESSION['filterQueries']);
+// unset($_SESSION['currentPage']);
+$session->unset_search_set();
 
 
 ?>

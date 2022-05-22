@@ -24,6 +24,29 @@ class Reservation extends Db_object {
         return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
     }
 
+    public static function searchReservation($searchText, $searchCategory) {
+        global $database;
+        echo $searchText = $database->escape_string($searchText);
+        echo $searchCategory = $database->escape_string($searchCategory);
+
+        $sql = "SELECT * FROM " .static::$db_table ." WHERE {$searchCategory} LIKE '%{$searchText}%' ";
+        return $results = static::find_by_query($sql);
+    }
+
+    public static function countSearchResult($searchText, $searchCategory) {
+        return count(static::searchReservation($searchText, $searchCategory));
+    }
+
+    public static function searchReservationWithPagination($searchText, $searchCategory, $paginate) {
+        $items_per_page = static::countSearchResult($searchText, $searchCategory);
+
+        $sql = "SELECT * FROM " .static::$db_table ." WHERE {$searchCategory} LIKE '%{$searchText}%' ";
+        $sql .= "ORDER BY request_recieved_time DESC ";
+        $sql .= "LIMIT {$items_per_page} ";
+        $sql .= "OFFSET {$paginate->offset()}";
+        return $results = static::find_by_query($sql);
+    }
+
     public function isUnread() {
         if($this->request_status == "unread") {
             return true;
@@ -55,7 +78,7 @@ class Reservation extends Db_object {
         }
     }
 
-    // Format Date and Time
+    // Format Date and Time for Display
     public function formatDate() {
         $formatted_date = date_create($this->request_date);
         return $formatted_date = date_format($formatted_date, 'D d.m');
@@ -77,6 +100,7 @@ class Reservation extends Db_object {
             return "done";
         } 
     }
+
 
     public function ajax_change_flag_status($flag_status, $request_id) {
         global $database;

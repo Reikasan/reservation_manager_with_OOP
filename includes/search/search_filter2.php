@@ -40,89 +40,67 @@
 //     $start_show_request = ($page * $per_page) - $per_page;
 // }
 
-                
-// // Set val for pagination
-// $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-// $items_per_page = 10;
-// $items_total_count = 
-// $paginations_per_page = 5;
-
-// $_SESSION['currentPage']= $page;
-
-// // Show Reservations
-// $paginate = new Paginate($page, $items_per_page, $items_total_count, $paginations_per_page);
-
-// $sql = "SELECT * FROM reservation_request ";
-// $sql .= "ORDER BY request_recieved_time DESC ";
-// $sql .= "LIMIT {$items_per_page} ";
-// $sql .= "OFFSET {$paginate->offset()}";
-// $reservations = Reservation::find_by_query($sql);
-
-// foreach($reservations as $reservation) :
-
 // SEARCH
-if(isset($_POST['search']) || $session->is_searched()) {
-    if($session->is_searched()) {
-        $searchText = $_SESSION['searchText'];
-        $searchCategory = $_SESSION['searchCategory'];
-        
-    } else {
-        $searchText = $_POST['searchText'];
-        $searchCategory = $_POST['searchCategories'];
+if(isset($_POST['search'])) {
+    $reservation = new Reservation();
 
-        $_SESSION['searchText'] = $searchText;
-        $_SESSION['searchCategory'] = $searchCategory;
-    }
-    
-    $numResult = Reservation::countSearchResult($searchText, $searchCategory);
+    $reservation->searchText = trim($_POST['searchText']);
+    $reservation->searchCategory = trim($_POST['searchCategories']);
 
-    // Set val for pagination
-    $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;
-    $items_per_page = 10;
-    $items_total_count = $numResult;
-    $paginations_per_page = 5;
+    if($results = $reservation->searchReservation($reservation->searchText, $reservation->searchCategory)) {
+        echo "works";
+        print_r($results);
+    };
 
-    $paginate = new Paginate($page, $items_per_page, $items_total_count, $paginations_per_page);
+    // $query .= "WHERE $searchCategory LIKE '%$searchText%' ";
 
-    $reservations = Reservation::searchReservationWithPagination($searchText, $searchCategory, $paginate);
-    $_SESSION['currentPage']= $page;
+    // // search category name 
+    // $categoryQuery = "SELECT display_name FROM search_category WHERE table_name = '{$searchCategory}' ";
+    // $categoryName = mysqli_query($connection, $categoryQuery);
 
-    $displayCatName = Category::fetchCategoryName($searchCategory);
- 
+    // $row = mysqli_fetch_assoc($categoryName);
+    // $displayName = $row['display_name'];
+
+    // // store search data for back from search details
+    // $_SESSION['searchText'] = $searchText;
+    // $_SESSION['searchCategory'] = $searchCategory;
+    // $_SESSION['query'] = $query;
+    // $_SESSION['searchQuery'] = $query;
+    // $_SESSION['displayName'] = $displayName;    
 }
 
 // BACK FROM SEARCH_DETAILS.PHP
-// if(isset($_POST['returnSearch'])) {
-//     // set variable when back from search_details.php
-//     if(isset($_SESSION['searchQuery']) && isset($_SESSION['filterValues'])) {
-//         $query = $_SESSION['searchQuery'];
-//         $searchText = $_SESSION['searchText'];
-//         // $searchCategory = $_SESSION['searchCategory'];
-//         $displayName = $_SESSION['displayName'];
-//         $filters = $_SESSION['filters'];
-//         $filterValues = $_SESSION['filterValues'];
-//         $filterQueries = $_SESSION['filterQueries'];
+if(isset($_POST['returnSearch'])) {
+    // set variable when back from search_details.php
+    if(isset($_SESSION['searchQuery']) && isset($_SESSION['filterValues'])) {
+        $query = $_SESSION['searchQuery'];
+        $searchText = $_SESSION['searchText'];
+        $searchCategory = $_SESSION['searchCategory'];
+        $displayName = $_SESSION['displayName'];
+        $filters = $_SESSION['filters'];
+        $filterValues = $_SESSION['filterValues'];
+        $filterQueries = $_SESSION['filterQueries'];
 
-//         $filterLength = count($filters);
-//         $query = createFilterQuery($filters, $filterQueries, $query, $filterLength);
+        $filterLength = count($filters);
+        $query = createFilterQuery($filters, $filterQueries, $query, $filterLength);
 
-//     } elseif(isset($_SESSION['searchQuery'])) {
-//         $query = $_SESSION['searchQuery'];
-//         $searchText = $_SESSION['searchText'];
-//         // $searchCategory = $_SESSION['searchCategory'];
-//         $displayName = $_SESSION['displayName'];
+    } elseif(isset($_SESSION['searchQuery'])) {
+        $query = $_SESSION['searchQuery'];
+        $searchText = $_SESSION['searchText'];
+        $searchCategory = $_SESSION['searchCategory'];
+        $displayName = $_SESSION['displayName'];
 
-//     } elseif(isset($_SESSION['filterValues'])) {
-//         $query = $initialQuery;
-//         $filters = $_SESSION['filters'];
-//         $filterValues = $_SESSION['filterValues'];
+    } elseif(isset($_SESSION['filterValues'])) {
+        $query = $initialQuery;
+        $filters = $_SESSION['filters'];
+        $filterValues = $_SESSION['filterValues'];
 
-//         if($query === "SELECT * FROM reservation_request ") {
-//             $filterLength = count($filters);
-//             $query = createFilterQuery($filters, $filterQueries, $query, $filterLength);
-//         }
-//     }
-// }
+        if($query === "SELECT * FROM reservation_request ") {
+            $filterLength = count($filters);
+            $query = createFilterQuery($filters, $filterQueries, $query, $filterLength);
+        }
+    }
+}
 
 
 // APPLY FILTERS
