@@ -26,7 +26,7 @@ class Paginate {
     }
 
     // Limit number of paginations
-    public function show_pagination($location) {
+    public function show_pagination($location, $searchSet = null) {
         $middle = ceil($this->paginations_per_page/2);
         $last_pagination_set = $this->page_total() - $this->paginations_per_page +1;
 
@@ -51,23 +51,42 @@ class Paginate {
         }
 
         for($i=$init; $i <= $iteration; $i++) {
-            if($i == $this->current_page) {
-                echo "<li class='active'><a href='{$location}?page={$i}'>{$i}</a></li>";
+            if($searchSet !== null) {
+                $parameter = $searchSet ."&page=";
             } else {
-                echo "<li><a href='{$location}?page={$i}'>{$i}</a></li>";
+                $parameter = "page=";
             }
+
+            if($i == $this->current_page) {
+                echo "<li class='active'><a href='{$location}?{$parameter}{$i}'>{$i}</a></li>";
+            } else {
+                echo "<li><a href='{$location}?{$parameter}{$i}'>{$i}</a></li>";
+            }
+            
         }
     }
 
-    public function has_previous($location) {
+    public function has_previous($location, $searchSet = null) {
+        if($searchSet !== null) {
+            $parameter = $searchSet ."&page=";
+        } else {
+            $parameter = "page=";
+        }
+
         if($this->previous() >=1) {
-            echo "<li><a href='{$location}?page={$this->previous()}'><i class='fas fa-angle-left'></i></a></li>";
+            echo "<li><a href='{$location}?{$parameter}{$this->previous()}'><i class='fas fa-angle-left'></i></a></li>";
         }
     }
 
-    public function has_next($location) {
+    public function has_next($location, $searchSet = null) {
+        if($searchSet !== null) {
+            $parameter = $searchSet ."&page=";
+        } else {
+            $parameter = "page=";
+        }
+        
         if($this->next() <= $this->page_total()) {
-            echo "<li><a href='{$location}?page={$this->next()}'><i class='fas fa-angle-right'></i></a></li>";
+            echo "<li><a href='{$location}?{$parameter}{$this->next()}'><i class='fas fa-angle-right'></i></a></li>";
         }
     }
 

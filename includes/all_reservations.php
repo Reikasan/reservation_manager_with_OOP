@@ -9,7 +9,7 @@
 // unset($_SESSION['filterValues']);
 // unset($_SESSION['filterQueries']);
 // unset($_SESSION['currentPage']);
-$session->unset_search_set();
+// $session->unset_search_set();
 
 
 ?>
