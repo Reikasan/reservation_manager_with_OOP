@@ -92,7 +92,8 @@
                             <td class="detailCell"><button class="btn details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>">Details</a></button></td>
                             <td title="go to details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>" class="btn status <?= $reservation->request_status; ?>" title="<?= $reservation->request_status; ?>"><?= $reservation->request_status; ?></a></td>
                         </tr>
-        <?php endforeach;     
+        <?php
+         endforeach;     
             }  // end if/else
         ?>
                     </tbody>
@@ -103,9 +104,9 @@
                     <?php 
                     // $paginate = new Paginate();
                         if($paginate->page_total() > 1) {
-                            $paginate->has_previous("search.php");
-                            $paginate->show_pagination("search.php");
-                            $paginate->has_next("search.php");
+                            $paginate->has_previous("search.php","{$searchCategory}={$searchText}");
+                            $paginate->show_pagination("search.php","{$searchCategory}={$searchText}");
+                            $paginate->has_next("search.php","{$searchCategory}={$searchText}");
                         }
                     ?>
             </ul>

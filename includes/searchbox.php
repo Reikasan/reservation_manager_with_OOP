@@ -1,3 +1,33 @@
+<?php 
+if(isset($_POST['search'])) {
+    $url = "search.php?{$_POST['searchCategories']}={$_POST['searchText']}";
+    redirect($url);
+}
+
+if(isset($_POST['applyFilter'])) {
+    $filters = array();
+
+    if(isset($_POST['flag'])) {
+        $filters["flag"] = $_POST['flag'];
+    }
+    if(isset($_POST['date'])) {
+        $filters["date"] = $_POST['date'];
+    }
+    if(isset($_POST['status'])) {
+        $filters["status"] = $_POST['status'];
+    }
+
+    $filterParameter = constructFilterParameter($filters);
+
+    if(isset($_SESSION['searchCategory']) && isset($_SESSION['searchText'])) {
+        echo $url = "search_test.php?{$_SESSION['searchCategory']}={$_SESSION['searchText']}&{$filterParameter}";
+    } else {
+        echo $url = "search_test.php?{$filterParameter}";
+    }
+    redirect($url);
+}
+?>
+
 <div class="search">
     <form action="search.php" method="post" id="searchForm">
         <div class="search-bar">
@@ -20,7 +50,7 @@
         </div>
     </form>
     <p id="addFilter">Add Filter<i class="fas fa-caret-down"></i></p>
-    <form action="search" method="post" class="filter hide" id="filterForm">
+    <form  method="post" class="filter hide" id="filterForm">
         <i class='fas fa-times closeBtn'></i>
         <div class="filterContainer row">
             <div class="col1">
@@ -34,8 +64,8 @@
                 <div>
                     <p>Upcoming</p>
                     <ul>
-                        <li>Upcoming Request<input type="checkbox" name='upcoming' value="upcoming" id="upcoming"></li>
-                        <li>Past Request<input type="checkbox" name='upcoming' value="past" id="past"></li>
+                        <li>Upcoming Request<input type="checkbox" name='date' value="upcoming" id="upcoming"></li>
+                        <li>Past Request<input type="checkbox" name='date' value="past" id="past"></li>
                     </ul>
                 </div>
             </div>

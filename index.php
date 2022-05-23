@@ -1,7 +1,7 @@
 <?php include "includes/header.php"; ?>
 <?php 
     if(!$session->is_signed_in()) { redirect("login.php"); } 
-    $session->unset_search_set();
+    // $session->unset_search_set();
 ?>
 <?php include "includes/navigation.php"; ?>
 

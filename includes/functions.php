@@ -132,4 +132,19 @@ function returnValueIfItsNotNull($variable) {
     }
 }
 
+/* SEARCH_FILTER.PHP */
+function getSearchCatFromUrl() {
+    $searchSet = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
+    preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$searchSet, $matches);
+    return $searchCategory = $matches[0];
+}
+
+/* SEARCHBOX.PHP */
+function constructFilterParameter($filters) {
+    $filterParameter = "";
+    foreach($filters as $key => $value) {
+        $filterParameter .= "{$key}={$value}&";
+    }
+    return preg_replace('/\&$/', "", $filterParameter);
+}
 ?>
