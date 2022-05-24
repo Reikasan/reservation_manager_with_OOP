@@ -1,34 +1,33 @@
 <?php 
 $filter = new Filter();
-$searchArray = array();
 
 if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
 
     if(isset($_POST['search'])) {
         $searchText =  $_POST['searchText'];
         $searchCategory =  $_POST['searchCategories'];
-        $searchArray[$searchCategory] = $searchText;
+        $filter->searchArray[$searchCategory] = $searchText;
 
-        if($filters = $filter->getFiltersFromUrl()) {
-            foreach($filters as $searchedFilter) {
-                $searchArray[$searchedFilter] = $_GET[$searchedFilter];
+        if($filter->filters = $filter->getFiltersFromUrl()) {
+            foreach($filter->filters as $searchedFilter) {
+                $filter->searchArray[$searchedFilter] = $_GET[$searchedFilter];
             }
             unset($searchedFilter);
         };
     } elseif(isset($_POST['applyFilter'])) {
-        $searchArray  = $filter->setFiltersInArray($searchArray);
+        $filter->searchArray  = $filter->setFiltersInArray();
         $searchCategory = $filter->getSearchCatFromUrl();
 
         if(isset($_GET[$searchCategory])) {
             $searchText =  $_GET[$searchCategory];
-            $searchArray[$searchCategory] = $searchText;
+            $filter->searchArray[$searchCategory] = $searchText;
         }
     }
     
-    $filterParameter = $filter ->constructFilterParameterForURL($searchArray );
-    $url = "search.php?{$filterParameter}";
+    $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArray);
+    $url = "search.php?{$filter->filterParameter}";
 
-    $_SESSION['filterParameter'] = $filterParameter;
+    $_SESSION['filterParameter'] = $filter->filterParameter;
     redirect($url);
 }
 

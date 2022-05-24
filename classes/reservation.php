@@ -24,20 +24,19 @@ class Reservation extends Db_object {
         return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
     }
 
-    public static function searchReservation($filters) {
-        $filter = new Filter();
-        $filters = $filter->constructFilterParameterForSQL($filters);
-        $sql = "SELECT * FROM " .static::$db_table .$filters;
+    public static function searchReservation($filter) {
+        echo $filters = $filter->constructFilterParameterForSQL();
+        echo $sql = "SELECT * FROM " .static::$db_table .$filters;
         return $results = static::find_by_query($sql);
     }
 
-    public static function countSearchResult($filters) {
-        return count(static::searchReservation($filters));
+    public static function countSearchResult($filter) {
+        return count(static::searchReservation($filter));
     }
 
-    public static function searchReservationWithPagination($filters, $paginate, $items_per_page) {
-        $filter = new Filter();
-        $filters = $filter->constructFilterParameterForSQL($filters);
+    public static function searchReservationWithPagination($filter, $paginate, $items_per_page) {
+
+        $filters = $filter->constructFilterParameterForSQL($filter);
 
         $sql = "SELECT * FROM " .static::$db_table .$filters;
         $sql .= "ORDER BY request_recieved_time DESC ";

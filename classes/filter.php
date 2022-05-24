@@ -1,75 +1,82 @@
 <?php 
 
 class filter {
-    private $searchSet;
+    protected $url;
+    public $searchArray;
+    public $searchCategory;
+    public $filters;
     public $filterParameter;
-    public $key;
-    public $value;
+    protected $key;
+    protected $value;
+
+    public function __construct() {
+        $this->searchArray = array();
+    }
 
     public function getSearchCatFromUrl() {
-        $searchSet = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
-        if(preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$searchSet, $matches))  {
-            return $searchCategory = $matches[0];
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
+        if(preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$url, $matches))  {
+            return $this->searchCategory = $matches[0];
         }  
     }
 
     public function getFiltersFromUrl() {
-        echo $searchSet = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
-        if(preg_match_all('/flag|date|status/',$searchSet, $matches))  {
-            return $matches[0];
+        $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
+        if(preg_match_all('/flag|date|status/',$url, $matches))  {
+            return $this->filters = $matches[0];
         }  
     }
 
-    public function setFiltersInArray($searchArray) {
+    public function setFiltersInArray() {
         global $database;
 
         if(isset($_POST['flag'])) {
-            $searchArray["flag"] = $database->escape_string($_POST['flag']);
+            $this->searchArray["flag"] = $database->escape_string($_POST['flag']);
         }
         if(isset($_POST['date'])) {
-            $searchArray["date"] = $database->escape_string($_POST['date']);
+            $this->searchArray["date"] = $database->escape_string($_POST['date']);
         }
         if(isset($_POST['status'])) {
-            $searchArray["status"] = $database->escape_string($_POST['status']);
+            $this->searchArray["status"] = $database->escape_string($_POST['status']);
         }
 
         if(isset($_GET['flag'])) {
-            $searchArray["request_flag"] = $database->escape_string($_GET['flag']);
+            $this->searchArray["request_flag"] = $database->escape_string($_GET['flag']);
         }
         if(isset($_GET['date'])) {
-            $searchArray["request_date"] = $database->escape_string($_GET['date']);
+            $this->searchArray["request_date"] = $database->escape_string($_GET['date']);
         }
         if(isset($_GET['status'])) {
-            $searchArray["request_status"] = $database->escape_string($_GET['status']);
+            $this->searchArray["request_status"] = $database->escape_string($_GET['status']);
         }
-        return $searchArray;
+        return $this->searchArray;
     } 
 
-    public function constructFilterParameterForURL($searchArray) {
-        $filterParameter = "";
-        foreach($searchArray as $key => $value) {
-            $filterParameter .= "{$key}={$value}&";
+    public function constructFilterParameterForURL() {
+        $this->filterParameter = "";
+        foreach($this->searchArray as $key => $value) {
+            $this->filterParameter .= "{$key}={$value}&";
         }
         unset($value);
-        return preg_replace('/\&$/', "", $filterParameter);
+        return preg_replace('/\&$/', "", $this->filterParameter);
     }
     
-    public function constructFilterParameterForSQL($searchArray) {
-        $filterParameter = " WHERE ";
+    public function constructFilterParameterForSQL() {
+        $this->filterParameter = " WHERE ";
     
-        foreach($searchArray as $key => $value) {
+        foreach($this->searchArray as $key => $value) {
             if($key === "request_date" && $value === "upcoming") {
-                $filterParameter .= "{$key} >= now() AND ";
+                $this->filterParameter .= "{$key} >= now() AND ";
             } elseif($key === "request_date" && $value === "past") {
-                $filterParameter .= "{$key} < now() AND ";
+                $this->filterParameter .= "{$key} < now() AND ";
             } elseif(preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$key)) {
-                $filterParameter .= "{$key} LIKE '%{$value}%' AND ";
+                $this->filterParameter .= "{$key} LIKE '%{$value}%' AND ";
             } else {
-                $filterParameter .= "{$key} = '{$value}' AND ";
+                $this->filterParameter .= "{$key} = '{$value}' AND ";
             }
         }
         unset($value);
-        return preg_replace('/AND\s$/', "", $filterParameter);
+        return preg_replace('/AND\s$/', "", $this->filterParameter);
     }
     
     
