@@ -78,8 +78,40 @@ class filter {
         unset($value);
         return preg_replace('/AND\s$/', "", $this->filterParameter);
     }
-    
-    
+
+    public function setSearchCategory() {
+        global $database;
+
+        if(isset($_POST['search'])) {
+            return $database->escape_string($_POST['searchCategories']);
+        } else {
+            return $this->getSearchCatFromUrl();
+        }
+    }
+
+    public function setSearchText() {
+        global $database;
+
+        if(isset($_POST['search'])) {
+            return $database->escape_string($_POST['searchText']);
+        } elseif (isset($_POST['applyFilter'])) {
+            return $database->escape_string($_GET[$this->getSearchCatFromUrl()]);
+        } elseif(isset($_GET[$this->setSearchCategory()])) {
+            return $database->escape_string($_GET[$this->setSearchCategory()]);
+        }
+    }
+    public function combineFilters() {
+        global $database;
+        
+        if($this->getFiltersFromUrl()) {
+            foreach($this->filters as $searchedFilter) {
+                $this->searchArray[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
+            }
+            unset($searchedFilter);
+        } else {
+            $this->searchArray = $this->setFiltersInArray();
+        }
+    }
 }
 
 ?>

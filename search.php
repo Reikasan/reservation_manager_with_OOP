@@ -104,7 +104,7 @@
                     <?php 
                     // $paginate = new Paginate();
                         $filterParameter = $_SESSION['filterParameter'];
-                        
+
                         if($paginate->page_total() > 1) {
                             $paginate->has_previous("search.php",$filterParameter);
                             $paginate->show_pagination("search.php",$filterParameter);

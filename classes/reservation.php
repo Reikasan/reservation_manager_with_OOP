@@ -36,7 +36,7 @@ class Reservation extends Db_object {
 
     public static function searchReservationWithPagination($filter, $paginate, $items_per_page) {
 
-        $filters = $filter->constructFilterParameterForSQL($filter);
+        $filters = $filter->constructFilterParameterForSQL();
 
         $sql = "SELECT * FROM " .static::$db_table .$filters;
         $sql .= "ORDER BY request_recieved_time DESC ";

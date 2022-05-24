@@ -1,18 +1,14 @@
 <?php
 // filters
 $filter = new Filter();
-
-$searchCategory = $filter->getSearchCatFromUrl();
-
-if(isset($_GET[$searchCategory])) {
-    $searchText =  $database->escape_string($_GET[$searchCategory]);
-    $filter->searchArray[$searchCategory] = $searchText;
-}
-
+$searchCategory = $filter->setSearchCategory();
 $filter->searchArray = $filter->setFiltersInArray();
 
-$filteredReservation = Reservation::searchReservation($filter);
-echo $numResult = Reservation::countSearchResult($filter);
+if(isset($_GET[$searchCategory])) {
+    $filter->searchArray[$searchCategory] = $filter->setSearchText();
+}
+
+$numResult = Reservation::countSearchResult($filter);
 
 // Set val for pagination
 $page = !empty($_GET['page']) ? (int)$_GET['page'] : 1;

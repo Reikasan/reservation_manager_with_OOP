@@ -58,20 +58,6 @@ class Session {
             $this->signed_in = false;
         }
     }
-
-    // Search
-    public function is_searched() {
-        if(isset($_SESSION['searchText']) && isset($_SESSION['searchCategory'])) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function unset_search_set() {
-        unset($_SESSION['searchText']);
-        unset($_SESSION['searchCategory']);
-    }
 }
 
 $session = new session();

@@ -2,28 +2,11 @@
 $filter = new Filter();
 
 if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
-
-    if(isset($_POST['search'])) {
-        $searchText =  $_POST['searchText'];
-        $searchCategory =  $_POST['searchCategories'];
-        $filter->searchArray[$searchCategory] = $searchText;
-
-        if($filter->filters = $filter->getFiltersFromUrl()) {
-            foreach($filter->filters as $searchedFilter) {
-                $filter->searchArray[$searchedFilter] = $_GET[$searchedFilter];
-            }
-            unset($searchedFilter);
-        };
-    } elseif(isset($_POST['applyFilter'])) {
-        $filter->searchArray  = $filter->setFiltersInArray();
-        $searchCategory = $filter->getSearchCatFromUrl();
-
-        if(isset($_GET[$searchCategory])) {
-            $searchText =  $_GET[$searchCategory];
-            $filter->searchArray[$searchCategory] = $searchText;
-        }
-    }
     
+    if($filter->setSearchCategory()) {
+        $filter->searchArray[$filter->setSearchCategory()] = $filter->setSearchText();
+    }
+    $filter->combineFilters();
     $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArray);
     $url = "search.php?{$filter->filterParameter}";
 
