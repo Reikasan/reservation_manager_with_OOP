@@ -24,26 +24,26 @@ class Reservation extends Db_object {
         return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
     }
 
-    public static function searchReservation($searchText, $searchCategory) {
-        global $database;
-        echo $searchText = $database->escape_string($searchText);
-        echo $searchCategory = $database->escape_string($searchCategory);
-
-        $sql = "SELECT * FROM " .static::$db_table ." WHERE {$searchCategory} LIKE '%{$searchText}%' ";
+    public static function searchReservation($filters) {
+        $filter = new Filter();
+        $filters = $filter->constructFilterParameterForSQL($filters);
+        $sql = "SELECT * FROM " .static::$db_table .$filters;
         return $results = static::find_by_query($sql);
     }
 
-    public static function countSearchResult($searchText, $searchCategory) {
-        return count(static::searchReservation($searchText, $searchCategory));
+    public static function countSearchResult($filters) {
+        return count(static::searchReservation($filters));
     }
 
-    public static function searchReservationWithPagination($searchText, $searchCategory, $paginate) {
-        $items_per_page = static::countSearchResult($searchText, $searchCategory);
+    public static function searchReservationWithPagination($filters, $paginate, $items_per_page) {
+        $filter = new Filter();
+        $filters = $filter->constructFilterParameterForSQL($filters);
 
-        $sql = "SELECT * FROM " .static::$db_table ." WHERE {$searchCategory} LIKE '%{$searchText}%' ";
+        $sql = "SELECT * FROM " .static::$db_table .$filters;
         $sql .= "ORDER BY request_recieved_time DESC ";
         $sql .= "LIMIT {$items_per_page} ";
         $sql .= "OFFSET {$paginate->offset()}";
+        echo $sql;
         return $results = static::find_by_query($sql);
     }
 

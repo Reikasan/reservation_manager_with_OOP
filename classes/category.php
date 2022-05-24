@@ -12,9 +12,9 @@ class Category extends Db_object {
         global $database;
  
         $searchCategory = $database->escape_string($searchCategory);
-        echo $sql = "SELECT * FROM ".static::$db_table ." WHERE table_name = '{$searchCategory}' LIMIT 1 ";
+        $sql = "SELECT * FROM ".static::$db_table ." WHERE table_name = '{$searchCategory}' LIMIT 1 ";
         $the_result_array = static::find_by_query($sql);
-        return $result = $the_result_array[0]->display_name;
+        return $the_result_array ? $the_result_array[0]->display_name: null;
     }
 }
 ?>

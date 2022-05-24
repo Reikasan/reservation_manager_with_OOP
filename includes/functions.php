@@ -42,41 +42,41 @@ function checkSelected($value, $selected_value) {
 
 
 // SEARCH_FILTER.PHP
-function chengeFilterQuery($selectedFilter, $selectedFilterValue, $selectedFilterQueries, $filters, $filterValues, $filterQueries) {
-    global $filters;
-    global $filterValues;
-    global $filterQueries;
+// function chengeFilterQuery($selectedFilter, $selectedFilterValue, $selectedFilterQueries, $filters, $filterValues, $filterQueries) {
+//     global $filters;
+//     global $filterValues;
+//     global $filterQueries;
     
-    if($selectedFilter == "Flag") {
-        $columnName = 'request_flag';
-    } elseif ($selectedFilter == "Event date") {
-        $columnName = 'request_date';
-    } elseif ($selectedFilter == "Status") {
-        $columnName = 'request_status';
-    }
+//     if($selectedFilter == "Flag") {
+//         $columnName = 'request_flag';
+//     } elseif ($selectedFilter == "Event date") {
+//         $columnName = 'request_date';
+//     } elseif ($selectedFilter == "Status") {
+//         $columnName = 'request_status';
+//     }
 
-    if((isset($_POST['search']) || isset($_SESSION['searchText'])) || count($filters) > 0) {
-        if($selectedFilterValue == "upcoming") {
-            $selectedFilterQueries = "AND {$columnName} >= now() ";
-        } elseif($selectedFilterValue == "past") {
-            $selectedFilterQueries = "AND {$columnName} < now() ";
-        } else {
-        $selectedFilterQueries = "AND {$columnName} = '{$selectedFilterValue}' ";
-        }
-    } else {
-        if($selectedFilterValue == "upcoming") {
-            $selectedFilterQueries = "WHERE {$columnName} >= now() ";
-        } elseif($selectedFilterValue == "past") {
-            $selectedFilterQueries = "WHERE {$columnName} < now() ";
-        } else {
-        $selectedFilterQueries = "WHERE {$columnName} = '{$selectedFilterValue}' ";
-        }
-    }
+//     if((isset($_POST['search']) || isset($_SESSION['searchText'])) || count($filters) > 0) {
+//         if($selectedFilterValue == "upcoming") {
+//             $selectedFilterQueries = "AND {$columnName} >= now() ";
+//         } elseif($selectedFilterValue == "past") {
+//             $selectedFilterQueries = "AND {$columnName} < now() ";
+//         } else {
+//         $selectedFilterQueries = "AND {$columnName} = '{$selectedFilterValue}' ";
+//         }
+//     } else {
+//         if($selectedFilterValue == "upcoming") {
+//             $selectedFilterQueries = "WHERE {$columnName} >= now() ";
+//         } elseif($selectedFilterValue == "past") {
+//             $selectedFilterQueries = "WHERE {$columnName} < now() ";
+//         } else {
+//         $selectedFilterQueries = "WHERE {$columnName} = '{$selectedFilterValue}' ";
+//         }
+//     }
 
-    array_push($filters, $selectedFilter);
-    array_push($filterValues, $selectedFilterValue);
-    array_push($filterQueries, $selectedFilterQueries);
-}
+//     array_push($filters, $selectedFilter);
+//     array_push($filterValues, $selectedFilterValue);
+//     array_push($filterQueries, $selectedFilterQueries);
+// }
 
 function createFilterQuery($filters, $filterQueries, $query, $filterLength) {
     if($filterLength > 0) {
@@ -133,18 +133,9 @@ function returnValueIfItsNotNull($variable) {
 }
 
 /* SEARCH_FILTER.PHP */
-function getSearchCatFromUrl() {
-    $searchSet = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
-    preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$searchSet, $matches);
-    return $searchCategory = $matches[0];
-}
+
 
 /* SEARCHBOX.PHP */
-function constructFilterParameter($filters) {
-    $filterParameter = "";
-    foreach($filters as $key => $value) {
-        $filterParameter .= "{$key}={$value}&";
-    }
-    return preg_replace('/\&$/', "", $filterParameter);
-}
+
+
 ?>
