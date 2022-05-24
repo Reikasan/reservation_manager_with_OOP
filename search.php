@@ -103,10 +103,12 @@
             <ul class="pagination">
                     <?php 
                     // $paginate = new Paginate();
+                        $filterParameter = $_SESSION['filterParameter'];
+                        
                         if($paginate->page_total() > 1) {
-                            $paginate->has_previous("search.php","{$searchCategory}={$searchText}");
-                            $paginate->show_pagination("search.php","{$searchCategory}={$searchText}");
-                            $paginate->has_next("search.php","{$searchCategory}={$searchText}");
+                            $paginate->has_previous("search.php",$filterParameter);
+                            $paginate->show_pagination("search.php",$filterParameter);
+                            $paginate->has_next("search.php",$filterParameter);
                         }
                     ?>
             </ul>

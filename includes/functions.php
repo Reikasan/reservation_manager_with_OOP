@@ -133,36 +133,9 @@ function returnValueIfItsNotNull($variable) {
 }
 
 /* SEARCH_FILTER.PHP */
-function getSearchCatFromUrl() {
-    $searchSet = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY );
-    preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$searchSet, $matches);
-    return $searchCategory = $matches[0];
-}
+
 
 /* SEARCHBOX.PHP */
-function constructFilterParameterForURL($filters) {
-    $filterParameter = "";
-    foreach($filters as $key => $value) {
-        $filterParameter .= "{$key}={$value}&";
-    }
-    unset($value);
-    return preg_replace('/\&$/', "", $filterParameter);
-}
 
-function constructFilterParameterForSQL($filters) {
-    $filterParameter = " WHERE ";
-
-    foreach($filters as $key => $value) {
-        if($key === "request_date" && $value === "upcoming") {
-            $filterParameter .= "{$key} >= now() AND ";
-        } elseif($key === "request_date" && $value === "past") {
-            $filterParameter .= "{$key} < now() AND ";
-        } else {
-            $filterParameter .= "{$key} = '{$value}' AND ";
-        }
-    }
-    unset($value);
-    return preg_replace('/AND\s$/', "", $filterParameter);
-}
 
 ?>

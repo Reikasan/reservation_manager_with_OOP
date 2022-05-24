@@ -1,35 +1,41 @@
 <?php 
-if(isset($_POST['search'])) {
-    $url = "search.php?{$_POST['searchCategories']}={$_POST['searchText']}";
+$filter = new Filter();
+$searchArray = array();
+
+if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
+
+    if(isset($_POST['search'])) {
+        $searchText =  $_POST['searchText'];
+        $searchCategory =  $_POST['searchCategories'];
+        $searchArray[$searchCategory] = $searchText;
+
+        if($filters = $filter->getFiltersFromUrl()) {
+            foreach($filters as $searchedFilter) {
+                $searchArray[$searchedFilter] = $_GET[$searchedFilter];
+            }
+            unset($searchedFilter);
+        };
+    } elseif(isset($_POST['applyFilter'])) {
+        $searchArray  = $filter->setFiltersInArray($searchArray);
+        $searchCategory = $filter->getSearchCatFromUrl();
+
+        if(isset($_GET[$searchCategory])) {
+            $searchText =  $_GET[$searchCategory];
+            $searchArray[$searchCategory] = $searchText;
+        }
+    }
+    
+    $filterParameter = $filter ->constructFilterParameterForURL($searchArray );
+    $url = "search.php?{$filterParameter}";
+
+    $_SESSION['filterParameter'] = $filterParameter;
     redirect($url);
 }
 
-if(isset($_POST['applyFilter'])) {
-    $filters = array();
-
-    if(isset($_POST['flag'])) {
-        $filters["flag"] = $database->escape_string($_POST['flag']);
-    }
-    if(isset($_POST['date'])) {
-        $filters["date"] = $database->escape_string($_POST['date']);
-    }
-    if(isset($_POST['status'])) {
-        $filters["status"] = $database->escape_string($_POST['status']);
-    }
-
-    $filterParameter = constructFilterParameterForURL($filters);
-
-    if(isset($_SESSION['searchCategory']) && isset($_SESSION['searchText'])) {
-        echo $url = "search.php?{$_SESSION['searchCategory']}={$_SESSION['searchText']}&{$filterParameter}";
-    } else {
-        echo $url = "search.php?{$filterParameter}";
-    }
-    redirect($url);
-}
 ?>
 
 <div class="search">
-    <form action="search.php" method="post" id="searchForm">
+    <form action="<?= !preg_match('/search.php/', $_SERVER['PHP_SELF']) ? "search.php" : null; ?>" method="post" id="searchForm">
         <div class="search-bar">
             <div class="row-1">
                 <i class="fas fa-search"></i>
