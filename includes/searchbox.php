@@ -8,21 +8,21 @@ if(isset($_POST['applyFilter'])) {
     $filters = array();
 
     if(isset($_POST['flag'])) {
-        $filters["flag"] = $_POST['flag'];
+        $filters["flag"] = $database->escape_string($_POST['flag']);
     }
     if(isset($_POST['date'])) {
-        $filters["date"] = $_POST['date'];
+        $filters["date"] = $database->escape_string($_POST['date']);
     }
     if(isset($_POST['status'])) {
-        $filters["status"] = $_POST['status'];
+        $filters["status"] = $database->escape_string($_POST['status']);
     }
 
-    $filterParameter = constructFilterParameter($filters);
+    $filterParameter = constructFilterParameterForURL($filters);
 
     if(isset($_SESSION['searchCategory']) && isset($_SESSION['searchText'])) {
-        echo $url = "search_test.php?{$_SESSION['searchCategory']}={$_SESSION['searchText']}&{$filterParameter}";
+        echo $url = "search.php?{$_SESSION['searchCategory']}={$_SESSION['searchText']}&{$filterParameter}";
     } else {
-        echo $url = "search_test.php?{$filterParameter}";
+        echo $url = "search.php?{$filterParameter}";
     }
     redirect($url);
 }

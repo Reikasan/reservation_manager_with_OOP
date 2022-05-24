@@ -42,41 +42,41 @@ function checkSelected($value, $selected_value) {
 
 
 // SEARCH_FILTER.PHP
-function chengeFilterQuery($selectedFilter, $selectedFilterValue, $selectedFilterQueries, $filters, $filterValues, $filterQueries) {
-    global $filters;
-    global $filterValues;
-    global $filterQueries;
+// function chengeFilterQuery($selectedFilter, $selectedFilterValue, $selectedFilterQueries, $filters, $filterValues, $filterQueries) {
+//     global $filters;
+//     global $filterValues;
+//     global $filterQueries;
     
-    if($selectedFilter == "Flag") {
-        $columnName = 'request_flag';
-    } elseif ($selectedFilter == "Event date") {
-        $columnName = 'request_date';
-    } elseif ($selectedFilter == "Status") {
-        $columnName = 'request_status';
-    }
+//     if($selectedFilter == "Flag") {
+//         $columnName = 'request_flag';
+//     } elseif ($selectedFilter == "Event date") {
+//         $columnName = 'request_date';
+//     } elseif ($selectedFilter == "Status") {
+//         $columnName = 'request_status';
+//     }
 
-    if((isset($_POST['search']) || isset($_SESSION['searchText'])) || count($filters) > 0) {
-        if($selectedFilterValue == "upcoming") {
-            $selectedFilterQueries = "AND {$columnName} >= now() ";
-        } elseif($selectedFilterValue == "past") {
-            $selectedFilterQueries = "AND {$columnName} < now() ";
-        } else {
-        $selectedFilterQueries = "AND {$columnName} = '{$selectedFilterValue}' ";
-        }
-    } else {
-        if($selectedFilterValue == "upcoming") {
-            $selectedFilterQueries = "WHERE {$columnName} >= now() ";
-        } elseif($selectedFilterValue == "past") {
-            $selectedFilterQueries = "WHERE {$columnName} < now() ";
-        } else {
-        $selectedFilterQueries = "WHERE {$columnName} = '{$selectedFilterValue}' ";
-        }
-    }
+//     if((isset($_POST['search']) || isset($_SESSION['searchText'])) || count($filters) > 0) {
+//         if($selectedFilterValue == "upcoming") {
+//             $selectedFilterQueries = "AND {$columnName} >= now() ";
+//         } elseif($selectedFilterValue == "past") {
+//             $selectedFilterQueries = "AND {$columnName} < now() ";
+//         } else {
+//         $selectedFilterQueries = "AND {$columnName} = '{$selectedFilterValue}' ";
+//         }
+//     } else {
+//         if($selectedFilterValue == "upcoming") {
+//             $selectedFilterQueries = "WHERE {$columnName} >= now() ";
+//         } elseif($selectedFilterValue == "past") {
+//             $selectedFilterQueries = "WHERE {$columnName} < now() ";
+//         } else {
+//         $selectedFilterQueries = "WHERE {$columnName} = '{$selectedFilterValue}' ";
+//         }
+//     }
 
-    array_push($filters, $selectedFilter);
-    array_push($filterValues, $selectedFilterValue);
-    array_push($filterQueries, $selectedFilterQueries);
-}
+//     array_push($filters, $selectedFilter);
+//     array_push($filterValues, $selectedFilterValue);
+//     array_push($filterQueries, $selectedFilterQueries);
+// }
 
 function createFilterQuery($filters, $filterQueries, $query, $filterLength) {
     if($filterLength > 0) {
@@ -140,11 +140,29 @@ function getSearchCatFromUrl() {
 }
 
 /* SEARCHBOX.PHP */
-function constructFilterParameter($filters) {
+function constructFilterParameterForURL($filters) {
     $filterParameter = "";
     foreach($filters as $key => $value) {
         $filterParameter .= "{$key}={$value}&";
     }
+    unset($value);
     return preg_replace('/\&$/', "", $filterParameter);
 }
+
+function constructFilterParameterForSQL($filters) {
+    $filterParameter = " WHERE ";
+
+    foreach($filters as $key => $value) {
+        if($key === "request_date" && $value === "upcoming") {
+            $filterParameter .= "{$key} >= now() AND ";
+        } elseif($key === "request_date" && $value === "past") {
+            $filterParameter .= "{$key} < now() AND ";
+        } else {
+            $filterParameter .= "{$key} = '{$value}' AND ";
+        }
+    }
+    unset($value);
+    return preg_replace('/AND\s$/', "", $filterParameter);
+}
+
 ?>

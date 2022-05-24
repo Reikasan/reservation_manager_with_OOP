@@ -47,6 +47,12 @@ class Reservation extends Db_object {
         return $results = static::find_by_query($sql);
     }
 
+    public static function filterReservation($filters) {
+        $filters = constructFilterParameterForSQL($filters);
+        echo $sql = "SELECT * FROM " .static::$db_table .$filters;
+        return $results = static::find_by_query($sql);
+    }
+
     public function isUnread() {
         if($this->request_status == "unread") {
             return true;
