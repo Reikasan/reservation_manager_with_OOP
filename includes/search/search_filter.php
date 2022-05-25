@@ -1,12 +1,19 @@
 <?php
 // filters
 $filter = new Filter();
+
+if(isset($_POST['cancelFilter'])) {
+    $filter->cancelFilterAndRefreshSearch();
+}
+
 $searchCategory = $filter->setSearchCategory();
-$filter->searchArray = $filter->setFiltersInArray();
+$filter->searchArrayForSql = $filter->setFiltersInArray();
 
 if(isset($_GET[$searchCategory])) {
-    $filter->searchArray[$searchCategory] = $filter->setSearchText();
+    $filter->searchArrayForSql[$searchCategory] = $filter->setSearchText();
 }
+
+print_r($filter->searchArrayForSql);
 
 $numResult = Reservation::countSearchResult($filter);
 

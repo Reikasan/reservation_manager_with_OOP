@@ -438,8 +438,6 @@ if(searchBtn !== null ) {
         });
     });
 
-
-     
     // clear all filters
     const clearBtn = document.getElementById('clearBtn');
     clearBtn.addEventListener('click', ()=> {

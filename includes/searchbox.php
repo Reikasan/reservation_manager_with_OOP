@@ -4,13 +4,14 @@ $filter = new Filter();
 if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
     
     if($filter->setSearchCategory()) {
-        $filter->searchArray[$filter->setSearchCategory()] = $filter->setSearchText();
+        $filter->searchArrayForUrl[$filter->setSearchCategory()] = $filter->setSearchText();
     }
     $filter->combineFilters();
-    $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArray);
+    $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArrayForUrl);
     $url = "search.php?{$filter->filterParameter}";
 
     $_SESSION['filterParameter'] = $filter->filterParameter;
+    $_SESSION['searchArrayForUrl'] = $filter->searchArrayForUrl;
     redirect($url);
 }
 
