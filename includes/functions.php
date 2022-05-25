@@ -78,45 +78,38 @@ function checkSelected($value, $selected_value) {
 //     array_push($filterQueries, $selectedFilterQueries);
 // }
 
-function createFilterQuery($filters, $filterQueries, $query, $filterLength) {
-    if($filterLength > 0) {
-        foreach($filterQueries as $filterQuery) {
-            $filterQuery;
-            $query .= $filterQuery;
-        }
+// function createFilterQuery($filters, $filterQueries, $query, $filterLength) {
+//     if($filterLength > 0) {
+//         foreach($filterQueries as $filterQuery) {
+//             $filterQuery;
+//             $query .= $filterQuery;
+//         }
 
-        return $query;
-    } else {
-        return $query;
-    }
-}
+//         return $query;
+//     } else {
+//         return $query;
+//     }
+// }
 
-function createFilterBtn($filters, $filterValues, $i) {
-    if(array_key_exists($i, $filters)) {
-        $filter = ucfirst($filters[$i]);
-        $filterValue = ucfirst($filterValues[$i]);
-        echo $filterBtn = "<button class='filterBtn'>{$filter}: <span class='bold'>'{$filterValue}'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$filterValue}'><i class='fas fa-times'></i></button>";
-    } 
-}
 
-function replaceQueryString($filterQueries, $arrayIndex) {
-    $changeQuery = $filterQueries[$arrayIndex];
-    $filterQueries[$arrayIndex] = str_replace('AND', 'WHERE', $changeQuery);
-    return $filterQueries[$arrayIndex];
-}
+// function replaceQueryString($filterQueries, $arrayIndex) {
+//     $changeQuery = $filterQueries[$arrayIndex];
+//     $filterQueries[$arrayIndex] = str_replace('AND', 'WHERE', $changeQuery);
+//     return $filterQueries[$arrayIndex];
+// }
 
 /* BULKOPTIONS */
-function checkQuery() {
-    if(isset($_SESSION['searchQuery'])) {
-        $query = $_SESSION['searchQuery'];
-    } elseif(isset($_SESSION['query'])) {
-        $query = $_SESSION['query'];
-    } else {
-        $query = "SELECT * FROM reservation_request ";
-    }
+// function checkQuery() {
+//     if(isset($_SESSION['searchQuery'])) {
+//         $query = $_SESSION['searchQuery'];
+//     } elseif(isset($_SESSION['query'])) {
+//         $query = $_SESSION['query'];
+//     } else {
+//         $query = "SELECT * FROM reservation_request ";
+//     }
 
-    return $query;
-}
+//     return $query;
+// }
 
 /* DETAILS.PHP */
 function checkChecked($value, $selected_value) {

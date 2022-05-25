@@ -25,6 +25,7 @@ class Reservation extends Db_object {
     }
 
     public static function searchReservation($filter) {
+        echo "hi";
         echo $filters = $filter->constructFilterParameterForSQL();
         echo $sql = "SELECT * FROM " .static::$db_table .$filters;
         return $results = static::find_by_query($sql);

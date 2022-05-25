@@ -2,15 +2,19 @@
 
 class filter {
     protected $url;
-    public $searchArray;
+    public $searchArrayForSql;
+    public $searchArrayForUrl;
     public $searchCategory;
+    public $searchText;
     public $filters;
     public $filterParameter;
     protected $key;
     protected $value;
+    public $filterBtnArray;
 
     public function __construct() {
-        $this->searchArray = array();
+        $this->searchArrayForSql = array();
+        $this->searchArrayForUrl = array();
     }
 
     public function getSearchCatFromUrl() {
@@ -31,30 +35,36 @@ class filter {
         global $database;
 
         if(isset($_POST['flag'])) {
-            $this->searchArray["flag"] = $database->escape_string($_POST['flag']);
+            $this->searchArrayForUrl["flag"] = $database->escape_string($_POST['flag']);
         }
         if(isset($_POST['date'])) {
-            $this->searchArray["date"] = $database->escape_string($_POST['date']);
+            $this->searchArrayForUrl["date"] = $database->escape_string($_POST['date']);
         }
         if(isset($_POST['status'])) {
-            $this->searchArray["status"] = $database->escape_string($_POST['status']);
+            $this->searchArrayForUrl["status"] = $database->escape_string($_POST['status']);
+        }
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            return $this->searchArrayForUrl;
         }
 
         if(isset($_GET['flag'])) {
-            $this->searchArray["request_flag"] = $database->escape_string($_GET['flag']);
+            $this->searchArrayForSql["request_flag"] = $database->escape_string($_GET['flag']);
         }
         if(isset($_GET['date'])) {
-            $this->searchArray["request_date"] = $database->escape_string($_GET['date']);
+            $this->searchArrayForSql["request_date"] = $database->escape_string($_GET['date']);
         }
         if(isset($_GET['status'])) {
-            $this->searchArray["request_status"] = $database->escape_string($_GET['status']);
+            $this->searchArrayForSql["request_status"] = $database->escape_string($_GET['status']);
         }
-        return $this->searchArray;
+
+        if($_SERVER['REQUEST_METHOD'] === 'GET') {
+            return $this->searchArrayForSql;
+        }
     } 
 
     public function constructFilterParameterForURL() {
         $this->filterParameter = "";
-        foreach($this->searchArray as $key => $value) {
+        foreach($this->searchArrayForUrl as $key => $value) {
             $this->filterParameter .= "{$key}={$value}&";
         }
         unset($value);
@@ -64,7 +74,7 @@ class filter {
     public function constructFilterParameterForSQL() {
         $this->filterParameter = " WHERE ";
     
-        foreach($this->searchArray as $key => $value) {
+        foreach($this->searchArrayForSql as $key => $value) {
             if($key === "request_date" && $value === "upcoming") {
                 $this->filterParameter .= "{$key} >= now() AND ";
             } elseif($key === "request_date" && $value === "past") {
@@ -83,9 +93,9 @@ class filter {
         global $database;
 
         if(isset($_POST['search'])) {
-            return $database->escape_string($_POST['searchCategories']);
+            return $this->searchCategory = $database->escape_string($_POST['searchCategories']);
         } else {
-            return $this->getSearchCatFromUrl();
+            return $this->searchCategory = $this->getSearchCatFromUrl();
         }
     }
 
@@ -93,11 +103,11 @@ class filter {
         global $database;
 
         if(isset($_POST['search'])) {
-            return $database->escape_string($_POST['searchText']);
+            return $this->searchText = $database->escape_string($_POST['searchText']);
         } elseif (isset($_POST['applyFilter'])) {
-            return $database->escape_string($_GET[$this->getSearchCatFromUrl()]);
+            return $this->searchText = $database->escape_string($_GET[$this->getSearchCatFromUrl()]);
         } elseif(isset($_GET[$this->setSearchCategory()])) {
-            return $database->escape_string($_GET[$this->setSearchCategory()]);
+            return $this->searchText = $database->escape_string($_GET[$this->setSearchCategory()]);
         }
     }
     public function combineFilters() {
@@ -105,12 +115,57 @@ class filter {
 
         if($this->getFiltersFromUrl()) {
             foreach($this->filters as $searchedFilter) {
-                $this->searchArray[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
+                $this->searchArrayForUrl[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
             }
             unset($searchedFilter);
         } else {
-            $this->searchArray = $this->setFiltersInArray();
+            $this->searchArrayForUrl = $this->setFiltersInArray();
         }
+    }
+
+    public function getFilterBtnArray() {
+        global $database;
+
+        if(isset($_GET['flag'])) {
+            $this->filterBtnArray["flag"] = $database->escape_string($_GET['flag']);
+        }
+        if(isset($_GET['date'])) {
+            $this->filterBtnArray["date"] = $database->escape_string($_GET['date']);
+        }
+        if(isset($_GET['status'])) {
+            $this->filterBtnArray["status"] = $database->escape_string($_GET['status']);
+        }
+        return $this->filterBtnArray;
+    }
+
+    public function echoFilterBtn() {
+        echo "<form class='filterBtnContainer' method='post'> ";
+
+        foreach($this->filterBtnArray as $key => $value) {
+            echo "<button class='filterBtn'>" .ucfirst($key) ." = <span class='bold'>'" .ucfirst($value) ."'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+        }
+        unset($value);
+        
+        echo "</form>";
+    }
+
+    public function cancelFilterAndRefreshSearch() {
+        $this->canceledFilter = $_POST['cancelFilter'];
+        $this->searchArrayForUrl =  $_SESSION['searchArrayForUrl'];
+        unset($this->searchArrayForUrl[$this->canceledFilter]);
+
+
+        if(count($this->searchArrayForUrl) === 0) {
+            $url = "reservation.php";
+            unset($_SESSION['filterParameter']);
+            unset($_SESSION['searchArrayForUrl']);
+        } else {
+            $this->filterParameter = $this->constructFilterParameterForURL($this->searchArrayForUrl);
+            echo $url = "search.php?{$this->filterParameter}";
+            $_SESSION['filterParameter'] = $this->filterParameter;
+            $_SESSION['searchArrayForUrl'] = $this->searchArrayForUrl;
+        }
+        redirect($url);
     }
 }
 
