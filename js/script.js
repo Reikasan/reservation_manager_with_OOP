@@ -307,51 +307,70 @@ function confirmPastEvent() {
     }
 }
 
-
-    //Check all required fields are filled
-    // const addForm = document.getElementById('add');
-    // if(addForm !== null) {
-    //     addForm.addEventListener('submit', checkRequiredFields);
-    // }
-
-    // function checkRequiredFields(event) {
-    //     const errorMessage = document.querySelector('.message');
-
-    //     var requestEmailValue = document.getElementById('email').value;
-    //     var requestTelValue = document.getElementById('tel').value;
-
-    //     if(requestEmailValue.length == 0 && requestTelValue.length == 0) {
-    //         errorMessage.innerHTML = "Please enter Email address or Phone number";
-    //         errorMessage.classList.add('alert'); 
-    //         errorMessage.classList.remove('hide');
-
-    //         event.preventDefault();
-    //     } 
-    // } 
-
 /* SEARCHBOX.PHP */
 const searchBtn = document.getElementById('searchBtn');
 
 if(searchBtn !== null ) {
-
-    // check input is not empty
+    const addFilter = document.getElementById('addFilter');
+    
+    // Validation with regexp
     searchBtn.addEventListener('click', function(e) {
-        const searchText = document.getElementById('searchText').value;
+        var searchTextValue = document.getElementById('searchText').value;
         const searchCategory = document.getElementById('searchCategory').value;
 
-        const searchBar = document.querySelector('.search-bar');
+        if(searchTextValue === "" || searchCategory === "") {
+            showSearchBarError("Can not search with empty input");
+        } 
+        
+        if(searchCategory == "request_date") {
+            if(!/\d+[\.\s,-]\d+/.test(searchTextValue)) {
+                showSearchBarError("Invalid input. Date must be number. Ex: 06-01");   
+            }
 
-        if(searchText === "" || searchCategory === "") {
-            searchBar.style.border = "1px solid tomato";
-            e.preventDefault();
-        } else {
-            searchBar.style.border = "1px solid #ddd";
+            const modifiedDate = modifyDateForSql(searchTextValue); 
+            return  searchInput.value = modifiedDate;
         }
-    });
+        
+        if(searchCategory === "request_tel") {
+            if(/[\D-]/.test(searchTextValue)) {
+                showSearchBarError("Invalid input. Phone number must be number.");   
+            }
+            
+            searchTextValue = searchTextValue.replace(/-/g, '');
+            return searchInput.value = searchTextValue;
+        }
+        
+        function showSearchBarError($errorText){
+            e.preventDefault();
+        
+            const searchBar = document.querySelector('.search-bar');
+            const errorMessageContainer = document.querySelector('.error-message');
+            addFilter.style.top = "8rem";
+            searchBar.style.border = "1px solid tomato";
+            errorMessageContainer.style.color = "tomato";
+            errorMessageContainer.innerHTML = $errorText;
+            errorMessageContainer.classList.remove('.hidden')
+        }
+
+        function modifyDateForSql($searchTextValue) {
+            searchTextValue = searchTextValue.replace(/[\.\s,]/g, '-');
+
+            var dateArray = searchTextValue.split('-');
+            var modifiedDateArray = Array();
+ 
+            dateArray.forEach(date => {
+                if(/^[1-9]$/.test(date)) {
+                    date = date.replace(/^[1-9]$/, '0$&');
+                }
+                modifiedDateArray.push(date);
+            });
+            
+            modifiedDateArray.reverse();
+            return modifiedDateArray.join('-');
+        }
+    }, {passive: false});
     
     // drop down add filter field
-    const addFilter = document.getElementById('addFilter');
-
     addFilter.addEventListener('click', function() {
         document.getElementById('filterForm').classList.toggle('hide');
     });
@@ -418,6 +437,8 @@ if(searchBtn !== null ) {
             }
         });
     });
+
+
      
     // clear all filters
     const clearBtn = document.getElementById('clearBtn');

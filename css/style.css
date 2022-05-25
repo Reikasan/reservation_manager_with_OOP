@@ -248,6 +248,15 @@ select.search-input {
     -webkit-appearance: none;
     -moz-appearance: none;
 }
+.error-message {
+    position: absolute;
+    right: 2rem;
+    top: 5.5rem;
+    font-size: 1.5rem;
+}
+.error-message.hide{
+    display: none;
+}
 
 p#addFilter {
     font-size: 1.6rem;
@@ -347,6 +356,8 @@ p#addFilter i {
     z-index: 10;
     cursor: pointer;
 }
+
+
 
 /* BULKOPTION */
 #bulkOptionsContainer {

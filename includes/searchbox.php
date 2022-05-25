@@ -37,6 +37,7 @@ if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
             </div>
         </div>
     </form>
+    <p class="error-message hidden"></p>
     <p id="addFilter">Add Filter<i class="fas fa-caret-down"></i></p>
     <form  method="post" class="filter hide" id="filterForm">
         <i class='fas fa-times closeBtn'></i>

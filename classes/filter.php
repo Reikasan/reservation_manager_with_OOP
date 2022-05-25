@@ -102,7 +102,7 @@ class filter {
     }
     public function combineFilters() {
         global $database;
-        
+
         if($this->getFiltersFromUrl()) {
             foreach($this->filters as $searchedFilter) {
                 $this->searchArray[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
