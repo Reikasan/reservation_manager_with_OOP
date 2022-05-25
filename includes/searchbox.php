@@ -1,34 +1,16 @@
 <?php 
 $filter = new Filter();
-$searchArray = array();
 
 if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
-
-    if(isset($_POST['search'])) {
-        $searchText =  $_POST['searchText'];
-        $searchCategory =  $_POST['searchCategories'];
-        $searchArray[$searchCategory] = $searchText;
-
-        if($filters = $filter->getFiltersFromUrl()) {
-            foreach($filters as $searchedFilter) {
-                $searchArray[$searchedFilter] = $_GET[$searchedFilter];
-            }
-            unset($searchedFilter);
-        };
-    } elseif(isset($_POST['applyFilter'])) {
-        $searchArray  = $filter->setFiltersInArray($searchArray);
-        $searchCategory = $filter->getSearchCatFromUrl();
-
-        if(isset($_GET[$searchCategory])) {
-            $searchText =  $_GET[$searchCategory];
-            $searchArray[$searchCategory] = $searchText;
-        }
-    }
     
-    $filterParameter = $filter ->constructFilterParameterForURL($searchArray );
-    $url = "search.php?{$filterParameter}";
+    if($filter->setSearchCategory()) {
+        $filter->searchArray[$filter->setSearchCategory()] = $filter->setSearchText();
+    }
+    $filter->combineFilters();
+    $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArray);
+    $url = "search.php?{$filter->filterParameter}";
 
-    $_SESSION['filterParameter'] = $filterParameter;
+    $_SESSION['filterParameter'] = $filter->filterParameter;
     redirect($url);
 }
 
@@ -55,6 +37,7 @@ if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
             </div>
         </div>
     </form>
+    <p class="error-message hidden"></p>
     <p id="addFilter">Add Filter<i class="fas fa-caret-down"></i></p>
     <form  method="post" class="filter hide" id="filterForm">
         <i class='fas fa-times closeBtn'></i>
