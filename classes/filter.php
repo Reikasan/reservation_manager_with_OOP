@@ -142,7 +142,13 @@ class filter {
         echo "<form class='filterBtnContainer' method='post'> ";
 
         foreach($this->filterBtnArray as $key => $value) {
-            echo "<button class='filterBtn'>" .ucfirst($key) ." = <span class='bold'>'" .ucfirst($value) ."'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+            if($key === 'flag' && $value === 'active') {
+                echo "<button class='filterBtn'><span class='bold'>With Flag</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+            } elseif($key === 'flag' && $value === 'deactive' ) {
+                echo "<button class='filterBtn'><span class='bold'>Without Flag</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+            } else {
+                echo "<button class='filterBtn'>" .ucfirst($key) ." = <span class='bold'>'" .ucfirst($value) ."'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+            }
         }
         unset($value);
         
@@ -150,20 +156,21 @@ class filter {
     }
 
     public function cancelFilterAndRefreshSearch() {
-        $this->canceledFilter = $_POST['cancelFilter'];
-        $this->searchArrayForUrl =  $_SESSION['searchArrayForUrl'];
-        unset($this->searchArrayForUrl[$this->canceledFilter]);
+        global $session;
 
+        $this->canceledFilter = $_POST['cancelFilter'];
+        $this->searchArrayForUrl =  $session->searchArrayForUrl;
+        unset($this->searchArrayForUrl[$this->canceledFilter]);
 
         if(count($this->searchArrayForUrl) === 0) {
             $url = "reservation.php";
-            unset($_SESSION['filterParameter']);
-            unset($_SESSION['searchArrayForUrl']);
+            unset($session->filterParameter);
+            unset($session->searchArrayForUrl);
         } else {
             $this->filterParameter = $this->constructFilterParameterForURL($this->searchArrayForUrl);
-            echo $url = "search.php?{$this->filterParameter}";
-            $_SESSION['filterParameter'] = $this->filterParameter;
-            $_SESSION['searchArrayForUrl'] = $this->searchArrayForUrl;
+            $url = "search.php?{$this->filterParameter}";
+            $session->filterParameter($this, $this->filterParameter); 
+            $session->searchArrayForUrl($this, $this->searchArrayForUrl);
         }
         redirect($url);
     }

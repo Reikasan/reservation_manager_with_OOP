@@ -14,9 +14,8 @@
        
         <div class="back">
             <?php 
-            if(isset($_SESSION['currentPage'])) {
-                $page = $_SESSION['currentPage'];
-                echo "<a href='reservation.php?page={$page}'>";
+            if(isset($session->current_page)) {
+                echo "<a href='reservation.php?page={$session->current_page}'>";
             } else {
                 echo "<a href='reservation.php'>";
             }
@@ -29,7 +28,7 @@
         <div class="reservationBox"> 
 
         <!-- SEARCH AND FILTERS -->
-        <?php include "includes/search/search_filter.php"; ?>
+        <?php include "includes/search_filter.php"; ?>
         
         <!-- BULK OPTIONS -->
         <?php include "includes/bulkoptions.php"; ?>
@@ -119,12 +118,10 @@
             <ul class="pagination">
                     <?php 
                     // $paginate = new Paginate();
-                        $filterParameter = $_SESSION['filterParameter'];
-
                         if($paginate->page_total() > 1) {
-                            $paginate->has_previous("search.php",$filterParameter);
-                            $paginate->show_pagination("search.php",$filterParameter);
-                            $paginate->has_next("search.php",$filterParameter);
+                            $paginate->has_previous("search.php",$session->filterParameter);
+                            $paginate->show_pagination("search.php",$session->filterParameter);
+                            $paginate->has_next("search.php",$session->filterParameter);
                         }
                     ?>
             </ul>

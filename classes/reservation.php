@@ -25,9 +25,8 @@ class Reservation extends Db_object {
     }
 
     public static function searchReservation($filter) {
-        echo "hi";
-        echo $filters = $filter->constructFilterParameterForSQL();
-        echo $sql = "SELECT * FROM " .static::$db_table .$filters;
+        $filters = $filter->constructFilterParameterForSQL();
+        $sql = "SELECT * FROM " .static::$db_table .$filters;
         return $results = static::find_by_query($sql);
     }
 
@@ -43,7 +42,6 @@ class Reservation extends Db_object {
         $sql .= "ORDER BY request_recieved_time DESC ";
         $sql .= "LIMIT {$items_per_page} ";
         $sql .= "OFFSET {$paginate->offset()}";
-        echo $sql;
         return $results = static::find_by_query($sql);
     }
 
