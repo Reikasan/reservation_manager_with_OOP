@@ -1,18 +1,4 @@
-<?php
-// clear previous search data
-// unset($_SESSION['searchText']);
-// unset($_SESSION['searchCategory']);
-// unset($_SESSION['query']);
-// unset($_SESSION['searchQuery']);
-// unset($_SESSION['displayName']);
-// unset($_SESSION['filters']);
-// unset($_SESSION['filterValues']);
-// unset($_SESSION['filterQueries']);
-// unset($_SESSION['currentPage']);
-// $session->unset_search_set();
-
-
-?>
+<?php $session->finish_search(); ?>
 <section class="main">
     <h1>Reservation Request</h1>
     <?php include "includes/searchbox.php"; ?>
@@ -45,8 +31,6 @@
                 $items_total_count = Reservation::count_all();
                 $paginations_per_page = 5;
 
-                $_SESSION['currentPage']= $page;
-
                 // Show Reservations
                 $paginate = new Paginate($page, $items_per_page, $items_total_count, $paginations_per_page);
                 
@@ -55,7 +39,9 @@
                 $sql .= "LIMIT {$items_per_page} ";
                 $sql .= "OFFSET {$paginate->offset()}";
                 $reservations = Reservation::find_by_query($sql);
-               
+
+                $session->current_page($page);
+
                 foreach($reservations as $reservation) :
             ?>
                     <tr class="<?= $reservation->isPastEvent();?>">

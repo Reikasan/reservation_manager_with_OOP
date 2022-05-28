@@ -3,15 +3,21 @@
 
     <div class="back">
     <?php 
-    if(isset($_SESSION['currentPage'])) {
-        $page = $_SESSION['currentPage'];
-        echo "<a href='reservation.php?page={$page}'>";
+    if(!empty($session->current_search_page) && !empty($session->filterParameter)){
+        echo "<a href='search.php?{$session->filterParameter}&page={$session->current_search_page}'>";
+        echo "<i class='fas fa-chevron-left'></i>";
+        echo " Back to Search Result Page";
+    } elseif(isset($session->currentPage)) {
+        echo "<a href='reservation.php?page={$session->current_page}'>";
+        echo "<i class='fas fa-chevron-left'></i>";
+        echo " Back to All reservations";
     } else {
         echo "<a href='reservation.php'>";
+        echo "<i class='fas fa-chevron-left'></i>";
+        echo " Back to All reservations";
     }
     ?>
-            <i class="fas fa-chevron-left"></i>
-            Back to All reservations
+            
         </a>
     </div>
     

@@ -4,12 +4,19 @@ class Session {
     private $signed_in = false;
     public $msg;
     public $message;
-
-
+    public $current_page;
+    public $current_search_page;
+    public $filterParameter;
+    public $searchArrayForUrl;
+    
     function __construct() {
         session_start();
         $this->check_the_login();
         $this->check_message();
+        $this->check_current_page();
+        $this->check_current_search_page();
+        $this->check_filterParameter();
+        $this->check_searchArrayForUrl();
     }
 
     // Message
@@ -57,6 +64,74 @@ class Session {
             unset($this->user_role);
             $this->signed_in = false;
         }
+    }
+
+    public function current_page($page = "") {
+        if(!empty($page)) {
+            $_SESSION['current_page'] = $page;
+        } else {
+            return $this->current_page;
+        }
+    }
+
+    private function check_current_page() {
+        if(isset($_SESSION['current_page'])) {
+            $this->current_page = $_SESSION['current_page'];
+        } 
+    }
+
+    public function current_search_page($page = "") {
+        if(!empty($page)) {
+            $_SESSION['current_search_page'] = $page;
+        } else {
+            return $this->current_search_page;
+        }
+    }
+
+    private function check_current_search_page() {
+        if(isset($_SESSION['current_search_page'])) {
+            $this->current_search_page = $_SESSION['current_search_page'];
+        }
+    }
+
+    public function filterParameter($filter, $filterParameter = "") {
+        if(!empty($filterParameter)) {
+            $_SESSION['filterParameter'] =  $filterParameter = $filter->filterParameter;
+        } else {
+            return $this->filterParameter;
+        }
+    }
+
+    public function searchArrayForUrl($filter, $searchArrayForUrl = "") {
+        if(!empty($searchArrayForUrl)) {
+            $_SESSION['searchArrayForUrl'] = $searchArrayForUrl = $filter->searchArrayForUrl;
+        } else {
+            return $this->searchArrayForUrl;
+        }
+    }
+
+    private function check_filterParameter() {
+        if(isset($_SESSION['filterParameter'])) {
+            $this->filterParameter = $_SESSION['filterParameter'];
+        }
+    }
+
+    private function check_searchArrayForUrl() {
+        if(isset($_SESSION['searchArrayForUrl'])) {
+            $this->searchArrayForUrl = $_SESSION['searchArrayForUrl'];
+        } else {
+            $this->searchArrayForUrl = "";
+        }
+    } 
+
+    public function finish_search() {
+        unset($this->filterParameter);
+        unset($this->searchArrayForUrl);
+        unset($this->current_search_page);
+
+        unset($_SESSION['filterParameter']);
+        unset($_SESSION['searchArrayForUrl']);
+        unset($_SESSION['current_search_page']);
     }
 }
 

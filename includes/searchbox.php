@@ -10,8 +10,9 @@ if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
     $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArrayForUrl);
     $url = "search.php?{$filter->filterParameter}";
 
-    $_SESSION['filterParameter'] = $filter->filterParameter;
-    $_SESSION['searchArrayForUrl'] = $filter->searchArrayForUrl;
+    $session->filterParameter($filter, $filter->filterParameter);
+    $session->searchArrayForUrl($filter, $filter->searchArrayForUrl);
+    
     redirect($url);
 }
 
