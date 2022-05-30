@@ -21,13 +21,13 @@ $calendar = new Calendar();
             <h1 class="month"><a title="show last month" class="previous" href="calendar.php?month=<?php $calendar->getPreviousMonth(); ?>">&lt;</a>&nbsp;<?= $calendar->calendar_title; ?>&nbsp;<a title="show next month" class="next" href="calendar.php?month=<?php $calendar->getNextMonth(); ?>">&gt;</a></h1>
             <table class="main-calendar-frame">
             <tr>
-                <th>Sun</th>
                 <th>Mon</th>
                 <th>Tue</th>
                 <th>Wed</th>
                 <th>Thu</th>
                 <th>Fri</th>
                 <th>Sat</th>
+                <th>Sun</th>
             </tr>
             <?php
                 $calendar->showCalendar();

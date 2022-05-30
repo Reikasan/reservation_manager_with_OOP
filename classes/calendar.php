@@ -45,7 +45,7 @@ class Calendar {
         $today = date('j-m-Y');
 
         $day_count = date('t', $this->timestamp);
-        $day_of_week = date('w', $this->timestamp);
+        $day_of_week = date('N', $this->timestamp);
 
         $date = new DateTime($this->month);
         $display_month = $date->format('m-Y');
@@ -54,7 +54,7 @@ class Calendar {
         $weeks = array();
         $week = '';
 
-        $week .= str_repeat('<td></td>', $day_of_week);
+        $week .= str_repeat('<td></td>', $day_of_week-1);
 
         for($day = 1; $day <= $day_count; $day++, $day_of_week++) {
             
@@ -68,9 +68,9 @@ class Calendar {
             $week .= '</td>';
 
 
-            if($day_of_week % 7 == 6 || $day == $day_count) {
-                if($day == $day_count) {
-                    $week .= str_repeat('<td></td>', 6 - $day_of_week % 7);
+            if($day_of_week % 7 == 0 || $day == $day_count) {
+                if($day == $day_count && $day_of_week % 7 != 0) {
+                    $week .= str_repeat('<td></td>', 7 - $day_of_week % 7);
                 }
 
                 $weeks[] = '<tr>' .$week .'</tr>';

@@ -518,6 +518,9 @@ div.calendar .next:hover {
 div.calendar table.main-calendar-frame {
     width: 100%;
     margin-top: 3rem;
+    border-spacing: 0;
+    -webkit-border-horizontal-spacing: 0;
+    -webkit-border-vertical-spacing: 0;
 } 
 
 div.calendar th, div.calendar td {
@@ -532,14 +535,14 @@ div.calendar table.main-calendar-frame tr {
 }
 
 div.calendar table.main-calendar-frame .today {
-    background: orange !important;
+    border: solid 3px tomato;
 }
 
-div.calendar table.main-calendar-frame th:nth-of-type(7), div.calendar table.main-calendar-frame td:nth-of-type(7) {
+div.calendar table.main-calendar-frame th:nth-of-type(6), div.calendar table.main-calendar-frame td:nth-of-type(6) {
     color: blue;
 }
 
-div.calendar table.main-calendar-frame th:nth-of-type(1), div.calendar table.main-calendar-frame td:nth-of-type(1) {
+div.calendar table.main-calendar-frame th:nth-of-type(7), div.calendar table.main-calendar-frame td:nth-of-type(7) {
     color: red;
 }
 
