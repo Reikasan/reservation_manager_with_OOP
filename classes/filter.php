@@ -110,16 +110,17 @@ class filter {
             return $this->searchText = $database->escape_string($_GET[$this->setSearchCategory()]);
         }
     }
+
     public function combineFilters() {
         global $database;
 
-        if($this->getFiltersFromUrl()) {
+        if(isset($_POST['applyFilter'])) {
+            $this->searchArrayForUrl = $this->setFiltersInArray();
+        } else {
             foreach($this->filters as $searchedFilter) {
                 $this->searchArrayForUrl[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
             }
             unset($searchedFilter);
-        } else {
-            $this->searchArrayForUrl = $this->setFiltersInArray();
         }
     }
 
