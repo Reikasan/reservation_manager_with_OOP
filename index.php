@@ -11,7 +11,7 @@
 
     <!-- main content -->
     <section class="main">
-        <div class="today">
+        <div class="todays-reservation">
             <h1>Today's Reservation</h1>
             <div class="reservationBox index-page">
             <?php
@@ -76,7 +76,7 @@
                 </a>
             </div>
             <div class="icon">
-                <a href="coming_soon">
+                <a href="calendar.php">
                     <i class="far fa-calendar"></i>
                     <h2>Calendar</h2>
                 </a>

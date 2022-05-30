@@ -9,7 +9,7 @@ class Session {
     public $filterParameter;
     public $searchArrayForUrl;
     
-    function __construct() {
+    public function __construct() {
         session_start();
         $this->check_the_login();
         $this->check_message();
