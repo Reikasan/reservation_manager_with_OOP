@@ -1,7 +1,7 @@
 <?php include "includes/header.php"; ?>
 <?php 
     if(!$session->is_signed_in()) { redirect("login.php"); } 
-    // $session->unset_search_set();
+    $session->finish_search();
 ?>
 <?php include "includes/navigation.php"; ?>
 
@@ -15,17 +15,13 @@
             <h1>Today's Reservation</h1>
             <div class="reservationBox index-page">
             <?php
-                // SELECT TODAY'S RESERVATION DATA 
                 $today = date("Y-m-d");
-                $stmt = mysqli_prepare($connection, "SELECT request_id, request_name, request_date, request_time, request_num_seats, request_comment, request_status, request_flag FROM reservation_request WHERE request_date = ?");
-                mysqli_stmt_bind_param($stmt, "s", $today);
-                mysqli_execute($stmt);
-                mysqli_stmt_bind_result($stmt, $request_id, $request_name, $request_date, $request_time, $request_num_seats, $request_comment, $request_status, $flag);
-                mysqli_stmt_store_result($stmt);
-                mysqli_stmt_close($stmt);
-                $num_row = mysqli_stmt_num_rows($stmt);
+                $filter = new Filter();
+                $filters = " Where request_date = '{$today}' ";
+                $numResult = count(Reservation::searchReservation($filter, $filters));                
+                $reservations = Reservation::searchReservation($filter, $filters);
 
-                if($num_row >= 1 ) {
+                if($numResult >= 1 ) :
                 ?>
                     <table>
                         <thead>
@@ -40,46 +36,40 @@
                             </tr>
                         </thead>
                         <tbody>
-                <?php
-                    while(mysqli_stmt_fetch($stmt)){
-                        // format date and time
-                        $formated_request_time = date_create($request_time);
-                        $formated_request_time = date_format($formated_request_time, 'H:i');
-
-                        echo "<tr>";
-                        echoFlagInTd($flag);
-                        echo "<td>$formated_request_time</td>";
-                        echo "<td class='name'>$request_name</td>";
-                        echo "<td>$request_num_seats</td>";
-                        echoSubstringedComment($request_comment);
-                        
-                        echo "<td class='detailCell'><a href='reservation/details/$request_id' class='btn details'>Details</a></td>";
-                        echo "<td title='go to details'><a href='reservation/details/$request_id' class='btn status $request_status'>$request_status</a></td>";
-                        echo "</tr>";
-                    }
-                    echo "</tbody> </table>";
-                } else {
-                    echo "<h1 class='no-data'>No Reservation</h1>";
-                }
-        
-            ?>
+                <?php foreach($reservations as $reservation) : ?>
+                            <tr>
+                                <td><i class="fa-flag <?= $reservation->isFlagged(); ?>" data="<?= $reservation->request_id; ?>"></i></td> 
+                                <td class="timeCell"><?= $reservation->formatTime(); ?></td>
+                                <td class="name"><?= $reservation->request_name; ?></td>
+                                <td><?= $reservation->request_num_seats; ?></td>
+                                <td class="commentCell"><?= $reservation->substringedComment(); ?></td>
+                                <td class="detailCell"><button class="btn details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>">Details</a></button></td>
+                                <td title="go to details"><a href="reservation.php?source=details&r_id=<?= $reservation->request_id; ?>" class="btn status <?= $reservation->request_status; ?>" title="<?= $reservation->request_status; ?>"><?= $reservation->request_status; ?></a></td>
+                            </tr>
+                    
+                <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php 
+                    else :
+                        echo "<h1 class='no-data'>No Reservation</h1>";
+                    endif;
+                ?>
             </div>
         </div>
         <?php
             // CHECK UNREAD REQUEST
-            $query = "SELECT request_id FROM reservation_request WHERE request_status = 'unread'";
-            $result = mysqli_query($connection, $query);
-        
-            $num_unread_request = mysqli_num_rows($result);
+            $unreadFilter = " Where request_status = 'unread' ";
+            $numUnread = count(Reservation::searchReservation($filter, $unreadFilter));
         ?>
         <div class="reservation">
             <div class="icon">
-                <a href="reservation">
+                <a href="reservation.php">
                     <i class="far fa-envelope"></i>
                     <h2>Reservation Request</h2>
                     <?php
-                    if($num_unread_request > 0){
-                        echo "<div class='new'>$num_unread_request</div>";
+                    if($numUnread > 0){
+                        echo "<div class='new'>$numUnread</div>";
                     } 
                     ?>
                     

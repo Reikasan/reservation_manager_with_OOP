@@ -124,36 +124,12 @@ class filter {
         }
     }
 
-    public function getFilterBtnArray() {
-        global $database;
-        global $session;
-
-        print_r($session->searchArrayForUrl);
-        // if(isset($_GET['flag'])) {
-        //     $this->filterBtnArray["flag"] = $database->escape_string($_GET['flag']);
-        // }
-        // if(isset($_GET['date'])) {
-        //     $this->filterBtnArray["date"] = $database->escape_string($_GET['date']);
-        // }
-        // if(isset($_GET['status'])) {
-        //     $this->filterBtnArray["status"] = $database->escape_string($_GET['status']);
-        // }
-        // if(isset($this->searchText)) {
-        //     $displayCatName = Category::fetchCategoryName($this->searchCategory);
-        //     $this->filterBtnArray[$displayCatName] = $this->searchText;
-        // }
-        // return $this->filterBtnArray;
-     
-    }
-
     public function echoFilterBtn() {
-        // $this->getFilterBtnArray();
         global $session;
         $this->searchArrayForUrl = $session->searchArrayForUrl;
 
         echo "<form class='filterBtnContainer' method='post'> ";
 
-        // foreach($this->filterBtnArray as $key => $value) {
         foreach($this->searchArrayForUrl as $key => $value) {
             if($key === 'flag' && $value === 'active') {
                 echo "<button class='filterBtn'><span class='bold'>With Flag</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
