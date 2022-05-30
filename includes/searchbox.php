@@ -6,6 +6,7 @@ if(isset($_POST['search']) || isset($_POST['applyFilter'])) {
     if($filter->setSearchCategory()) {
         $filter->searchArrayForUrl[$filter->setSearchCategory()] = $filter->setSearchText();
     }
+
     $filter->combineFilters();
     $filter->filterParameter = $filter->constructFilterParameterForURL($filter->searchArrayForUrl);
     $url = "search.php?{$filter->filterParameter}";

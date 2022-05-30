@@ -110,42 +110,58 @@ class filter {
             return $this->searchText = $database->escape_string($_GET[$this->setSearchCategory()]);
         }
     }
+
     public function combineFilters() {
         global $database;
 
-        if($this->getFiltersFromUrl()) {
+        if(isset($_POST['applyFilter'])) {
+            $this->searchArrayForUrl = $this->setFiltersInArray();
+        } else {
             foreach($this->filters as $searchedFilter) {
                 $this->searchArrayForUrl[$searchedFilter] = $database->escape_string($_GET[$searchedFilter]);
             }
             unset($searchedFilter);
-        } else {
-            $this->searchArrayForUrl = $this->setFiltersInArray();
         }
     }
 
     public function getFilterBtnArray() {
         global $database;
+        global $session;
 
-        if(isset($_GET['flag'])) {
-            $this->filterBtnArray["flag"] = $database->escape_string($_GET['flag']);
-        }
-        if(isset($_GET['date'])) {
-            $this->filterBtnArray["date"] = $database->escape_string($_GET['date']);
-        }
-        if(isset($_GET['status'])) {
-            $this->filterBtnArray["status"] = $database->escape_string($_GET['status']);
-        }
-        return $this->filterBtnArray;
+        print_r($session->searchArrayForUrl);
+        // if(isset($_GET['flag'])) {
+        //     $this->filterBtnArray["flag"] = $database->escape_string($_GET['flag']);
+        // }
+        // if(isset($_GET['date'])) {
+        //     $this->filterBtnArray["date"] = $database->escape_string($_GET['date']);
+        // }
+        // if(isset($_GET['status'])) {
+        //     $this->filterBtnArray["status"] = $database->escape_string($_GET['status']);
+        // }
+        // if(isset($this->searchText)) {
+        //     $displayCatName = Category::fetchCategoryName($this->searchCategory);
+        //     $this->filterBtnArray[$displayCatName] = $this->searchText;
+        // }
+        // return $this->filterBtnArray;
+     
     }
 
     public function echoFilterBtn() {
+        // $this->getFilterBtnArray();
+        global $session;
+        $this->searchArrayForUrl = $session->searchArrayForUrl;
+
         echo "<form class='filterBtnContainer' method='post'> ";
 
-        foreach($this->filterBtnArray as $key => $value) {
+        // foreach($this->filterBtnArray as $key => $value) {
+        foreach($this->searchArrayForUrl as $key => $value) {
             if($key === 'flag' && $value === 'active') {
                 echo "<button class='filterBtn'><span class='bold'>With Flag</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
             } elseif($key === 'flag' && $value === 'deactive' ) {
                 echo "<button class='filterBtn'><span class='bold'>Without Flag</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
+            } elseif(preg_match('/request_date|request_name|request_email|request_tel|request_comment/',$key)) {
+                $displayCatName = Category::fetchCategoryName($this->searchCategory);
+                echo "<button class='filterBtn'>" .ucfirst($displayCatName) ." = <span class='bold'>'" .ucfirst($value) ."'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
             } else {
                 echo "<button class='filterBtn'>" .ucfirst($key) ." = <span class='bold'>'" .ucfirst($value) ."'</span><input type='submit' class='cancelFilterInput' name='cancelFilter' value='{$key}'><i class='fas fa-times'></i></button>";
             }

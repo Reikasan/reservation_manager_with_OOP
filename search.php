@@ -34,34 +34,19 @@
         <?php include "includes/bulkoptions.php"; ?>
 
         <?php
+            $filter->echoFilterBtn();
+            
             if($numResult === null) {
                 redirect("index.php");
 
             } elseif($numResult === 0) {
-                if($filter->getFilterBtnArray()){
-                    $filter->echoFilterBtn();
-                }
-
-                if(isset($filter->searchText)) {
-                    echo $message = "<h2 class='alert'><span class='bold'>{$filter->searchText}</span> in <span class='bold'> {$displayCatName}</span> found no result <i class='fas fa-times closeBtn'></i></h2>";
-                } else {
-                    echo $message = "<h2 class='alert'>Found no result <i class='fas fa-times closeBtn'></i></h2>";
-                }
+                echo $message = "<h2 class='alert'>Found no result <i class='fas fa-times closeBtn'></i></h2>";
             } else {
-                if($filter->getFilterBtnArray()){
-                    $filter->echoFilterBtn();
+                if($numResult === 1) {
+                    echo $message = "<h2 class='success'>Found $numResult result <i class='fas fa-times closeBtn'></i></h2>";
+                } elseif($numResult > 1) {
+                    echo $message = "<h2 class='success'>Found $numResult results <i class='fas fa-times closeBtn'></i></h2>"; 
                 }
-
-                if($numResult === 1 && isset($filter->searchText)) {
-                    echo $message = "<h2 class='success'><span class='bold'>{$filter->searchText}</span> in <span class='bold'> {$displayCatName}</span> found $numResult result <i class='fas fa-times closeBtn'></i></h2>";
-                } elseif ($numResult === 1) {
-                    echo $message = "<h2 class='success'><span class='bold'>Found $numResult result <i class='fas fa-times closeBtn'></i></h2>";
-                } elseif($numResult > 1 && isset($filter->searchText)) {
-                    echo $message = "<h2 class='success'><span class='bold'>{$filter->searchText}</span> in <span class='bold'> {$displayCatName}</span> found $numResult results <i class='fas fa-times closeBtn'></i></h2>";
-                } else {
-                    echo $message = "<h2 class='success'><span class='bold'>Found $numResult results <i class='fas fa-times closeBtn'></i></h2>"; 
-                }
-
         ?>
                 <table>
                     <thead>
