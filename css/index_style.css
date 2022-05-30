@@ -5,13 +5,13 @@ body {
     top: 0;
 }
 
-.today {
+.todays-reservation {
     height: 50%;
     border-bottom: .1rem solid #ddd;
     overflow-y: scroll;
 }
 
-.today h1 {
+.todays-reservation h1 {
     height: 20%;
 }
 
@@ -493,6 +493,57 @@ form#add .btn {
 .coming {
     height: 60%;
     margin-top: 10%;
+}
+
+/* CALENDAR.PHP */
+div.calendar {
+    padding: 1rem 10%;
+}
+div.calendar h3 {
+    font-size: 2.5rem;
+}
+
+div.calendar .previous,
+div.calendar .next {
+    opacity: 0.6;
+    transition: opacity .5s;
+    margin: 0 2rem;
+}
+
+div.calendar .previous:hover,
+div.calendar .next:hover {
+    opacity: 1;
+} 
+
+div.calendar table.main-calendar-frame {
+    width: 100%;
+    margin-top: 3rem;
+    border-spacing: 0;
+    -webkit-border-horizontal-spacing: 0;
+    -webkit-border-vertical-spacing: 0;
+} 
+
+div.calendar th, div.calendar td {
+    padding: 1rem;
+}
+div.calendar table.main-calendar-frame tbody :first-child  {
+    height: 3rem !important;
+}
+
+div.calendar table.main-calendar-frame tr {
+    height: 10rem;
+}
+
+div.calendar table.main-calendar-frame .today {
+    border: solid 3px tomato;
+}
+
+div.calendar table.main-calendar-frame th:nth-of-type(6), div.calendar table.main-calendar-frame td:nth-of-type(6) {
+    color: blue;
+}
+
+div.calendar table.main-calendar-frame th:nth-of-type(7), div.calendar table.main-calendar-frame td:nth-of-type(7) {
+    color: red;
 }
 
 
