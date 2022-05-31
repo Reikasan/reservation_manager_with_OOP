@@ -13,6 +13,7 @@ const search_row2 = document.querySelector('.row-2');
 
 function checkWindowSize() {
     const w = window.innerWidth;
+    console.log(w);
     const hideUl = nestedUl.classList.contains('hide');
     
     const link = document.querySelector('.removalLink');
@@ -74,7 +75,7 @@ function checkWindowSize() {
                 search_row2.classList.add('hide');
             }
         }
-        
+       
     } else {
         if(hideSidebar) {
             sidebar.classList.remove('hide');
@@ -90,16 +91,16 @@ function checkWindowSize() {
             if(hideSearchbar) {
                 search_row2.classList.remove('hide');
             }
-        }   
+        }  
     }
 }
 
-var TO = false;
-window.addEventListener('resize', function() {
-    /* set timer for resize event */
-    if(TO !== false)
-        clearTimeout(TO);
-    TO = setTimeout(checkWindowSize, 200); //200 is time in miliseconds
+let resizeTimer;
+window.addEventListener('resize', ()=> {
+    if(resizeTimer != null) {
+        clearTimeout(resizeTimer);
+    }    
+    resizeTimer = setTimeout(checkWindowSize, 200); 
 });
 
 window.addEventListener('load', checkWindowSize);
