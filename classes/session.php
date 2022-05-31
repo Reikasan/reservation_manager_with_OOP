@@ -8,6 +8,7 @@ class Session {
     public $current_search_page;
     public $filterParameter;
     public $searchArrayForUrl;
+    public $displayedMonth;
     
     public function __construct() {
         session_start();
@@ -17,6 +18,7 @@ class Session {
         $this->check_current_search_page();
         $this->check_filterParameter();
         $this->check_searchArrayForUrl();
+        $this->check_displayedMonth();
     }
 
     // Message
@@ -133,6 +135,22 @@ class Session {
         unset($_SESSION['searchArrayForUrl']);
         unset($_SESSION['current_search_page']);
     }
+
+    public function displayedMonth() {
+        if(!empty($displayedMonth)) {
+            $_SESSION['displayedMonth'] = $displayedMonth;
+        } else {
+            return $this->displayedMonth;
+        }
+    }
+
+    private function check_displayedMonth() {
+        if(isset($_SESSION['displayedMonth'])) {
+            $this->displayedMonth = $_SESSION['displayedMonth'];
+        } else {
+            $this->displayedMonth = "";
+        }
+    } 
 }
 
 $session = new session();

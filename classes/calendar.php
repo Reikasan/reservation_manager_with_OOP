@@ -2,14 +2,20 @@
 
 class Calendar {
 
-    private $month;
+    protected $month;
     public $timestamp;
     public $calendar_title;
+    protected $day_count;
+    protected $day_of_week; 
+    private $weeks;
+    private $week;
 
     public function __construct() {
         $this->month();
         $this->timestamp();
         $this->createCalendarTitle();  
+        $this->weeks = array();
+        $this->week = '';
     }
 
     private function month() {
@@ -38,50 +44,90 @@ class Calendar {
     }
     
     public function getNextMonth() {
-        echo  date('Y-m', strtotime('+1 month', $this->timestamp));
+        echo date('Y-m', strtotime('+1 month', $this->timestamp));
     }
 
     public function showCalendar() {
         $today = date('j-m-Y');
-
-        $day_count = date('t', $this->timestamp);
-        $day_of_week = date('N', $this->timestamp);
+        $this->day_count = date('t', $this->timestamp);
+        $this->day_of_week = date('N', $this->timestamp);
 
         $date = new DateTime($this->month);
         $display_month = $date->format('m-Y');
         
-
-        $weeks = array();
-        $week = '';
-
-        $week .= str_repeat('<td></td>', $day_of_week-1);
-
-        for($day = 1; $day <= $day_count; $day++, $day_of_week++) {
-            
+        $this->addBlankForBeginning();
+        
+        for($day = 1; $day <= $this->day_count; $day++, $this->day_of_week++) {
             $date = $day .'-' .$display_month; 
 
-            if($today === $date) {
-                $week .= '<td class="today">' .$day;
+            if($today == $date) {
+                $this->week .= "<td class='today'>";
             } else {
-                $week .= '<td>' .$day;
+                $this->week .= "<td>";
             }
-            $week .= '</td>';
 
-
-            if($day_of_week % 7 == 0 || $day == $day_count) {
-                if($day == $day_count && $day_of_week % 7 != 0) {
-                    $week .= str_repeat('<td></td>', 7 - $day_of_week % 7);
-                }
-
-                $weeks[] = '<tr>' .$week .'</tr>';
-
-                $week = '';
-            }
+            $reservation_table = $this->makeReservationTable($day);
+            $this->week .=  $reservation_table . "</td>";
+            
+            if($this->day_of_week % 7 == 0 || $day == $this->day_count) {
+                $this->addBlankForEnd($day); 
+    
+                $this->weeks[] = '<tr>' .$this->week .'</tr>';
+                $this->week = '';
+            }       
         }
 
-        foreach($weeks as $week) {
-            echo $week;
+        foreach($this->weeks as $this->week) {
+            echo $this->week;
         }
+
+        $this->saveMonth();
+    }
+
+    private function makeReservationTable($day) {
+        $search_date = "{$this->month}-{$day}";
+        $reservation = new Reservation();
+        $reservations = $reservation->selectByRequestDate($search_date);
+        $num_result = count($reservations);
+
+        $reservation_table = "<table class='reservations'><tr><td>{$day}</td></tr>";
+        if($num_result > 0) {
+            if($num_result >= 2) {
+                $length = 1;
+            } else {
+                $length = $num_result -1;
+            }
+            
+            for($i = 0; $i <= $length; $i++) {
+                $reservation_table .= "<tr><td><a href='reservation.php?source=details&r_id={$reservations[$i]->request_id}'>{$reservations[$i]->formatTime()} {$reservations[$i]->request_num_seats} Seats</a></td></tr>";
+            }
+
+            if($length <= 1) {
+                $reservation_table .= str_repeat("<tr><td></td></tr>", 3 - ($length + 1));
+            } else {
+                $plus = $num_result - 2;
+                $reservation_table .= "<tr><td class='plus'><a href='reservation.php?source=details&r_id={$reservations[2]->request_id}'>+ {$plus}</a></td></tr>";
+            }
+        } else {
+            $reservation_table .= str_repeat("<tr><td></td></tr>", 3);
+        }
+        return $reservation_table .= "</table>";
+    }
+
+    private function addBlankForBeginning() {
+        $this->week .= str_repeat('<td></td>', $this->day_of_week-1);
+    } 
+
+    private function addBlankForEnd($day) {
+        if($day == $this->day_count && $this->day_of_week % 7 != 0) {
+            $this->week .= str_repeat('<td></td>', 7 - $this->day_of_week % 7);
+        }
+    }
+
+    private function saveMonth() {
+        global $session;
+
+        $_SESSION['displayedMonth'] = $this->month;
     }
     
 }

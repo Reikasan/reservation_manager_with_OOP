@@ -21,7 +21,7 @@ class Reservation extends Db_object {
     public $id;
  
     public static function selectByRequestDate($request_date) {
-        return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."'");
+        return static::find_by_query("SELECT * FROM " .static::$db_table ." where request_date = '" .$request_date ."' order by request_time ");
     }
 
     public static function searchReservation($filter, $filters = null) {
