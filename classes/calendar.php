@@ -100,11 +100,11 @@ class Calendar {
             
             for($i = 0; $i <= $length; $i++) {
                 $reservation_table .= "<tr><td><a href='reservation.php?source=details&r_id={$reservations[$i]->request_id}'><i class='fas fa-circle {$reservations[$i]->request_status}'></i>";
-                $reservation_table .= "{$reservations[$i]->formatTime()} {$reservations[$i]->request_num_seats} Seats</a></td></tr>";
+                $reservation_table .= "{$reservations[$i]->formatTime()}</a></td></tr>";
             }
 
-            if($length <= 1) {
-                $reservation_table .= str_repeat("<tr><td></td></tr>", 3 - ($length + 1));
+            if($num_result <= 2) {
+                $reservation_table .= str_repeat("<tr><td></td></tr>", 3 - $num_result);
             } else {
                 $plus = $num_result - 2;
                 $reservation_table .= "<tr><td class='plus'><a href='reservation.php?source=details&r_id={$reservations[2]->request_id}'>+ {$plus}</a></td></tr>";
@@ -129,6 +129,10 @@ class Calendar {
         global $session;
 
         $_SESSION['displayedMonth'] = $this->month;
+    }
+
+    public function showWeekCalendar() {
+        echo "hi";
     }
     
 }

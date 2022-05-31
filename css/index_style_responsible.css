@@ -369,6 +369,19 @@
     .success {
         font-size: 1.8rem !important;
     }
+
+    /* CALENDAR.PHP */
+    div.calendar {
+        padding: 1rem 1%;
+    }
+
+    div.calendar table.reservations a {
+        font-size: 1rem;
+    }
+
+    div.calendar table.reservations i.fa-circle {
+        display: none;
+    }
 } /* end of max-width 650px */
 
 @media screen and (max-width: 500px)  {

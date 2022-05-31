@@ -37,19 +37,19 @@
 
 
 /* CALENDAR */
-div.calendar table.reservations i.unread {
+td i.unread, th i.unread {
     color: #dce822;
 }
 
-div.calendar table.reservations i.pending {
+td i.pending {
     color : palevioletred;
 }
 
-div.calendar table.reservations i.canceled {
+td i.canceled {
     color: #2c2c2c;
 }
 
-div.calendar table.reservations i.confirmed {
+td i.confirmed {
     color: paleturquoise;
 }
 

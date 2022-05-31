@@ -12,7 +12,7 @@
         </li>
             
         </li>
-        <li><a href="coming_soon.php"><span><i class="far fa-calendar"></i></span>Calendar</a></li>
+        <li><a href="calendar.php"><span><i class="far fa-calendar"></i></span>Calendar</a></li>
     </ul>
     <div class="hamburgerIcon hide">
         <i class="fas fa-bars"></i>
