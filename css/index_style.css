@@ -123,7 +123,6 @@ th select.th-select option {
 }
 
 td .fa-circle, th .fa-circle {
-    color: #dce822;
     font-size: 1rem;
 }
 
@@ -567,6 +566,11 @@ div.calendar table.reservations tr {
 }
 div.calendar table.reservations tr td {
     padding: .25rem;
+}
+
+div.calendar table.reservations i.fa-circle {
+    vertical-align: baseline;
+    margin-right: 5px;
 }
 
 div.calendar table.reservations a {

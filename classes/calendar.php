@@ -99,7 +99,8 @@ class Calendar {
             }
             
             for($i = 0; $i <= $length; $i++) {
-                $reservation_table .= "<tr><td><a href='reservation.php?source=details&r_id={$reservations[$i]->request_id}'>{$reservations[$i]->formatTime()} {$reservations[$i]->request_num_seats} Seats</a></td></tr>";
+                $reservation_table .= "<tr><td><a href='reservation.php?source=details&r_id={$reservations[$i]->request_id}'><i class='fas fa-circle {$reservations[$i]->request_status}'></i>";
+                $reservation_table .= "{$reservations[$i]->formatTime()} {$reservations[$i]->request_num_seats} Seats</a></td></tr>";
             }
 
             if($length <= 1) {

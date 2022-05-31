@@ -58,7 +58,7 @@ class Reservation extends Db_object {
 
     public function showUnreadSign() {
         if($this->isUnread()) {
-            return "<i class='fas fa-circle' title='unread'></i>";
+            return "<i class='fas fa-circle unread' title='unread'></i>";
         }
     }
 
