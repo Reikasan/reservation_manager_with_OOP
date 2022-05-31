@@ -7,7 +7,6 @@
 
 $calendar = new Calendar();
 
-
 ?>
 <?php include "includes/navigation.php"; ?>
 
