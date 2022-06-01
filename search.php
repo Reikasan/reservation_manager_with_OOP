@@ -52,7 +52,7 @@
                     <thead>
                         <tr>
                             <th><input type="checkbox" name="" id="selectAllBoxes"></th>
-                            <th><i class="fas fa-circle"></i></th>
+                            <th><i class="fas fa-circle unread"></i></th>
                             <th><i class="far fa-flag"></i></th>
                             <th>Date</th>
                             <th class='timeCell'>Time</th>

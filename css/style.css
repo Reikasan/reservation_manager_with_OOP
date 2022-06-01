@@ -397,6 +397,10 @@ tr.done {
     opacity: 0.7;
 }
 
+tr.unread > td {
+    font-weight: 900;
+}
+
 /* PAGINATION */
 ul.pagination {
     display: flex;

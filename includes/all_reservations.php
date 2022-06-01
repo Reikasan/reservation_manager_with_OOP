@@ -44,7 +44,7 @@
 
                 foreach($reservations as $reservation) :
             ?>
-                    <tr class="<?= $reservation->isPastEvent();?>">
+                    <tr class="<?= $reservation->isPastEvent();?> <?php echo $reservation->isUnread() ? 'unread' : null; ?>">
                         <td><input class="checkbox" type="checkbox" name="checkBoxArray[]" value="<?= $reservation->request_id; ?>"></td>
                         <td><?= $reservation->showUnreadSign(); ?></td>
                         <td><i class="fa-flag <?= $reservation->isFlagged(); ?>" data="<?= $reservation->request_id; ?>"></i></td>
