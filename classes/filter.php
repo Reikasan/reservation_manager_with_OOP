@@ -123,11 +123,37 @@ class filter {
             unset($searchedFilter);
         }
     }
+    
+    private function setSearchArrayFromUrlForFilterBtn() {
+        global $database;
+        $this->searchCategory = $this->setSearchCategory();
 
+        if(isset($this->searchCategory)) {
+            $this->searchArrayForUrl[$this->searchCategory] = $this->setSearchText();
+        }
+        if(isset($_GET['flag'])) {
+            $this->searchArrayForUrl["flag"] = $database->escape_string($_GET['flag']);
+        }
+        if(isset($_GET['date'])) {
+            $this->searchArrayForUrl["date"] = $database->escape_string($_GET['date']);
+        }
+        if(isset($_GET['status'])) {
+            $this->searchArrayForUrl["status"] = $database->escape_string($_GET['status']);
+        }
+        return $this->searchArrayForUrl;
+    }
+    
     public function echoFilterBtn() {
         global $session;
-        $this->searchArrayForUrl = $session->searchArrayForUrl;
 
+        if(isset($session->searchArrayForUrl) && !empty($session->searchArrayForUrl)) {
+            $this->searchArrayForUrl = $session->searchArrayForUrl;
+        } else {
+            $this->searchArrayForUrl = $this->setSearchArrayFromUrl();
+        }
+
+        $session->searchArrayForUrl($this, $this->searchArrayForUrl);
+    
         echo "<form class='filterBtnContainer' method='post'> ";
 
         foreach($this->searchArrayForUrl as $key => $value) {
