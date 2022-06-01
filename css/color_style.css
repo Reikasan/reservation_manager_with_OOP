@@ -15,7 +15,7 @@
 }
 
 .btn.canceled, .status.canceled {
-    color: #2c2c2c !important;
+    background-color: #2c2c2c !important;
     color: white;
 }
 
