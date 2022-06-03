@@ -1,4 +1,7 @@
-<?php $session->finish_search(); ?>
+<?php 
+    $session->finish_search(); 
+    $session->unset_displayedMonth();    
+?>
 <section class="main">
     <h1>Reservation Request</h1>
     <?php include "includes/searchbox.php"; ?>
@@ -11,7 +14,7 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" name="" id="selectAllBoxes"></th>
-                    <th><i class="fas fa-circle unread"></i></th>
+                    <th class="unread-sign"><i class="fas fa-circle unread"></i></th>
                     <th><i class="far fa-flag"></i></th>
                     <th>Date</th>
                     <th class="timeCell">Time</th>
@@ -46,7 +49,7 @@
             ?>
                     <tr class="<?= $reservation->isPastEvent();?> <?php echo $reservation->isUnread() ? 'unread' : null; ?>">
                         <td><input class="checkbox" type="checkbox" name="checkBoxArray[]" value="<?= $reservation->request_id; ?>"></td>
-                        <td><?= $reservation->showUnreadSign(); ?></td>
+                        <td class="unread-sign"><?= $reservation->showUnreadSign(); ?></td>
                         <td><i class="fa-flag <?= $reservation->isFlagged(); ?>" data="<?= $reservation->request_id; ?>"></i></td>
                         <td><?= $reservation->formatDate(); ?></td>
                         <td class="timeCell"><?= $reservation->formatTime(); ?></td>

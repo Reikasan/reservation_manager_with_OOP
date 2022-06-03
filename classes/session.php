@@ -151,6 +151,11 @@ class Session {
             $this->displayedMonth = "";
         }
     } 
+
+    public function unset_displayedMonth() {
+        unset($this->displayedMonth);
+        unset($_SESSION['displayedMonth']);
+    }
 }
 
 $session = new session();

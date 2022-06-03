@@ -2,6 +2,7 @@
 <?php 
     if(!$session->is_signed_in()) { redirect("login.php"); } 
     $session->finish_search();
+    $session->unset_displayedMonth();
 ?>
 <?php include "includes/navigation.php"; ?>
 
