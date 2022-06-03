@@ -7,7 +7,7 @@
         echo "<a href='search.php?{$session->filterParameter}&page={$session->current_search_page}'>";
         echo "<i class='fas fa-chevron-left'></i>";
         echo " Back to Search Result Page";
-    } elseif(isset($session->currentPage)) {
+    } elseif(isset($session->current_page)) {
         echo "<a href='reservation.php?page={$session->current_page}'>";
         echo "<i class='fas fa-chevron-left'></i>";
         echo " Back to All reservations";
