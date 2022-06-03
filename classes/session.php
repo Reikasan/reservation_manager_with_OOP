@@ -55,7 +55,7 @@ class Session {
         unset($_SESSION['user_role']);
         unset($this->user_role);
         $this->signed_in = false;
-        self::unset_search_set();
+        $this->finish_search();
     }
 
     private function check_the_login() {
@@ -151,6 +151,11 @@ class Session {
             $this->displayedMonth = "";
         }
     } 
+
+    public function unset_displayedMonth() {
+        unset($this->displayedMonth);
+        unset($_SESSION['displayedMonth']);
+    }
 }
 
 $session = new session();

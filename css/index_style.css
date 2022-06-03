@@ -4,6 +4,13 @@ body {
     position: fixed;
     top: 0;
 }
+.btn {
+    color: #000;
+}
+
+.no-transition {
+    transition: unset;
+}
 
 .todays-reservation {
     height: 50%;
@@ -40,7 +47,6 @@ body {
 .reservationBox table{
     width: 100%;
     font-size: 1.6rem;
-    padding: 1rem 2rem;
     color: #2c2c2c;
     border-collapse: collapse;
     text-align: center;

@@ -8,11 +8,9 @@
     .commentCell {
         display: none;
     }
-
     section.sidebar {
         width: 25%;
     }
-
     section.main {
         width: 75%;
     }
@@ -26,13 +24,11 @@
     .anotherReservation {
         width: 45%;
     } 
-
     .mail {
         width: 55%;
         padding: 2rem;
         font-size: 1.6rem;
     }
-
     .mail-header .status {
         height: 6rem;
         width: 12rem;
@@ -45,7 +41,6 @@
     .container {
         display: block;
     }
-
     section.sidebar {
         background-color: #fff;
         position: relative;
@@ -54,18 +49,17 @@
         padding: 1rem;
         font-size: 1.8rem;
         height: 6rem;
+        transition: height .3s;
     }
-
     section.sidebar.open {
         height: 14rem;
+        transition: height .5s;
     }
-
     section.sidebar ul {
         display: flex;
         justify-content: space-around;
         text-align: center;
     }
-
     .sidebar li {
         padding: 1rem;
     }
@@ -75,50 +69,45 @@
     .sidebar a:hover {
         color: #000;
     }
-
     .sidebar .nested {
         display: block !important;
         text-indent: 0;
+        position: fixed;
+        top: 12rem;
+        transition: top .5s, opacity .8s, height .8s;
     }
-
     .sidebar .nested.hide {
         height: 0;
         opacity: 0;
+        position: fixed;
+        top: 8rem;
+        transition: unset;
     }
-
     .sidebar .nested:first-child {
         margin-top: 1rem;
     }
-
     li.dropdownMenu.pointer {
         cursor: pointer;
     }
-
     .sidebar .nested li {
         text-align: initial;
     }
-
     .sidebar .nested li a {
         font-size: 1.6rem;
     }
-
     section.main {
         width: 100%;
         height: 80%;
     }
-
     .reservation {
         height: 33vh;
     }
-
     .reservationBox {
         padding-bottom: 1rem;
     }
-
     .back {
         margin-top: 1rem;
     }
-
     .commentCell {
         display: table-cell;
     }
@@ -127,12 +116,10 @@
     .reservationDetails {
         margin-bottom: 3rem;
     }
-
     .mail {
         padding: 2rem;
         font-size: 1.6rem;
     }
-
     table.mail-contents {
         margin: 2rem 0;
     }
@@ -160,30 +147,24 @@
         display: block;
         height: 65%;
     }
-
     .anotherReservation {
         width: 100%;
         height: 4.5rem;
         position: relative;
         z-index: 50;
     }
-
     .anotherReservation ul {
         background-color: #f8f8f8;
         overflow-y: hidden;
     }
-
     .anotherReservation.open {
         height: auto;
         box-shadow: 1px 1px 4px #2c2c2c;
-        position: fixed;
-        
+        position: fixed;        
     }
-
     .anotherReservation.open + .mail {
         margin-top: 4.5rem;
     }
-
     .anotherReservation li.date i.fa-caret-down.dropdown2.show {
         display: block;
         position: absolute;
@@ -191,34 +172,27 @@
         top: 1rem;
         font-size: 2.5rem;
         cursor: pointer;
-    }
-    
+    }    
     .anotherReservation li.selected {
         display: none;
     }
-
     .list-container {
         height: 8rem;
     }
-
     .list-container .details {
         margin: 1rem 2rem;
     }
-
     .list-container .status {
         padding: 2.5rem 0;
     }
-
     .mail {
         width: 100%;
         height: calc(100% - 4.5rem);
         overflow-y: scroll;
     }
-
     table.mail-contents {
         margin: 2rem auto;
     }
-
     .mail-header .status {
         height: 8rem;
         width: 15rem;
@@ -237,28 +211,23 @@
         height: auto;
         margin-bottom: 2rem;
     }
-
     section.sidebar.transition {
         position: fixed;
         z-index: 50;
         border-bottom: none;
         box-shadow: 1px 1px 4px #aaa;
     }
-
     section.sidebar.transition + .main {
         height: calc(80% + 5rem);
     }
-
     section.sidebar.open {
         height: auto;
     }
-
     section.sidebar.hide {
         border-bottom: none;
         height: 5rem;
         margin-bottom: 0;
     }
-
     section.sidebar ul.hamburger {
         display: block;
         opacity: 1;
@@ -266,12 +235,10 @@
         margin: 0 auto;
         width: 18rem;
     }
-
     section.sidebar ul.hamburger.hide {
         height: 0;
         opacity: 0;
     }
-
     .hamburgerIcon {
         position: absolute;
         right: 2rem;
@@ -282,13 +249,26 @@
         font-size: 2.5rem;
         cursor: pointer;
     }
-
     .sidebar li {
         text-align: left;
     }
-
     .sidebar a {
         font-weight: 900;
+    }
+    .sidebar .dropdownMenu div.reservation-container {
+        height: 9rem;
+    }
+    .sidebar .dropdownMenu div.reservation-container.shrink {
+        height: auto;
+    }
+    .sidebar .nested {
+        top: 16rem;
+    }
+    .sidebar .nested.hide {
+        top: 12rem;
+    }
+    .sidebar .nested.hide li {
+        display: none;
     }
     .sidebar .nested li {
         text-align: center;
@@ -297,12 +277,10 @@
         font-size: 1.4rem;
         font-weight: 400;
     }
-
     .main h1 {
         font-size: 3rem;
         padding-top: 0;
     }
-
     .detailCell {
         display: none;
     }
@@ -322,50 +300,43 @@
     .search form .search-bar{
         display: block;
         z-index: 20;
-    }
-    
+    }    
     .search form .search-bar div.row-1 {
         border-bottom: solid 1px #ccc;
     }
-
     .search form .search-bar .row-2.hide {
         height: 0;
         opacity: 0;
-
     }
-
     .row-2.hide #searchCategory, #searchBtn {
         padding: 0;
     }
-
     #searchCategory {
         padding-left: 2rem;
     }
-
     .searchBtn {
         border-radius: 0 0 0.3rem 0;
     }
-
     p#addFilter {
         top: 5rem;
     }
-
     .filter {
         top: 7rem;
     }
 
-    /* RESERVATION.PHP */
+    /* RESERVATION.PHP */    
+    .reservationBox table {
+        padding: 0;
+    }
     .reservationDetails {
         height: 70%;
     }
-
     .mail-header .status {
         height: 6rem;
-        width: 10rem;
+        width: 12rem;
         padding: 1.5rem 0;
         font-size: 1.6rem;
     }
-
     .success {
         font-size: 1.8rem !important;
     }
@@ -374,11 +345,9 @@
     div.calendar {
         padding: 1rem 1%;
     }
-
     div.calendar table.reservations a {
         font-size: 1rem;
     }
-
     div.calendar table.reservations i.fa-circle {
         display: none;
     }
@@ -391,7 +360,6 @@
     nav .right li, nav .right li a {
         width: 6rem;
     }
-
     .main {
         height: auto;
     }
@@ -401,15 +369,12 @@
         display: block;
         height: auto;
     }
-
     .icon {
         width: auto;
         margin-bottom: 2rem;
     }
 
-    .timeCell {
-        display: none;
-    }
+    /* ALL RESERVATION.PHP */
     .reservationBox table {
         font-size: 1.4rem;
     }
@@ -417,44 +382,48 @@
         width: 10rem;
         font-size: 1.4rem;
     }
+    th.unread-sign, td.unread-sign {
+        display: none;
+    }
+
+    /* DETAILS.PHP */
+    div.mail {
+        font-size: 1.4rem;
+    }
+    table.small {
+        width: 80% !important;
+        font-size: 1.2rem !important;
+    }
 
     /* ADD RESERVATION.PHP */
     form#add {
         width: 90%;
     } 
-
     .form-group {
         font-size: 1.4rem;
     }
-
     form label.short {
         width: 6rem;
     }
-
     #add input, #add select {
         width: calc(100% - 7rem);
     }
-
     input.short, select.short {
         padding: 1rem .5rem .2rem;
         width: 100% !important;
     }
-
     .radioBtnContainer {
         width: 48%;
     }
-
     .form-group.btn-container {
         
         text-align: center;
     }
-
     form#add input.btn {
         width: auto;
         margin: 2rem auto;
         font-size: 1.8rem;
     }
-
     .success {
         font-size: 1.6rem !important;
     }
@@ -477,7 +446,8 @@
         flex-direction: column;
     }
     .filterBtn {
-        width: 15rem;
+        padding: .5rem 1rem;
+        width: 13rem;
     }
 
 } /* end of max-width 500px */
