@@ -2,7 +2,7 @@
     <ul class="hamburger">
         <li><a href="index.php">Today's Reservation</a></li>
         <li class="dropdownMenu">
-            <div>
+            <div class="reservation-container">
                 <a href="reservation.php" class="removalLink"><span><i class="far fa-envelope"></i></span>Reservations<span><i class="fas fa-caret-down"></i></span></a>
             </div>
             <ul class="nested">

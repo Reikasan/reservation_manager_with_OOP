@@ -10,20 +10,37 @@ const hamburger = document.querySelector('.hamburger');
 const nestedUl = document.querySelector('.nested');
 const dropdown2 = document.querySelector('.dropdown2');
 const search_row2 = document.querySelector('.row-2');
+const reservationContainer = document.querySelector('.reservation-container');
+
+function isNestedUlHidden() {
+    if(nestedUl.classList.contains('hide')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isHamburgerHidden() {
+    if(hamburger.classList.contains('hide')) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function checkWindowSize() {
     const w = window.innerWidth;
-    console.log(w);
-    const hideUl = nestedUl.classList.contains('hide');
     
     const link = document.querySelector('.removalLink');
     const hasLink = link.hasAttribute('href');
 
     if(w <= 1000) {
         /* HIDE NESTED UL AND REMOVE LINK */
-        if(!hideUl) {
+        if(!isNestedUlHidden()) {
+            console.log("miao");
+            reservationContainer.classList.add('shrink');
             nestedUl.classList.add('hide');
-            nestedUl.classList.remove('transition');
+            nestedUl.classList.remove('no-transition');
         } 
 
         link.removeAttribute('href');
@@ -31,7 +48,9 @@ function checkWindowSize() {
 
     } else {
         /* SHOW NESTED UL AND ADD LINK*/
-        if(hideUl) {
+        if(isNestedUlHidden()) {
+            console.log("herehere!");
+            reservationContainer.classList.remove('shrink');
             nestedUl.classList.remove('hide');
         } 
 
@@ -40,7 +59,7 @@ function checkWindowSize() {
         }
         dropdownMenu.classList.remove('pointer');
     }/* w = 1000px */
-    
+
     if(dropdown2 !== null) {
         const showAnotherReservations = dropdown2.classList.contains('show');
 
@@ -53,21 +72,17 @@ function checkWindowSize() {
             /* SHOW DROPDOWN SIGN AT ANOTHER_RESERVATIONS */
             if(showAnotherReservations) {
                 dropdown2.classList.remove('show');
-                dropdown2.classList.remove('transition');
+                // dropdown2.classList.remove('transition');
             } 
         } /* w = 800px */   
     }
 
-    const hideSidebar = hamburger.classList.contains('hide');
-    
-
     if(w <= 650) {    
-        
-        if(!hideSidebar) {
+        if(!isHamburgerHidden()) {
             sidebar.classList.add('hide');
             hamburger.classList.add('hide');
             hamburgerIcon.classList.remove('hide');
-            hamburgerIcon.classList.remove('transition');
+            // hamburgerIcon.classList.remove('transition');
         }   
         if(search_row2 !== null) {
             const hideSearchbar = search_row2.classList.contains('hide');
@@ -77,13 +92,13 @@ function checkWindowSize() {
         }
        
     } else {
-        if(hideSidebar) {
+        if(isHamburgerHidden()) {
             sidebar.classList.remove('hide');
             hamburger.classList.remove('hide');
             hamburgerIcon.classList.add('hide');
 
-            sidebar.classList.remove('transition');
-            hamburger.classList.remove('transition');
+            // sidebar.classList.remove('transition');
+            // hamburger.classList.remove('transition');
         }
 
         if(search_row2 !== null) {
@@ -111,18 +126,25 @@ const dropdownMenu = document.querySelector('.dropdownMenu');
 
 function toggleDropdown() {
     const w = window.innerWidth;
-    if(w < 1000) {
-        const hideItems = nestedUl.classList.contains('hide');
-        const sidebar = document.querySelector('.sidebar');
-
-        if(!hideItems) {
+    if(w < 650) {
+        if(!isNestedUlHidden()) {
             nestedUl.classList.add('hide');
-            nestedUl.classList.remove('transition');
+            reservationContainer.classList.add('shrink');
+        } else {
+            nestedUl.classList.remove('hide');
+            reservationContainer.classList.remove('shrink');
+        }
+    } else if(w < 1000) {
+        // const sidebar = document.querySelector('.sidebar');
+
+        if(!isNestedUlHidden()) {
+            nestedUl.classList.add('hide');
+            // nestedUl.classList.remove('transition');
             sidebar.classList.remove('open');
         } else {
             nestedUl.classList.remove('hide');
             sidebar.classList.add('open');
-            nestedUl.classList.add('transition');
+            // nestedUl.classList.add('transition');
         }
     } 
 }
@@ -136,18 +158,16 @@ if(dropdownMenu !== null) {
 const hamburgerIcon = document.querySelector('.hamburgerIcon');
 if(hamburgerIcon !== null) {
     hamburgerIcon.addEventListener('click', function() {
-        const hideSidebar = hamburger.classList.contains('hide');
-    
-        if(!hideSidebar) {
+        if(!isHamburgerHidden()) {
             sidebar.classList.add('hide');
-            sidebar.classList.remove('transition');
+            // sidebar.classList.remove('transition');
             hamburger.classList.add('hide');
-            hamburger.classList.remove('transition');
+            // hamburger.classList.remove('transition');
         } else {
             sidebar.classList.remove('hide');
-            sidebar.classList.add('transition');
+            // sidebar.classList.add('transition');
             hamburger.classList.remove('hide');
-            hamburger.classList.add('transition');
+            // hamburger.classList.add('transition');
         }
     });
 }
@@ -245,10 +265,10 @@ if(container !== null) {
     contentsHeight = contentsHeight + 60;
 
     if(contentsHeight > containerHeight) {
-        const downArea = document.querySelector('.down');
+        var downArea = document.querySelector('div.down, div.down.hide');
         downArea.classList.remove('hide');
 
-        const downMark = document.querySelector('.down .fa-angle-down');
+        const downMark = document.querySelector('.down > .fa-angle-down');
 
         const option = { once: true };
 
@@ -258,6 +278,7 @@ if(container !== null) {
 
         function scrollAndHideDownmark() {
             container.scrollTo(0, contentsHeight);
+            console.log(downArea);
             downArea.classList.add('hide');
         }   
     }   
