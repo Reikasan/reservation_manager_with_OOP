@@ -3,7 +3,11 @@
 
     <div class="back">
     <?php 
-    if(!empty($session->current_search_page) && !empty($session->filterParameter)){
+    if (isset($session->displayedMonth) && !empty($session->displayedMonth)) {
+        echo "<a href='calendar.php?month={$session->displayedMonth}'>";
+        echo "<i class='fas fa-chevron-left'></i>";
+        echo " Back to Calendar";
+    } elseif (!empty($session->current_search_page) && !empty($session->filterParameter)){
         echo "<a href='search.php?{$session->filterParameter}&page={$session->current_search_page}'>";
         echo "<i class='fas fa-chevron-left'></i>";
         echo " Back to Search Result Page";
@@ -11,10 +15,6 @@
         echo "<a href='reservation.php?page={$session->current_page}'>";
         echo "<i class='fas fa-chevron-left'></i>";
         echo " Back to All reservations";
-    } elseif(isset($session->displayedMonth) && !empty($session->displayedMonth)) {
-        echo "<a href='calendar.php?month={$session->displayedMonth}'>";
-        echo "<i class='fas fa-chevron-left'></i>";
-        echo " Back to Calendar";
     } else {
         echo "<a href='reservation.php'>";
         echo "<i class='fas fa-chevron-left'></i>";

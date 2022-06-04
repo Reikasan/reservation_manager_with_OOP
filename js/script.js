@@ -8,7 +8,7 @@
 const sidebar = document.querySelector('.sidebar');
 const hamburger = document.querySelector('.hamburger');
 const nestedUl = document.querySelector('.nested');
-const dropdown2 = document.querySelector('.dropdown2');
+const dropdownSign = document.querySelector('.dropdown2');
 const search_row2 = document.querySelector('.row-2');
 const reservationContainer = document.querySelector('.reservation-container');
 
@@ -28,6 +28,14 @@ function isHamburgerHidden() {
     }
 }
 
+function isDropdownSignShown() {
+    if(dropdownSign.classList.contains('show')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function checkWindowSize() {
     const w = window.innerWidth;
     
@@ -37,7 +45,7 @@ function checkWindowSize() {
     if(w <= 1000) {
         /* HIDE NESTED UL AND REMOVE LINK */
         if(!isNestedUlHidden()) {
-            console.log("miao");
+            sidebar.classList.remove('open');
             reservationContainer.classList.add('shrink');
             nestedUl.classList.add('hide');
             nestedUl.classList.remove('no-transition');
@@ -49,7 +57,6 @@ function checkWindowSize() {
     } else {
         /* SHOW NESTED UL AND ADD LINK*/
         if(isNestedUlHidden()) {
-            console.log("herehere!");
             reservationContainer.classList.remove('shrink');
             nestedUl.classList.remove('hide');
         } 
@@ -60,19 +67,16 @@ function checkWindowSize() {
         dropdownMenu.classList.remove('pointer');
     }/* w = 1000px */
 
-    if(dropdown2 !== null) {
-        const showAnotherReservations = dropdown2.classList.contains('show');
-
+    if(dropdownSign !== null) {
         if(w <= 800) {
             /* HIDE DROPDOWN SIGN AT ANOTHER_RESERVATIONS */
-            if(!showAnotherReservations) {
-                dropdown2.classList.add('show');
+            if(!isDropdownSignShown()) {
+                dropdownSign.classList.add('show');
             } 
         } else {
-            /* SHOW DROPDOWN SIGN AT ANOTHER_RESERVATIONS */
-            if(showAnotherReservations) {
-                dropdown2.classList.remove('show');
-                // dropdown2.classList.remove('transition');
+            if(isDropdownSignShown()) {
+                dropdownSign.classList.remove('show');
+                dropdownSign.classList.remove('transition');
             } 
         } /* w = 800px */   
     }
@@ -80,9 +84,9 @@ function checkWindowSize() {
     if(w <= 650) {    
         if(!isHamburgerHidden()) {
             sidebar.classList.add('hide');
+            sidebar.classList.remove('transition');
             hamburger.classList.add('hide');
             hamburgerIcon.classList.remove('hide');
-            // hamburgerIcon.classList.remove('transition');
         }   
         if(search_row2 !== null) {
             const hideSearchbar = search_row2.classList.contains('hide');
@@ -94,11 +98,9 @@ function checkWindowSize() {
     } else {
         if(isHamburgerHidden()) {
             sidebar.classList.remove('hide');
+            sidebar.classList.add('transition');
             hamburger.classList.remove('hide');
             hamburgerIcon.classList.add('hide');
-
-            // sidebar.classList.remove('transition');
-            // hamburger.classList.remove('transition');
         }
 
         if(search_row2 !== null) {
@@ -129,22 +131,20 @@ function toggleDropdown() {
     if(w < 650) {
         if(!isNestedUlHidden()) {
             nestedUl.classList.add('hide');
+            sidebar.classList.remove('transition');
             reservationContainer.classList.add('shrink');
         } else {
             nestedUl.classList.remove('hide');
+            sidebar.classList.add('transition');
             reservationContainer.classList.remove('shrink');
         }
     } else if(w < 1000) {
-        // const sidebar = document.querySelector('.sidebar');
-
         if(!isNestedUlHidden()) {
             nestedUl.classList.add('hide');
-            // nestedUl.classList.remove('transition');
             sidebar.classList.remove('open');
         } else {
             nestedUl.classList.remove('hide');
             sidebar.classList.add('open');
-            // nestedUl.classList.add('transition');
         }
     } 
 }
@@ -153,21 +153,18 @@ if(dropdownMenu !== null) {
     dropdownMenu.addEventListener('click', toggleDropdown);
 }
 
-
 /* Hamburger menu */
 const hamburgerIcon = document.querySelector('.hamburgerIcon');
 if(hamburgerIcon !== null) {
     hamburgerIcon.addEventListener('click', function() {
         if(!isHamburgerHidden()) {
             sidebar.classList.add('hide');
-            // sidebar.classList.remove('transition');
+            sidebar.classList.remove('transition');
             hamburger.classList.add('hide');
-            // hamburger.classList.remove('transition');
         } else {
             sidebar.classList.remove('hide');
-            // sidebar.classList.add('transition');
+            sidebar.classList.add('transition');
             hamburger.classList.remove('hide');
-            // hamburger.classList.add('transition');
         }
     });
 }
@@ -278,18 +275,25 @@ if(container !== null) {
 
         function scrollAndHideDownmark() {
             container.scrollTo(0, contentsHeight);
-            console.log(downArea);
             downArea.classList.add('hide');
         }   
     }   
 }
 
 /* Toggle Dropdown anotherReservation by click */ 
-if(dropdown2 !== null) {
-    dropdown2.addEventListener('click', function() {
+if(dropdownSign !== null) {
+    dropdownSign.addEventListener('click', function() {
         const anotherReservation = document.querySelector('.anotherReservation');
-        const showAnotherReservations = anotherReservation.classList.contains('open');
-        if(showAnotherReservations) {
+
+        function isAnotherReservationsShown() {
+            if(anotherReservation.classList.contains('open')) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // const showAnotherReservations = ;
+        if(isAnotherReservationsShown()) {
             anotherReservation.classList.remove('open');
             anotherReservation.classList.remove('transition');
         } else {

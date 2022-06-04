@@ -83,6 +83,12 @@
         top: 8rem;
         transition: unset;
     }
+    .sidebar .nested li {
+        display: block;
+    }
+    .sidebar .nested.hide li {
+        display: none;
+    }
     .sidebar .nested:first-child {
         margin-top: 1rem;
     }
@@ -160,7 +166,7 @@
     .anotherReservation.open {
         height: auto;
         box-shadow: 1px 1px 4px #2c2c2c;
-        position: fixed;        
+        position: fixed;       
     }
     .anotherReservation.open + .mail {
         margin-top: 4.5rem;
@@ -174,7 +180,7 @@
         cursor: pointer;
     }    
     .anotherReservation li.selected {
-        display: none;
+        display: none !important;
     }
     .list-container {
         height: 8rem;
