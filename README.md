@@ -1,5 +1,7 @@
 # [reservation_manager_with_OOP](https://reservation-manager.reikaakuzawa.com/)
 I'm reconstructing Reservation-Manager site with OOP concept
+
+This Site is connected with [Sample Bar Site](https://sample-bar.reikaakuzawa.com/). You can make reservations from Bar Site and manage it here!
 ![reservation_manager_screenshot](https://user-images.githubusercontent.com/68085523/167089689-009bf759-55af-458b-88d2-cf1fe1aae866.jpg)
 
 # Features
