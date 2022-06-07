@@ -36,6 +36,8 @@ if(isset($_POST['login'])) {
         <div class="message-container">
             <?= isset($message) ? $message: null; ?>
         </div>
+        <p class="text-red">Only for demonstration purpose, password is already set.</p>
+        <p class="text-red">Also you can play around with <a class="underline" href="forgot.php">Forgot your password page</a></p>
         <form action="" method="post" class="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
